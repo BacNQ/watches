@@ -9,7 +9,7 @@ import "./style.scss"
 
 const CategoryMain = () => {
     return (
-        <div className="container flex max-w-[1320px] mx-auto">
+        <div className="flex max-w-[1320px] mx-auto">
             <div className="w-[20%] bg-white p-4 my-4 rounded-lg">
                 <div className="bg-[#070e35] rounded-[5px] font-semibold text-[13px] text-white px-4 py-2 mb-4 w-full text-left">
                     <div>
@@ -70,7 +70,7 @@ const CategoryMain = () => {
                     </li>
                 </ul>
             </div>
-            <div className="slide-banner w-[80%] p-4">
+            <div className="slide-banner w-[80%] pt-4 pr-0 pb-4 pl-4">
                 <div className="grid grid-cols-3 gap-4">
                     <div className="col-span-2">
                         <div className="relative">
