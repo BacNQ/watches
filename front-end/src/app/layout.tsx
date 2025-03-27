@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "B&Q Watches",
-  description: "B&Q Watches - Mua là dễ",
+  title: "Đồng Hồ Chính Hãng, Thời Trang & Đẳng Cấp",
+  description: "B&Q Watches – Khẳng Định Phong Cách, Giữ Trọn Thời Gian",
 };
 
 export default function RootLayout({
@@ -28,6 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></link>
+        <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"></link>
       </head>
 
       <body

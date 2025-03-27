@@ -16,11 +16,20 @@ async function scrapeProductDetail(slug) {
             thumbnails.push(image);
           }
         });
+        const code = $('.product_name .box_name .code_sp').text().replace('UPC:', '').trim();
+        const ratingText = $('.product_name .box_name span.rate a.rate_count').text().trim();
+        const rating = parseFloat(ratingText);
+        const soldText = $('.product_name .box_name .sell_products').text().trim().replace(/[^\d]/g, '');
+        const sold = +soldText;
+        const stock_status = $('.product_name .box_name .statust').text().trim();
         const name = $('.product_name .box_name h1.name_products').text().trim() || 'N/A';
-        const price_current = $('.product_name .product_base form#buy_simple_form_submit .price .price_current').text().trim();
-        const price_old = $('.product_name .product_base form#buy_simple_form_submit .price .price_old').text().trim();
-        const discount = $('.product_name .product_base form#buy_simple_form_submit .price .discount').text().trim();
-        const brand = $('.product_name .product_base form#buy_simple_form_submit .more_detail span.cate_name strong').text().trim();
+        const price_current_text = $('.product_name .product_base form#buy_simple_form_submit .price .price_current').text().trim();
+        const price_current = parseInt(price_current_text.replace(/[^\d]/g, ''), 10); 
+        const price_old_text = $('.product_name .product_base form#buy_simple_form_submit .price .price_old').text().trim();
+        const price_old = parseInt(price_old_text.replace(/[^\d]/g, ''), 10);
+        const discount = $('.product_name .product_base form#buy_simple_form_submit .price .discount').text().trim() || null;
+        const brand = $('.product_name .product_base form#buy_simple_form_submit .more_detail span.cate_name strong').text().trim() || null;
+        const origin = $('.product_name .product_base form#buy_simple_form_submit .more_detail span.text_ext strong').text().trim() || null;
         
         const specifics = [];
 
@@ -37,9 +46,14 @@ async function scrapeProductDetail(slug) {
 
         return {
             slug,
+            code,
+            stock_status,
+            rating,
+            sold,
             name,
             price_current,
             brand,
+            origin,
             price_old,
             thumbnails,
             discount,

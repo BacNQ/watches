@@ -2,6 +2,7 @@
 import "swiper/css";
 import "swiper/css/navigation"
 import "swiper/css/pagination"
+import './gallery.scss'
 import queryString from "query-string";
 import ImgLightbox from './lightbox';
 import { useState, useEffect } from "react";

@@ -1,32 +1,44 @@
-.swiper-images {
-    .swiper-slide {
-        border-radius: 8px;
-        overflow: hidden;
-        border: 1px solid #fff;
-        .main-gallery {
-            position: relative;
-            padding-top: 100%;
-            .img {
-                position: absolute;
-                top: 0px;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: #f7f7f7;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                .image-product {
+.gallery {
+    .swiper-images {
+        .swiper-slide {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #fff;
+            .main-gallery {
+                position: relative;
+                padding-top: 100%;
+                .img {
+                    position: absolute;
+                    top: 0px;
+                    left: 0;
                     width: 100%;
-                    height: auto;
-                    margin: 0px;
-                    background-repeat: no-repeat;
-                    img {
-                        display: block;
+                    height: 100%;
+                    background: #f7f7f7;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .image-product {
                         width: 100%;
-                        min-height: 100%;
-                        pointer-events: none;
+                        height: auto;
+                        margin: 0px;
+                        background-repeat: no-repeat;
+                        img {
+                            display: block;
+                            width: 100%;
+                            min-height: 100%;
+                            pointer-events: none;
+                        }
                     }
+                }
+            }
+        }
+    }
+    .swiper-thumnails {
+        margin-top: 10px;
+        .swiper-slide {
+            .item-gallery {
+                img {
+                    border-radius: 8px;
                 }
             }
         }
