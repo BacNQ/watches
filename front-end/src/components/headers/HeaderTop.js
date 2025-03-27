@@ -24,7 +24,7 @@ const HeaderTop = () => {
       <div className="header-main grid grid-cols-3 items-center gap-4 max-w-[1280px] mx-auto w-full h-[100px]">
         <div className="flex justify-start h-[100px] items-center ml-[-60px]">
           <Link href="/">
-            <img src="static/logo/logo.png" alt="Logo" className="h-[160px]" />
+            <img src="/static/logo/logo.png" alt="Logo" className="h-[160px]" />
           </Link>
         </div>
         <div className="flex justify-center ml-[-220px] relative">
