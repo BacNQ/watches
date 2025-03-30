@@ -30,9 +30,9 @@ async function scrapeProductDetail(slug) {
         const discount = $('.product_name .product_base form#buy_simple_form_submit .price .discount').text().trim() || null;
         const brand = $('.product_name .product_base form#buy_simple_form_submit .more_detail span.cate_name strong').text().trim() || null;
         const origin = $('.product_name .product_base form#buy_simple_form_submit .more_detail span.text_ext strong').text().trim() || null;
-        
-        const specifics = [];
+        const description = $('.summary_pro .description p').text().trim() || null;
 
+        const specifics = [];
         $(".characteristic_content .charactestic_table tr").each((i, el) => {
           const tds = $(el).find("td");
           tds.each((j, td) => {
@@ -42,6 +42,18 @@ async function scrapeProductDetail(slug) {
               specifics.push({ [title]: content });
             }
           });
+        });
+  
+        let related = [];
+        $('.list_slide_owl .list_slide_rl .item').each((i, elem) => {
+          const link = $(elem).find('a').attr('href').split('/');
+          const slug = link[link.length - 1];
+          const image = $(elem).find('img').attr('src');
+          const stock_status = $(elem).find('.itproduct__over span').text().trim() || null;
+
+          if (slug && image) {
+            related.push({ slug, image, stock_status });
+          }
         });
 
         return {
@@ -57,7 +69,9 @@ async function scrapeProductDetail(slug) {
             price_old,
             thumbnails,
             discount,
-            specifics
+            specifics,
+            description,
+            related,
         };
     } catch (error) {
         console.error('Error scraping product info:', error);

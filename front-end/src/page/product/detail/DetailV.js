@@ -5,15 +5,14 @@ import GalleryProduct from '../../../components/product/gallery';
 import { formatCurrency } from '../../../helpers/format_price'
 // import { setProduct } from "../../../helpers/history";
 import { useEffect, useState } from 'react';
+import SectionRelate from "../components/SectionRelate";
 import { Rate } from "antd";
 import './product.scss'
 
-// const BtnCartProduct = dynamic(() => import('../../../components/product/buycart'), { ssr: false })
+const BtnBuyProduct = dynamic(() => import('../../../components/product/buy-cart'), { ssr: false })
+const BtnCart = dynamic(() => import('../../../components/product/cart'), { ssr: false })
+
 // const FavoriteProduct = dynamic(() => import('../../../components/product/favorite'), { ssr: false })
-// const FavoriteSeller = dynamic(() => import('../../../components/seller/favorite'), { ssr: false })
-// const BtnQuoteProduct = dynamic(() => import('../../../components/product/quote'), { ssr: false })
-// const SectionRelate = dynamic(() => import('../_components/SectionRelate'), { ssr: false })
-// const SellerDetail = dynamic(() => import('../_components/SellerDetail'), { ssr: false })
 
 const ProductV = (props) => {
     const { product } = props;
@@ -65,6 +64,24 @@ const ProductV = (props) => {
                                 );
                             })}
                         </div>
+                        <div className='product-buy'>
+                            <BtnCart
+                                product={product}
+                                size="lg"
+                                label="Thêm vào giỏ"
+                            />
+                            <BtnBuyProduct
+                                product={product}
+                                size="lg"
+                                label="Mua ngay"
+                            />
+                        </div>
+                        <div className='hotline_detail'>
+                            <p>Gọi mua hàng: </p>
+                            <div className='phone-link'>
+                                <a href="tel:0353827279">035 382 7279</a> - <a href="tel:0981651127">098 165 1127</a>
+                            </div>
+                        </div>
                         <div className='box-commitment'>
                             <div className='title-box'>
                                 <div className='title'>CAM KẾT CỦA B&Q WATCHES</div>
@@ -98,6 +115,27 @@ const ProductV = (props) => {
                         </div>
                     </section>
                 </div>
+            </article>
+
+            {product?.description &&
+                <article className="box-product">
+                    <section className="box-description-product">
+                        {product?.description && (
+                            <div className="product-description">
+                                <div className='pannel-header'>
+                                    <h3 className='title-header bold'>Mô tả sản phẩm</h3>
+                                </div>
+                                <div className='pannel-body'>
+                                    <p>{product?.description}</p>
+                                </div>
+                            </div>
+                        )}
+                    </section>
+                </article>
+            }
+
+            <article className="product-relate">
+                <SectionRelate product={product} title="Sản phẩm tương tự" />
             </article>
         </div>
     )

@@ -207,8 +207,30 @@
                                     .item-text {
                                         font-size: 14px;
                                     }
+                                    i {
+                                        color: #fdaf17;
+                                    }
                                 }
                             }
+                        }
+                    }
+                    .product-buy {
+                        display: flex;
+                        flex-direction: row;
+                        gap: 48px;
+                        margin: 20px 0;
+                    }
+                    .hotline_detail {
+                        display: flex;
+                        justify-content: center;
+                        gap: 4px;
+                        font-size: 14px;
+                        p {
+                            font-weight: 550;
+                        }
+                        .phone-link {
+                            color: #2f80ed;
+                            font-weight: 550;
                         }
                     }
                 }
@@ -218,6 +240,73 @@
                     }
                 }
                   
+            }
+        }
+
+        .box-product {
+            .box-description-product {
+                .product-description {
+                    .pannel-header {
+                        position: relative;
+                        margin-bottom: 8px;
+                        padding-bottom: 8px;
+                        border-bottom: 1px solid #dddcdcc2;
+                        .title-header {
+                            font-size: 18px;
+                            line-height: 32px;
+                            margin-bottom: 0px;
+                            font-weight: 550;
+                        }
+                    }
+                    .pannel-body {
+                        p {
+                            position: relative;
+                            overflow: hidden;
+                            max-height: 500px;
+                            font-size: 15px;
+                            line-height: 24px;
+                            padding: 8px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .product-relate {
+            padding-bottom: 2px;
+            .group-relates {
+                background: #fff;
+                border-radius: 6px;
+                margin-bottom: 25px;
+                .card-header {
+                    border-radius: 6px 6px 0px 0px;
+                    background-color: #070e35;
+                    .title-main {
+                        padding: 8px 12px;
+                        font-size: 16px;
+                        line-height: 28px;
+                        font-weight: 550;
+                        color: #fff;
+                    }
+                }
+                .card-body {
+                    .swiper {
+                        margin: 12px;
+                        .product-item {
+                            transition: 0.2s ease-in-out;
+                            width: 100%;
+                            height: auto;
+                            float: left;
+                            text-align: center;
+                            padding: 10px;
+                            border-radius: 12px;
+                            margin-bottom: 15px;
+                            &:hover {
+                                box-shadow: 0 3px 6px 3px rgba(0, 0, 0, 0.15);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
