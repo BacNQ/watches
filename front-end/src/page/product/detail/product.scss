@@ -1,5 +1,6 @@
 .container {
     background-color: #eee;
+    padding-bottom: 2px;
     .breadcrumb {
         max-width: 1320px;
         margin: 0 auto;
@@ -273,7 +274,6 @@
         }
 
         .product-relate {
-            padding-bottom: 2px;
             .group-relates {
                 background: #fff;
                 border-radius: 6px;

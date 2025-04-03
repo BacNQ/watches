@@ -134,9 +134,11 @@ const ProductV = (props) => {
                 </article>
             }
 
-            <article className="product-relate">
-                <SectionRelate product={product} title="Sản phẩm tương tự" />
-            </article>
+            {product?.related &&
+                <article className="product-relate">
+                    <SectionRelate product={product} title="Sản phẩm tương tự" />
+                </article>
+            }
         </div>
     )
 }
