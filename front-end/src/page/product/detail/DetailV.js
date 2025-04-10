@@ -11,8 +11,7 @@ import './product.scss'
 
 const BtnBuyProduct = dynamic(() => import('../../../components/product/buy-cart'), { ssr: false })
 const BtnCart = dynamic(() => import('../../../components/product/cart'), { ssr: false })
-
-// const FavoriteProduct = dynamic(() => import('../../../components/product/favorite'), { ssr: false })
+// const FavoriteProduct = dynamic(() => import('../../../components/product/favourite'), { ssr: false })
 
 const ProductV = (props) => {
     const { product } = props;

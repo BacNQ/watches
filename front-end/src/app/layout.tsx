@@ -6,6 +6,7 @@ import "antd/dist/reset.css";
 import HeaderTop from '../components/headers/HeaderTop';
 import BackToTop from '../components/commons/BackToTop';
 import FooterMain from '../components/footers/index'
+import { Toaster as ToastProvider } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,6 +44,7 @@ export default function RootLayout({
             {children}
           </div>
           <BackToTop />
+          <ToastProvider />
           <FooterMain />
         </main>
       </body>

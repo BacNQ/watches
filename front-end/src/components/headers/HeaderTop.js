@@ -1,10 +1,26 @@
 'use client'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Link from 'next/link';
 import { Button, Input } from "@nextui-org/react";
 import './style.scss'
+import { getInfoUser } from '../../services/auth'
+import HeaderInfo from './HeaderInfo'
 
 const HeaderTop = () => {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    getInfoUser(token)
+      .then(data => {
+        setUser(data);
+      })
+      .catch(err => {
+        console.error('Không thể lấy thông tin user:', err.message);
+      });
+  }, []);
+
   return (
     <div className="header-top">
       <div className='header-nav-top w-full bg-[#070e35] flex items-center justify-end h-[40px] pr-[80px] gap-[50px] text-white text-[13px] font-semibold'>
@@ -41,10 +57,7 @@ const HeaderTop = () => {
           <div className='mr-8'>
             <div className='flex items-center gap-2'>
               <i className="fa-solid fa-user bg-[#d8d8d8] p-[10px] px-[12px] rounded-lg shadow-md"></i>
-              <div className='flex flex-col'>
-                <span className='text-[12px] text-[#939393]'>Xin chào</span>
-                <span className='text-[14px] font-semibold mt-[-6px]'>Nguyễn Quí Bắc <i className="fa-solid fa-caret-down ml-[6px]"></i></span>
-              </div>
+              <HeaderInfo user={user?.data} />
             </div>
           </div>
           <div>
