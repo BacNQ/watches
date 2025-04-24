@@ -3,21 +3,22 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const FavoriteSchema = new Schema({
-    code: { type: String, required: true, trim: true },
+    slug: { type: String,required: true, trim: true },
     name: { type: String, required: true, trim: true },
-    url: { type: String, required: true, trim: true },
-    price: { type: Number },
+    url: { type: String, trim: true },
+    price: { type: Number, required: true },
     description: { type: String },
+    url: { type: String, trim: true },
     images: { type: [String] },
     deleted: { type: Boolean, default: false },
-    // user_id: { type: Schema.Types.ObjectId, required: true },
+    user_id: { type: Schema.Types.ObjectId, required: true },
     created_date: { type: Date, default: Date.now },
 });
 
 FavoriteSchema.set('toJSON', { virtuals: true });
 FavoriteSchema.set('toObject', { virtuals: true });
 
-FavoriteSchema.index({ code: 1/*, user_id: 1 */}, { unique: true });
+FavoriteSchema.index({ slug: 1, user_id: 1 }, { unique: true });
 FavoriteSchema.virtual("id").get(function () {
     return this._id ? this._id.toHexString() : "";
 });

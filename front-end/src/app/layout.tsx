@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import dynamic from 'next/dynamic'
 import "antd/dist/reset.css";
 import HeaderTop from '../components/headers/HeaderTop';
 import BackToTop from '../components/commons/BackToTop';
+import ChatsProvider from '../chat/provider'
 import FooterMain from '../components/footers/index'
+import { QueryProvider } from '../provider/QueryProvider';
+// import { NextProvider } from '../provider/NextProvider';
 import { Toaster as ToastProvider } from 'react-hot-toast';
 
 const geistSans = Geist({
@@ -33,20 +35,27 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></link>
         <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css"></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
       </head>
 
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <main className='light'>
-          <HeaderTop />
-          <div id="root">
-            {children}
-          </div>
-          <BackToTop />
-          <ToastProvider />
-          <FooterMain />
-        </main>
+        <QueryProvider>
+          {/* <NextProvider> */}
+            <main className='light'>
+              <HeaderTop />
+              <div id="root">
+                {children}
+              </div>
+              <BackToTop />
+              <ChatsProvider />
+              <ToastProvider />
+              <FooterMain />
+            </main>
+          {/* </NextProvider> */}
+        </QueryProvider>
       </body>
     </html>
   );

@@ -1,0 +1,11 @@
+.detail-empty {
+    max-width: 1320px;
+    margin: auto;
+    margin-bottom: 65px;
+    .empty-item {
+        .ant-empty-image {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}

@@ -9,5 +9,19 @@
                 outline: none;
             }
         }
+        .item-action {
+            .btn-badge {
+                font-size: 12px;
+                font-weight: 600;
+                background-color: #fd3535;
+                color: #fff;
+                border-radius: 50%;
+                place-content: center;
+                width: 14px;
+                height: 14px;
+                left: 17px;
+                bottom: 18px;
+            }
+        }
     }
 }

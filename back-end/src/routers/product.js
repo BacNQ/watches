@@ -1,9 +1,9 @@
 const Product = require('../controllers/product-controller');
-// const auth = require('../middlewares/auth');
-// const dpopAuth = require("../middlewares/dpop-validate");
 
 function connectRoutes(router) {
     router.get('/bnq_watches/product/:slug', Product.getProduct);
+    router.get('/bnq_watches/products/trending', Product.getProductTrending);
+    router.get('/bnq_watches/products/luxury', Product.getProductLuxury);
 }
 
 module.exports.connect = connectRoutes;

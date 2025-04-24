@@ -1,9 +1,6 @@
-import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { Button, Textarea } from "@nextui-org/react";
 import GalleryProduct from '../../../components/product/gallery';
 import { formatCurrency } from '../../../helpers/format_price'
-// import { setProduct } from "../../../helpers/history";
 import { useEffect, useState } from 'react';
 import SectionRelate from "../components/SectionRelate";
 import { Rate } from "antd";
@@ -11,14 +8,10 @@ import './product.scss'
 
 const BtnBuyProduct = dynamic(() => import('../../../components/product/buy-cart'), { ssr: false })
 const BtnCart = dynamic(() => import('../../../components/product/cart'), { ssr: false })
-// const FavoriteProduct = dynamic(() => import('../../../components/product/favourite'), { ssr: false })
+const FavoriteProduct = dynamic(() => import('../../../components/product/favourite'), { ssr: false })
 
 const ProductV = (props) => {
     const { product } = props;
-    console.log(product)
-    // useEffect(() => {
-    //     if (product) setProduct('paypay', product)
-    // }, [product])
 
     return (
         <div className='content-body'>
@@ -31,8 +24,7 @@ const ProductV = (props) => {
                         <div className='product-header'>
                             <h1 className='product-name'>{product.name || ""}</h1>
                             <div className='product-action'>
-                                {/* <FavoriteProduct product={product} /> */}
-                                <i className="fa-solid fa-heart"></i>
+                                <FavoriteProduct product={product} />
                             </div>
                         </div>
                         <div className='product-rating'>

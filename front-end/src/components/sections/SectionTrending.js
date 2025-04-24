@@ -5,42 +5,46 @@ import Image from 'next/image';
 import { Pagination, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import './section.scss'
-// import { getProducts } from "../../helpers/history";
+import { getProductTrending } from '../../services/product'
 
 const breakpoints = {
   "640": {
-    "slidesPerView": 3,
-    "spaceBetween": 10
+    "slidesPerView": 2,
+    "spaceBetween": 2
   },
   "768": {
-    "slidesPerView": 4,
-    "spaceBetween": 10
+    "slidesPerView": 3,
+    "spaceBetween": 2
   },
   "1024": {
-    "slidesPerView": 5,
-    "spaceBetween": 10
+    "slidesPerView": 4,
+    "spaceBetween": 2
   },
   "1200": {
-    "slidesPerView": 6,
-    "spaceBetween": 10
+    "slidesPerView": 5,
+    "spaceBetween": 2
   }
 }
 
 const SectionTrending = () => {
-  // const [products, setProducts] = useState()
-  // useEffect(() => {
-  //   const _products = getProducts();
-  //   setProducts(_products)
-  // }, [])
-  // if (products && products.length > 0) {
+  const [products, setProducts] = useState()
+  useEffect(() => {
+    getProductTrending()
+      .then(data => {
+        setProducts(data?.response?.results);
+      })
+      .catch(err => {
+        console.error(err.message);
+      });
+  }, [])
     return (
       <section className="group-trending max-w-[1320px] mx-auto bg-[#fe7902] rounded-[8px]">
         <div className="trending-header">
           <Image className='rounded-t-[8px]' width={1320} height={30} src='/static/image/trend_watches.jpg' alt='' />
         </div>
-        <div className="card-body pd-0">
+        <div className="card-body px-4 md:px-8 lg:px-8 py-6">
           <Swiper
-            slidesPerView={2}
+            slidesPerView={5}
             spaceBetween={10}
             breakpoints={breakpoints}
             loop={true}
@@ -48,22 +52,13 @@ const SectionTrending = () => {
             modules={[Pagination, Navigation]}
             className="swiper-trending"
           >
-            {/* {
-              products
-                .filter(product => product.url && product.code)
-                .map((product, key) => ( */}
-                  <SwiperSlide /*key={key}*/>
-                    <ProductItem /*product={product}*/ />
-                  </SwiperSlide>
-                {/* ))
-            } */}
+            {
+              products && products.map((product, key) => (<SwiperSlide key={key}><ProductItem product={product}/></SwiperSlide>))
+            }
           </Swiper>
         </div>
       </section>
     );
-  // } else {
-  //   return null
-  // }
 }
 
 export default SectionTrending

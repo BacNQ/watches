@@ -1,13 +1,15 @@
 'use client'
 import React, {useEffect, useState} from 'react'
 import Link from 'next/link';
-import { Button, Input } from "@nextui-org/react";
+import { Input, Badge } from "@nextui-org/react";
 import './style.scss'
 import { getInfoUser } from '../../services/auth'
+import { useFavProducts } from '../../query/product';
 import HeaderInfo from './HeaderInfo'
 
 const HeaderTop = () => {
   const [user, setUser] = useState(null);
+  const { data, refetch } = useFavProducts();
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
@@ -61,10 +63,20 @@ const HeaderTop = () => {
             </div>
           </div>
           <div>
-            <i className="fa-solid fa-cart-shopping"></i>
+            <i className="fa-solid fa-cart-shopping text-[20px]"></i>
           </div>
-          <div>
-            <i className="fa-solid fa-heart"></i>
+          <div className='item-action'>
+            <a href='/account/favourite/product'>
+              <Badge
+                content={data?.res?.length}
+                isInvisible={!(data?.res?.length > 0)}
+                color="primary"
+                size="sm"
+                className="btn-badge"
+              >
+                <i className="fa-regular fa-heart text-[23px]"></i>
+              </Badge>
+            </a>
           </div>
         </div>
       </div>

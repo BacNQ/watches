@@ -1,9 +1,40 @@
 .page-home {
     .container {
         background-color: #eee;
-        padding-bottom: 24px;
+        padding-bottom: 65px;
         .header {
             background-color: #ffffff;
+        }
+        .section-styles {
+            max-width: 1320px;
+            margin: 28px auto;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .section-luxury-collection {
+            max-width: 1320px;
+            margin: 28px auto;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .section-luxury-watches {
+            max-width: 1320px;
+            margin: 28px auto;
+            border-radius: 8px;
+        }
+        .section-brand {
+            max-width: 1320px;
+            margin: 28px auto;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .section-history {
+            max-width: 1320px;
+            margin: 28px auto;
+            background-color: #fff;
+            border-radius: 8px;
         }
     }
 }

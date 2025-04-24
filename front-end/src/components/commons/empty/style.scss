@@ -1,0 +1,31 @@
+.box-empty {
+    margin: auto;
+    padding: 60px;
+    text-align: center;
+    background: #fff;
+    border-radius: 10px;
+    .empty-image {
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
+    .label-emtpy {
+        margin: 8px;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    .empty-description {
+        font-size: 14px;
+    }
+    .emtpy-content {
+        .btn-empty {
+            background-color: #070e35;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #fff;
+            margin-top: 10px;
+        }
+    }
+}

@@ -143,7 +143,7 @@ module.exports.UserForgot = async (req, res) => {
 module.exports.getInfoUser = async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
-        res.json({ username: user.username, avatar: user.avatar });
+        res.json({ username: user.username, avatar: user.avatar, user_id: user._id });
       } catch (err) {
         res.status(500).json({ message: 'Lỗi máy chủ' });
       }

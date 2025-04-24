@@ -26,11 +26,14 @@ const BackToTop = () => {
 
     return (
         isVisible && (
-            <div className={`back-to-top ${isVisible ? 'fade-in' : 'fade-out'}`} onClick={GoTop}>
+            <div
+                className={`back-to-top fade-in animate__animated animate__fadeInUpBig`}
+                onClick={GoTop}
+            >
                 <i className='bx bx-chevron-up text-[36px]'></i>
             </div>
         )
-    )
+    );
 }
 
 export default BackToTop

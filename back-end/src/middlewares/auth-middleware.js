@@ -14,6 +14,7 @@ const authMiddleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, SECRET);
         req.user = decoded; // Gán user ID và info từ token vào request
+        req.userId = decoded.id;
         next(); // Cho phép đi tiếp sang controller
     } catch (error) {
         return res.status(401).json({ message: 'Token hết hạn hoặc không hợp lệ' });
