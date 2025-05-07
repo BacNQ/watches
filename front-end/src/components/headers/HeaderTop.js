@@ -1,27 +1,17 @@
 'use client'
 import React, {useEffect, useState} from 'react'
+import dynamic from "next/dynamic";
 import Link from 'next/link';
-import { Input, Badge } from "@nextui-org/react";
+import { Badge } from "@nextui-org/react";
 import './style.scss'
-import { getInfoUser } from '../../services/auth'
+import { useUser } from '../../provider/UserProvider'
 import { useFavProducts } from '../../query/product';
 import HeaderInfo from './HeaderInfo'
+const SearchInput = dynamic(() => import("./SearchInput"), { ssr: false });
 
 const HeaderTop = () => {
-  const [user, setUser] = useState(null);
+  const { user } = useUser();
   const { data, refetch } = useFavProducts();
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    getInfoUser(token)
-      .then(data => {
-        setUser(data);
-      })
-      .catch(err => {
-        console.error('Không thể lấy thông tin user:', err.message);
-      });
-  }, []);
 
   return (
     <div className="header-top">
@@ -46,20 +36,13 @@ const HeaderTop = () => {
           </Link>
         </div>
         <div className="flex justify-center ml-[-220px] relative">
-          <Input
-            type="text"
-            placeholder="Tìm kiếm sản phẩm tại đây"
-            className="header-input"
-            radius="full"
-            variant="bordered"
-          />
-          <i className="fa-solid fa-magnifying-glass text-[20px] absolute left-[33px] top-[11px]"></i>
+          <SearchInput/>
         </div>
         <div className="flex items-center justify-end gap-[54px] text-gray-600 text-xl">
           <div className='mr-8'>
             <div className='flex items-center gap-2'>
               <i className="fa-solid fa-user bg-[#d8d8d8] p-[10px] px-[12px] rounded-lg shadow-md"></i>
-              <HeaderInfo user={user?.data} />
+              <HeaderInfo user={user} />
             </div>
           </div>
           <div>

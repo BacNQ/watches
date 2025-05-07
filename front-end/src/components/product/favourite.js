@@ -4,26 +4,13 @@ import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useFavProducts } from '../../query/product';
 import { postAddFavorite } from '../../services/common';
-import { getInfoUser } from '../../services/auth';
+import { useUser } from '../../provider/UserProvider'
 
 const AddFavorite = ({ product }) => {
   const [posting, setPosting] = useState(null)
   const { data, refetch } = useFavProducts();
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      return;
-    }
-
-    getInfoUser(token)
-      .then(data => {
-        setUser(data?.data);
-      })
-      .catch(err => {
-        console.error('Không thể lấy thông tin user:', err.message);
-      });
-  }, []);
+  const { user } = useUser();
+  
   const onSuccess = (res) => {
     toast.success(res?.data?.message ? res?.data?.message : 'Đã thêm vào danh sách yêu thích!');
     refetch();

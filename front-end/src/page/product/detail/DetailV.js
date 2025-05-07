@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import GalleryProduct from '../../../components/product/gallery';
 import { formatCurrency } from '../../../helpers/format_price'
-import { useEffect, useState } from 'react';
 import SectionRelate from "../components/SectionRelate";
 import { Rate } from "antd";
 import './product.scss'
@@ -12,7 +11,7 @@ const FavoriteProduct = dynamic(() => import('../../../components/product/favour
 
 const ProductV = (props) => {
     const { product } = props;
-
+    console.log(product)
     return (
         <div className='content-body'>
             <article className="box-product">
@@ -125,7 +124,7 @@ const ProductV = (props) => {
                 </article>
             }
 
-            {product?.related &&
+            {product?.related?.length > 0 &&
                 <article className="product-relate">
                     <SectionRelate product={product} title="Sản phẩm tương tự" />
                 </article>

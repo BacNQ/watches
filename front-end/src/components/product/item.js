@@ -17,7 +17,7 @@ const ProductItem = ({ product }) => {
                 </div>
                 <div className="caption">
                     <a href={product?.url} className="group-prod-name">
-                        <span className="prod-name bold line-clamp-2 text-[14px] leading-[20px] overflow-hidden text-ellipsis mb-[8px] font-normal px-[10px]">{product?.name}</span>
+                        <span className="prod-name bold line-clamp-2 text-[14px] leading-[20px] overflow-hidden text-ellipsis mb-[8px] font-normal px-[10px] min-h-[40px] place-content-center">{product?.name}</span>
                     </a>
                     <div className="group-prod-price px-[10px]">
                         <div className="bid-price flex flex-col gap-[8px] pb-[16px]">

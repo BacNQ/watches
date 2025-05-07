@@ -1,0 +1,107 @@
+.page-search {
+    background-color: #eee;
+    padding-bottom: 36px;
+
+    .breadcrumb {
+        max-width: 1320px;
+        margin: auto;
+
+        .breadcrumb-list {
+            padding: 10px 0px;
+            margin: 10px 0px !important;
+            align-items: center;
+            display: inline-flex;
+            list-style: none;
+
+            .breadcrumb-item {
+                font-size: 14px;
+
+                a {
+                    color: rgb(128, 128, 137) !important;
+                    font-size: 14px;
+                    text-decoration: unset !important;
+                }
+
+                .bx {
+                    margin: 0px 5px;
+                    font-size: 20px;
+                    vertical-align: sub;
+                    color: rgb(128, 128, 137);
+                }
+            }
+        }
+    }
+
+    .content-search {
+        .content-card {
+            max-width: 1320px;
+            margin: auto;
+
+            .card-main {
+                margin-left: 12px;
+                .content-header {
+                    .total-results {
+                        margin-bottom: 20px;
+                        font-size: 18px;
+                        margin-top: 12px;
+                    }
+                }
+
+                .content-main {
+                    .ant-segmented {
+                        padding: 0px !important;
+                        .ant-segmented-group {
+                            .ant-segmented-item {
+                                .ant-segmented-item-label {
+                                    padding: 4px 28px !important;
+                                }
+                            }
+                        }
+                    }
+                    .product-results {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 12px;
+
+                        .btn-heart {
+                            padding: 5px;
+                            width: 30px;
+                            height: 30px;
+                            line-height: 22px;
+                            border-radius: 100%;
+                            background-color: #eaedf1;
+                            color: #505f77;
+                            border: 1px solid #eaedf1;
+                            text-align: center;
+                            cursor: pointer;
+                            position: relative;
+                            font-size: 16px;
+                            transition: all 0.2s;
+
+                            &:hover,
+                            &.active {
+                                color: #fa2323;
+                                background-color: #ffc7c7;
+                                transition: 0.2s ease-in-out;
+                            }
+                        }
+
+                        .product-item {
+                            max-width: 250px !important;
+                            transition: 0.2s ease-in-out;
+                            &:hover {
+                                box-shadow: 0 3px 6px 3px rgba(0, 0, 0, 0.15);
+                            }
+                        }
+                    }
+                }
+
+                .pagination {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 36px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,81 @@
+.page-password {
+    .panel-header {
+        border-radius: 8px;
+        background: #fff;
+        margin-bottom: 15px;
+    }
+
+    .panel-body {
+        background-color: #eee;
+        padding-bottom: 60px;
+        .breadcrumb {
+            max-width: 1320px;
+            margin: 0 auto;
+            .breadcrumb-list {
+                padding: 10px 0px;
+                margin: 10px 0px !important;
+                align-items: center;
+                display: inline-flex;
+                list-style: none;
+                .breadcrumb-item {
+                    font-size: 14px;
+                    a {
+                        color: rgb(128, 128, 137) !important;
+                        font-size: 14px;
+                        text-decoration: unset !important;
+                    }
+                    .bx {
+                        margin: 0px 5px;
+                        font-size: 20px;
+                        vertical-align: sub;
+                        color: rgb(128, 128, 137);
+                    }
+                }
+            }
+        }
+        .content-body {
+            background: #fff;
+            padding: 20px 15px;
+            border-radius: 12px;
+            max-width: 1320px;
+            margin: auto;
+            .content-title{
+                margin-bottom: 30px;
+                padding: 4px 0;
+                margin-top: 12px;
+                text-align: center;
+                .label {
+                    font-size: 20px;
+                    font-weight: 600;
+                }
+            }
+            .form-password {
+                max-width: 480px;
+                margin: auto;
+                .input-form {
+                    margin-bottom: 25px;
+                    input {
+                        border: 2px solid #dadada;
+                        border-radius: 6px;
+                        padding: 8px;
+                        font-size: 14px;
+                        outline: none;
+                        margin-top: 26px;
+                    }
+                    .eye-pass {
+                        position: absolute;
+                        right: 21px;
+                        top: 35px;
+                    }
+                }
+                .btn-change {
+                    background-color: #070e35;
+                    border-radius: 8px;
+                    color: #fff;
+                    padding: 10px 28px;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}

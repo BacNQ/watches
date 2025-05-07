@@ -1,0 +1,247 @@
+.app {
+    background-color: #eee;
+    padding-bottom: 60px;
+    .breadcrumb {
+        max-width: 1320px;
+        margin: 0 auto;
+        .breadcrumb-list {
+            padding: 10px 0px;
+            margin: 10px 0px !important;
+            align-items: center;
+            display: inline-flex;
+            list-style: none;
+            .breadcrumb-item {
+                font-size: 14px;
+                a {
+                    color: rgb(128, 128, 137) !important;
+                    font-size: 14px;
+                    text-decoration: unset !important;
+                }
+                .bx {
+                    margin: 0px 5px;
+                    font-size: 20px;
+                    vertical-align: sub;
+                    color: rgb(128, 128, 137);
+                }
+            }
+        }
+    }
+    .page-user {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        background-color: rgb(255, 255, 255);
+        border-radius: 8px;
+        max-width: 1320px;
+        margin: auto;
+
+        .box-left {
+            width: 580px;
+            padding: 24px;
+            .btn-update {
+                background-color: #070e35;
+                border-radius: 10px;
+                padding: 10px 28px;
+                color: #fff;
+                font-size: 14px;
+                margin: 8px;
+            }
+        }
+
+        .line-vertical {
+            border-left: 1px solid rgb(235, 235, 240);
+            margin: 16px 0px;
+        }
+
+        .box-right {
+            width: calc(100% - 580px);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .label-group {
+            margin-bottom: 24px;
+        }
+
+        .group-info {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 25px;
+
+            .form-avatar {
+                margin-right: 16px;
+
+                .avatar-user {
+                    background-color: rgb(240, 248, 255);
+                    border-radius: 50%;
+                    width: 112px;
+                    height: 112px;
+                    border: 4px solid rgb(194, 225, 255);
+                    position: relative;
+                    -webkit-box-pack: center;
+                    justify-content: center;
+                    display: flex;
+                    -webkit-box-align: center;
+                    align-items: center;
+
+                    .avatar {
+                        position: absolute;
+                        left: 0px;
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                        background: #fff;
+                        overflow: hidden;
+                        margin: 0px;
+                        border-radius: 100%;
+
+                        .file-upload {
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            top: 0px;
+                            z-index: 999;
+                            opacity: 0;
+                        }
+                    }
+                }
+            }
+
+            .form-info {
+                width: 100%;
+                display: flex;
+                -webkit-box-pack: justify;
+                justify-content: space-between;
+                flex-direction: column;
+                .text-input {
+                    label {
+                        width: 100px;
+                    }
+                    input {
+                        outline: none;
+                        border: 2px solid #ccc;
+                        padding: 8px;
+                        border-radius: 8px;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+
+        .group-gender,
+        .group-remark,
+        .group-birthdate {
+            margin-bottom: 30px;
+            .birthdate-select {
+                gap: 24px;
+                button {
+                    display: flex;
+                    width: 150px;
+                    justify-content: space-between;
+                    border: 2px solid rgb(204, 204, 204);
+                    padding: 8px 12px;
+                    font-size: 14px;
+                    outline: none;
+                    border-radius: 8px;
+                    span {
+                        min-width: 33px;
+                    }
+                    svg {
+                        position: unset;
+                    }
+                }
+            }
+        }
+
+        .group-user {
+            margin-bottom: 25px;
+
+            .line-group {
+                position: relative;
+                padding: 10px;
+                padding-right: 120px;
+                padding-left: 40px;
+                padding-bottom: 20px;
+
+                .icon {
+                    position: absolute;
+                    left: 0px;
+                    top: 8px;
+                    font-size: 26px;
+                    color: #a6a6b0;
+
+                    &.icon-facebook {
+                        color: #1877f2;
+                    }
+
+                    &.icon-google {
+                        color: #d64937;
+                    }
+                }
+
+                .label-line {
+                    line-height: 16px;
+                    font-size: 16px;
+                    margin-bottom: 8px;
+                    color: rgb(74, 74, 74);
+                }
+
+                .label-name {
+                    line-height: 16px;
+                    font-size: 14px;
+                }
+
+                .btn-update {
+                    position: absolute;
+                    top: 12px;
+                    right: 0;
+                    font-size: 14px;
+                    cursor: pointer;
+                    padding: 8px 16px;
+                    border: 2px solid #ccc;
+                    border-radius: 8px;
+                }
+            }
+        }
+
+        .group-gender {
+            .radio-group {
+                gap: 16px !important;
+                div {
+                    flex-direction: row;
+                    gap: 60px;
+                    label {
+                        display: flex;
+                        align-items: center;
+                        gap: 16px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+[data-slot="popover"] {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 4px;
+    outline: none;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+
+    li {
+        padding: 10px;
+        font-size: 14px;
+        outline: none;
+
+        svg {
+            width: 12px;
+        }
+
+        &:hover {
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            transition: 0.2s ease-in-out;
+        }
+    }
+}

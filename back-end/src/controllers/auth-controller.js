@@ -2,7 +2,9 @@ const ObjectId = require('mongodb').ObjectId;
 const User = require('../models/users/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const moment = require("moment");
 const crypto = require('crypto');
+const UserModel = require('../models/users/user')
 require("dotenv").config();
 const sendOTP = require('../utils/send_otp')
 
@@ -142,9 +144,91 @@ module.exports.UserForgot = async (req, res) => {
 
 module.exports.getInfoUser = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
-        res.json({ username: user.username, avatar: user.avatar, user_id: user._id });
-      } catch (err) {
+        const user = await User.findById(req.user.id).lean();
+
+        if (!user) return res.status(404).json({ message: 'Người dùng không tồn tại' });
+
+        delete user.password;
+        res.json(user);
+    } catch (err) {
         res.status(500).json({ message: 'Lỗi máy chủ' });
-      }
+    }
 }
+
+module.exports.updateProfile = async (req, res) => {
+    try {
+        const body = req.body;
+        const query = {
+            _id: { $ne: req.userId }
+        }
+        let filter = [];
+        if (body.email) filter.push({ email: lowerCase(body.email) })
+        if (body.phone) filter.push({ phone: lowerCase(body.phone) })
+        let userExsit = null;
+        if (filter.length > 0) {
+            query['$or'] = filter;
+            userExsit = await UserModel.findOne(query);
+        }
+        if (userExsit) {
+            res.status(404).send({ message: (body.phone && item.phone == body.phone) ? ("Số " + item.phone + " đã tồn tại") : ("Email " + item.email + " đã tồn tại.") });
+        } else {
+            UserModel.findOne({ _id: req.userId })
+                .then(async (user) => {
+                    if (user) {
+                        const payload = {
+                            updated_date: new Date()
+                        }
+                        if (body.username !== undefined) payload.username = body.username;
+                        if (!user.email && body.email !== undefined) payload.email = body.email;
+                        if (!user.phone && body.phone !== undefined) payload.phone = body.phone;
+                        if (body.birthdate !== undefined && body.birthdate !== null && moment(body.birthdate).isValid()) payload.birthdate = new Date(body.birthdate);
+                        if (body.gender !== undefined) payload.gender = body.gender;
+                        if (body.avatar !== undefined) payload.avatar = body.avatar;
+                        await UserModel.updateOne({ _id: user._id }, { $set: payload });
+                        res.status(200).send({ code: 1, message: 'Cập nhập thông tin thành công' })
+                    } else {
+                        res.status(400).send({ code: 0, message: 'Không tìm tài khoản cập nhập' })
+                    }
+                }).catch((error) => {
+                    res.status(400).send({ code: 0, message: 'Không cập nhập được thông tin. Vui lòng liên hệ cho chúng tôi.' })
+                })
+        }
+    } catch (error) {
+        res.status(500).send({ code: 0, message: 'Không cập nhập được thông tin. Vui lòng liên hệ cho chúng tôi.' })
+    }
+};
+
+module.exports.updatePassword = async (req, res) => {
+    const { oldPassword, password, confirmpassword } = req.body;
+
+    if (!oldPassword || !password || !confirmpassword) {
+        return res.status(400).json({ message: 'Vui lòng điền đầy đủ thông tin' });
+    }
+
+    if (password !== confirmpassword) {
+        return res.status(400).json({ message: 'Mật khẩu xác nhận không khớp' });
+    }
+
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Mật khẩu cũ không đúng' });
+        }
+
+        user.password = password; // Không hash ở đây nữa
+        await user.save();
+
+        res.status(200).json({ message: 'Đổi mật khẩu thành công' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Lỗi máy chủ' });
+    }
+};
+
+

@@ -7,6 +7,7 @@ import BackToTop from '../components/commons/BackToTop';
 import ChatsProvider from '../chat/provider'
 import FooterMain from '../components/footers/index'
 import { QueryProvider } from '../provider/QueryProvider';
+import { UserProvider } from '../provider/UserProvider';
 // import { NextProvider } from '../provider/NextProvider';
 import { Toaster as ToastProvider } from 'react-hot-toast';
 
@@ -43,7 +44,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>
-          {/* <NextProvider> */}
+          <UserProvider>
             <main className='light'>
               <HeaderTop />
               <div id="root">
@@ -54,7 +55,7 @@ export default function RootLayout({
               <ToastProvider />
               <FooterMain />
             </main>
-          {/* </NextProvider> */}
+          </UserProvider>
         </QueryProvider>
       </body>
     </html>
