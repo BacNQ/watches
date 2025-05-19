@@ -1,0 +1,198 @@
+.app {
+    background-color: #eee;
+    padding-bottom: 50px;
+
+    .breadcrumb {
+        max-width: 1320px;
+        margin: 0 auto;
+        .breadcrumb-list {
+            padding: 10px 0px;
+            margin: 10px 0px !important;
+            align-items: center;
+            display: inline-flex;
+            list-style: none;
+            .breadcrumb-item {
+                font-size: 14px;
+                a {
+                    color: rgb(128, 128, 137) !important;
+                    font-size: 14px;
+                    text-decoration: unset !important;
+                }
+                .bx {
+                    margin: 0px 5px;
+                    font-size: 20px;
+                    vertical-align: sub;
+                    color: rgb(128, 128, 137);
+                }
+            }
+        }
+    }
+    .page-address {
+        max-width: 1320px;
+        margin: auto;
+
+        .head-page {
+            margin: 20px 0px 15px;
+
+            .label-page {
+                font-size: 16px;
+                line-height: 20px;
+            }
+        }
+
+        .pannel-address {
+            width: 100%;
+            overflow: hidden;
+
+            .group-pannel {
+                width: 200%;
+                display: flex;
+                transition: all 0.3s;
+                padding: 0px;
+
+                &.display {
+                    transform: translateX(-50%);
+                }
+
+                .box-item {
+                    padding: 5px;
+                    width: 50%;
+
+                    .add-address {
+                        cursor: pointer;
+
+                        &:hover {
+                            color: #f5222d;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .content-address {
+        .box-item {
+            padding-top: 0px;
+
+            .list-address {
+                width: 100%;
+
+                .item-address {
+                    margin-bottom: 5px !important;
+                    width: 100%;
+                    padding: 16px;
+                    border-radius: 8px;
+                    position: relative;
+                    background: #fff;
+                    transition: .2s ease-in-out;
+                    overflow: hidden;
+
+                    &.seleted::before {
+                        top: 0px;
+                        right: 3px;
+                        content: "\f00c";
+                        position: absolute;
+                        color: #fff;
+                        z-index: 9;
+                        font: normal normal normal 14px/1 FontAwesome;
+                        font-weight: 300;
+                        font-size: 13px;
+                    }
+
+                    &.seleted::after {
+                        top: 0px;
+                        right: 0px;
+                        content: "";
+                        position: absolute;
+                        width: 40px;
+                        height: 20px;
+                        border-color: #FDCD0B transparent transparent transparent;
+                        border-width: 20px 0 0 40px;
+                        border-style: solid;
+                    }
+
+                    .add-name {
+                        display: inline-block;
+                        width: 100%;
+                        margin: 0px;
+                        font-size: 14px;
+
+                        .text-success {
+                            color: #0fbc0f;
+                        }
+                    }
+
+                    .add-contact {
+                        display: flex;
+                        font-size: 13px;
+                        gap: 6px;
+                        color: rgb(120, 120, 120);
+
+                        .label-add {
+                            .fa-phone {
+                                font-size: 11px;
+                            }
+                        }
+                    }
+
+                    .address-action {
+                        position: absolute;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        top: 10px;
+                        right: 0px;
+                        padding: 5px;
+
+                        .tag {
+                            padding: 3px 10px;
+                            color: white;
+                            background: #ee772c;
+                            font-size: 13px;
+                            border-radius: 15px;
+                            margin-right: 15px;
+                            line-height: 20px;
+                        }
+
+                        .icon-action {
+                            color: #9e9e9e;
+                            cursor: pointer;
+                            width: 26px;
+                            height: 26px;
+                            text-align: center;
+                            place-content: center;
+
+                            &:hover {
+                                color: #f5222d;
+                            }
+
+                            svg {
+                                vertical-align: middle;
+                            }
+                        }
+                    }
+
+                    label {
+                        font-size: 13px;
+                        margin: 0px;
+                        width: 100%;
+                    }
+
+                    .adm-tag {
+                        margin-right: 8px;
+                        border-radius: 10px;
+                    }
+
+                    &:hover {
+                        background-color: #f5f8fb;
+                    }
+                }
+            }
+
+            .btn-add-address {
+                margin-top: 10px;
+                text-align: right;
+            }
+        }
+    }
+}

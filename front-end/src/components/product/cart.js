@@ -4,10 +4,11 @@ import { useMutation } from '@tanstack/react-query';
 import { Button } from "@nextui-org/react";
 import { useCarts } from '../../query/product';
 import { postAddCart } from '../../services/common';
+import { useUser } from '../../provider/UserProvider';
 
-const AddCart = ({ product, user }) => {
+const AddCart = ({ product }) => {
+  const { user } = useUser();
   const { refetch } = useCarts();
-  console.log(product)
 
   const onSuccess = () => {
     refetch();

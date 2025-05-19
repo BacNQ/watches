@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { Badge } from "@nextui-org/react";
 import './style.scss'
 import { useUser } from '../../provider/UserProvider'
-import { useFavProducts } from '../../query/product';
+import { useFavProducts, useCarts } from '../../query/product';
 import HeaderInfo from './HeaderInfo'
 const SearchInput = dynamic(() => import("./SearchInput"), { ssr: false });
 
 const HeaderTop = () => {
   const { user } = useUser();
-  const { data, refetch } = useFavProducts();
+  const { data } = useFavProducts();
+  const { data: cartData, refetch } = useCarts();
 
   return (
     <div className="header-top">
@@ -45,8 +46,18 @@ const HeaderTop = () => {
               <HeaderInfo user={user} />
             </div>
           </div>
-          <div>
-            <i className="fa-solid fa-cart-shopping text-[20px]"></i>
+          <div className='item-action'>
+            <a href='/account/cart'>
+              <Badge
+                content={cartData?.availables?.data?.length}
+                isInvisible={!(cartData?.availables?.data?.length > 0)}
+                color="primary"
+                size="sm"
+                className="btn-badge"
+              >
+                <i className="fa-solid fa-cart-shopping text-[20px]"></i>
+              </Badge>
+            </a>
           </div>
           <div className='item-action'>
             <a href='/account/favourite/product'>

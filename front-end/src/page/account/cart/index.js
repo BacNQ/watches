@@ -1,150 +1,163 @@
-// 'use client'
-// import './style.scss';
-// import React, { useState } from 'react';
-// import dynamic from 'next/dynamic';
-// import toast from 'react-hot-toast';
-// import { useDialog } from "../../../provider/ConfirmProvider";
-// import { useCarts } from '../../../query/product';
-// import { getInfoUser } from '../../../services/auth'
-// import { removeAllCarts, removeCarts } from '../../../services/common';
-// // import { usePrices } from '../../../query/profile';
-// // import { useUser } from '../../../provider/UserProvider';
-// // import { useExchanges, useExtras } from '../../../query/common';
+'use client'
+import './style.scss';
+import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
+import toast from 'react-hot-toast';
+import { Modal } from 'antd';
+import { useCarts } from '../../../query/product';
+import { useUser } from '../../../provider/UserProvider';
+import { removeAllCarts, removeCarts } from '../../../services/common';
+import Link from 'next/link';
 
-// const PendingV = dynamic(() => import('./pending'))
-// // const PaymentV = dynamic(() => import('./payment'))
+const PendingV = dynamic(() => import('./pending'))
 
-// const CartV = (props) => {
-//     // const { user } = useUser();
-//     const { confirm } = useDialog();
-//     // const { data: exchanges } = useExchanges();
-//     // const { data: prices } = usePrices();
-//     // const { data: extras } = useExtras({ route: 'JP', mode: 'D' });
-//     const { data: cartData, isLoading: loading, refetch } = useCarts();
-//     const [carts, setCarts] = useState([]);
-//     const [unavailableCarts, setUnavailableCarts] = useState([]);
-//     const [user, setUser] = useState(null);
-//     useEffect(() => {
-//         const token = localStorage.getItem('token');
-//         if (!token) return;
+const CartV = (props) => {
+    const { user } = useUser();
+    const { data: cartData, isLoading: loading, refetch } = useCarts();
+    const [carts, setCarts] = useState([]);
+    const [unavailableCarts, setUnavailableCarts] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalConfig, setModalConfig] = useState({
+        title: '',
+        onOk: () => {},
+        ids: []
+    });
 
-//         getInfoUser(token)
-//             .then(res => {
-//                 setUser(res?.data);
-//             })
-//             .catch(err => {
-//                 console.error('Không thể lấy thông tin user:', err.message);
-//             });
-//     }, []);
-//     // const [payments, setPayments] = useState([]);
+    const priceList = (cartData?.availables?.data || []).map(item => ({
+        slug: item.slug,
+        price: item.price,
+        qty: item.qty,
+        name: item.name,
+        image: item.images[0],
+        fee_shipping: 0,
+        id: item.id,
+        url: item.url
+    }));
 
-//     React.useEffect(() => {
-//         if (cartData) {
-//             setCarts(cartData.availables);
-//             setUnavailableCarts(cartData.unavailables);
-//         }
-//     }, [cartData])
+    React.useEffect(() => {
+        if (cartData) {
+            setCarts(cartData.availables);
+            setUnavailableCarts(cartData.unavailables);
+        }
+    }, [cartData])
 
-//     const loadSuccess = () => {
-//         refetch();
-//         setPayments([])
-//     }
+    const loadSuccess = () => {
+        refetch();
+    }
 
-//     const removeCart = (ids) => {
-//         if (ids && ids.length) {
-//             confirm({
-//                 title: 'Bạn có chắc chắn muốn xoá sản phẩm này?',
-//                 cancelText: 'Quay lại',
-//                 okText: 'Xác nhận',
-//                 onOk: () => {
-//                     removeCarts({ ids: ids })
-//                         .then(({ code }) => {
-//                             if (code) {
-//                                 refetch();
-//                                 toast.success('Xóa giỏ hàng thành công!')
-//                             } else {
-//                                 toast.error('Xóa giỏ hàng thất bại!')
-//                             }
-//                         })
-//                         .catch((error) => {
-//                             toast.error('Xóa giỏ hàng thất bại!')
-//                         })
-//                 }
-//             })
-//         }
-//     }
+    const showModal = (title, onOk, ids = []) => {
+        setModalConfig({
+            title,
+            onOk,
+            ids
+        });
+        setIsModalOpen(true);
+    };
 
-//     const removeAllAvailableCart = () => {
-//         confirm({
-//             title: 'Bạn chắc chắn muốn bỏ tất cả sản phẩm này?',
-//             cancelText: 'Quay lại',
-//             okText: 'Xác nhận',
-//             onOk: () => {
-//                 removeAllCarts({ unavailable: false })
-//                     .then(({ code }) => {
-//                         if (code) {
-//                             refetch();
-//                             toast.success('Xóa thành công!')
-//                         } else {
-//                             toast.error('Xóa thất bại!')
-//                         }
-//                     })
-//                     .catch((error) => {
-//                         toast.error('Xóa thất bại!')
-//                     })
-//             }
-//         })
-//     }
+    const handleOk = () => {
+        modalConfig.onOk();
+        setIsModalOpen(false);
+    };
 
-//     const removeAllUnavailableCart = () => {
-//         confirm({
-//             title: 'Bạn chắc chắn muốn bỏ tất cả sản phẩm không hoạt động này?',
-//             cancelText: 'Không',
-//             okText: 'Có',
-//             onOk: () => {
-//                 removeAllCarts({ unavailable: true })
-//                     .then(({ code }) => {
-//                         if (code) {
-//                             refetch();
-//                             toast.success('Xóa thành công!')
-//                         } else {
-//                             toast.error('Xóa thất bại!')
-//                         }
-//                     })
-//                     .catch((error) => {
-//                         toast.error('Xóa thất bại!')
-//                     })
-//             }
-//         })
-//     }
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
-//     const pageProps = {
-//         ...props,
-//         carts,
-//         unavailableCarts,
-//         loading,
-//         user,
-//         // prices,
-//         refetch,
-//         // setPayments,
-//         removeCart,
-//         removeAllAvailableCart,
-//         removeAllUnavailableCart
-//     }
+    const removeCart = (ids) => {
+        if (ids && ids.length) {
+            showModal('Bạn có chắc chắn muốn xoá sản phẩm này?', () => {
+                removeCarts({ ids: ids })
+                    .then(({ data }) => {
+                        if (data?.code == 1) {
+                            refetch();
+                            toast.success('Xóa giỏ hàng thành công!')
+                        } else {
+                            toast.error('Xóa giỏ hàng thất bại!')
+                        }
+                    })
+                    .catch((error) => {
+                        toast.error('Xóa giỏ hàng thất bại!')
+                    })
+            }, ids);
+        }
+    }
 
-//     // let payment = payments.length > 0;
+    const removeAllAvailableCart = () => {
+        showModal('Bạn chắc chắn muốn bỏ tất cả sản phẩm này?', () => {
+            removeAllCarts({ unavailable: false })
+                .then(({ data }) => {
+                    if (data?.code == 1) {
+                        refetch();
+                        toast.success('Xóa thành công!')
+                    } else {
+                        toast.error('Xóa thất bại!')
+                    }
+                })
+                .catch((error) => {
+                    toast.error('Xóa thất bại!')
+                })
+        });
+    }
 
-//     return (
-//         <div className='page-carts'>
-//             <div className="">
-//                 {payment
-//                     ? <PaymentV {...pageProps} payments={payments} extras={extras} loadSuccess={loadSuccess} onBack={() => setPayments([])} />
-//                     : <PendingV {...pageProps} />
-//                 }
-//             </div>
-//         </div>
-//     );
-// }
+    const removeAllUnavailableCart = () => {
+        showModal('Bạn chắc chắn muốn bỏ tất cả sản phẩm không hoạt động này?', () => {
+            removeAllCarts({ unavailable: true })
+                .then(({ code }) => {
+                    if (code) {
+                        refetch();
+                        toast.success('Xóa thành công!')
+                    } else {
+                        toast.error('Xóa thất bại!')
+                    }
+                })
+                .catch((error) => {
+                    toast.error('Xóa thất bại!')
+                })
+        });
+    }
 
-// export default CartV
+    const pageProps = {
+        ...props,
+        carts,
+        unavailableCarts,
+        loading,
+        user,
+        priceList,
+        refetch,
+        removeCart,
+        removeAllAvailableCart,
+        removeAllUnavailableCart
+    }
+
+    return (
+        <>
+            <div className='page-carts'>
+                <div className='max-w-[1320px] mx-auto'>
+                    <nav aria-label="breadcrumb" className='breadcrumb'>
+                        <ol className="breadcrumb-list">
+                            <li className="breadcrumb-item">
+                                <Link href="/"><i className='bx bx-home-alt-2' />Trang chủ</Link>
+                            </li>
+                            <li className="breadcrumb-item active">
+                                <i className='bx bx-chevron-right' />
+                                <span>Giỏ hàng</span>
+                            </li>
+                        </ol>
+                    </nav>
+                    <PendingV {...pageProps} />
+                </div>
+            </div>
+            <Modal
+                title={modalConfig.title}
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                okText="Xác nhận"
+                cancelText="Quay lại"
+            />
+        </>
+    );
+}
+
+export default CartV
 

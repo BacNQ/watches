@@ -230,7 +230,7 @@ const ProductsV = (props) => {
                                                                     </label>
                                                                 </div>
                                                                 <div className='product-ship'>
-                                                                    <p>Miễn phí ship khu vực HN, HCM</p>
+                                                                    <p>Miễn phí ship trên toàn quốc</p>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -72,7 +72,7 @@ module.exports.removeCart = async (req, res) => {
     const { ids } = req.body;
     const userId = req.userId;
     if (ids && ids.length) {
-      let _ids = ids.filter(id => validObjectId(id)).map((i) => ObjectId(i));
+      let _ids = ids.filter(id => validObjectId(id)).map((i) => new ObjectId(i));
       CartModel.deleteMany({ _id: { $in: _ids }, user_id: userId })
         .then((result) => {
           return res.send({ code: 1, message: "success", data: result }).end();

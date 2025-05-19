@@ -47,15 +47,24 @@ module.exports.createProduct = async (req, res) => {
 };
 
 module.exports.getProduct = async (req, res) => {
-    try {
-        const slug = req.params.slug
-        const product = await scrapeProductDetail(slug);
+  try {
+    const slug = req.params.slug;
+
+    let product = await ProductModel.findOne({ slug });
+
+    if (product) {
         res.status(200).send({ code: 1, data: product });
-    } catch (error) {
-        console.log('Error get product: ', error)
-        return res.status(400).send({ code: 0, message: 'Không tìm thấy sản phẩm' });
+    } else {
+        const scrapedData = await scrapeProductDetail(slug);
+        res.status(200).send({ code: 1, data: scrapedData });
     }
-}
+
+  } catch (error) {
+    console.error('Error get product: ', error);
+    res.status(500).send({ code: 0, message: 'Lỗi hệ thống' });
+  }
+};
+
 
 module.exports.getProductTrending = async (req, res) => {
     try {

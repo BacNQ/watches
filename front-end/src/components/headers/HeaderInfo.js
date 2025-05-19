@@ -49,9 +49,10 @@ const HeaderInfo = (props) => {
                                             </div>
                                         </div>
                                         <ul className="user-menu">
-                                            <li className='py-2'><Link href="/account/user"><i className="fa fa-user-circle" />&ensp;Thông tin tài khoản</Link></li>
-                                            <li className='pb-2'><hr className='mr-0' /></li>
-                                            <li><a className='cursor-pointer' onClick={handleLogout}><i className="fa fa-sign-out" />&ensp;Đăng xuất</a></li>
+                                            <li className='py-2 hover:text-red-500 transition duration-200 ease-in-out'><Link href="/account/user"><i className="fa fa-user-circle" />&ensp;Thông tin tài khoản</Link></li>
+                                            <li className='py-2 hover:text-red-500 transition duration-200 ease-in-out'><Link href="/account/address"><i className="fa-solid fa-location-dot" />&ensp;Sổ địa chỉ</Link></li>
+                                            <li className='pb-2 hover:text-red-500 transition duration-200 ease-in-out'><hr className='mr-0' /></li>
+                                            <li className='hover:text-red-500 transition duration-200 ease-in-out'><a className='cursor-pointer' onClick={handleLogout}><i className="fa fa-sign-out" />&ensp;Đăng xuất</a></li>
                                         </ul>
                                     </div>
                                 </PopoverContent>
