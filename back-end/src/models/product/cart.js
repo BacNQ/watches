@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const CartSchema = new Schema({
-    code: { type: String, required: true, trim: true },
-    slug: { type: String, trim: true },
+    code: { type: String, trim: true },
+    slug: { type: String, required: true, trim: true },
     name: { type: String, required: true, trim: true },
     url: { type: String, trim: true },
     qty: { type: Number, default: 1 },
@@ -12,7 +12,6 @@ const CartSchema = new Schema({
     description: { type: String },
     images: { type: [String] },
     user_id: { type: Schema.Types.ObjectId },
-    // sold_out: { type: Boolean, default: false },
     deleted: { type: Boolean, default: false },
     sold_out: { type: Boolean, default: false },
     created_date: { type: Date, default: Date.now },

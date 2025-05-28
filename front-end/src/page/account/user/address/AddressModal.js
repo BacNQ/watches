@@ -1,26 +1,22 @@
-
 import React from 'react';
+import { Modal } from 'antd';
 import AddressForm from './AddressForm';
-import {Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/react";
 
 const AddressModal = (props) => {
-    const { close, open, address } = props;
-    return (
-        <Modal isOpen={open} onOpenChange={() => close(false)} size='2xl'>
-            <ModalContent>
-            {() => (
-                <>
-                    <ModalHeader className="flex flex-col gap-1"><span className='bold'>{ address ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới'}</span></ModalHeader>
-                    <ModalBody>
-                        <div className='popup-body'>
-                            { open && <AddressForm {...props} />}
-                        </div>
-                    </ModalBody>
-                </>
-            )}
-            </ModalContent>
-        </Modal>
-    )
-}
-  
+  const { close, open, address } = props;
+
+  return (
+    <Modal
+      title={address ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới'}
+      open={open}
+      onCancel={() => close(false)}
+      onOk={() => close(false)}
+      footer={null}
+      width={800}
+    >
+      {open && <AddressForm {...props} />}
+    </Modal>
+  );
+};
+
 export default AddressModal;

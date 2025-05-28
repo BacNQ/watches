@@ -62,63 +62,48 @@ module.exports.getFavoriteByUser = async (req, res) => {
 };
 
 module.exports.searchFavorities = async (req, res) => {
-  const { sort, order, /*expired, search, site_code,*/ from, to } = req.query;
+  const { sort, order, from, to } = req.query;
+
   const requestData = {
-    size: req.query.size || 20,
-    page: req.query.page || 1,
+    size: parseInt(req.query.size, 10) || 20,
+    page: parseInt(req.query.page, 10) || 1,
     sortBy: mapOrder(sort || order),
   };
+
   let filter = {
     user_id: req.userId,
-  }
-  // if (search) {
-  //   let keyword = search.trim();
-  //   filter.$or = [
-  //     { name: { $regex: keyword, $options: "i" } },
-  //     { code: { $regex: keyword, $options: "i" } }
-  //   ];
-  // }
-
-  let created_date = null;
-  if (from && moment(from).isValid()) {
-    let _from = moment(from).format();
-    created_date = { $gte: new Date(_from) }
-  } else {
-    let _from = moment().subtract(7, 'days').startOf('day').format();
-    created_date = { $gte: new Date(_from) }
-  }
-  if (to && moment(to).isValid()) {
-    let _to = moment(to).format();
-    created_date = { ...created_date, $lte: new Date(_to) }
-  } else {
-    let _from = moment().endOf('day').format();
-    created_date = { ...created_date, $lte: new Date(_from) }
-  }
-
-  if (created_date) {
-    filter = { ...filter, created_date };
-  }
-
-  const query = {
     deleted: false,
-    ...filter,
   };
 
-  FavProductModel.findPagination(query, requestData)
+  let created_date = {};
+  if (from && moment(from).isValid()) {
+    created_date.$gte = new Date(moment(from).startOf('day').toISOString());
+  }
+  if (to && moment(to).isValid()) {
+    created_date.$lte = new Date(moment(to).endOf('day').toISOString());
+  }
+
+  if (Object.keys(created_date).length > 0) {
+    filter.created_date = created_date;
+  }
+
+  FavProductModel.findPagination(filter, requestData)
     .then(data => {
       if (data && data.results && data.results.length) {
-        data.results = data.results.map(item => {
-          return {
-            ...item,
-            status: item.status ? item.status.toString() : 'false',
-          }
-        });
+        data.results = data.results.map(item => ({
+          ...item,
+          status: item.status ? item.status.toString() : 'false',
+        }));
       }
       return res.send({ code: 1, message: 'success', res: data || [] }).end();
     })
     .catch(error => {
       console.log('API searchFavorities Error:', error.message || error);
-      return res.status(500).send({ code: 0, message: 'Có lỗi xảy ra trong quá trình lấy sản phẩm yêu thích!', error }).end();
+      return res.status(500).send({
+        code: 0,
+        message: 'Có lỗi xảy ra trong quá trình lấy sản phẩm yêu thích!',
+        error,
+      }).end();
     });
 };
 

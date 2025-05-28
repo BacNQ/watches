@@ -1,0 +1,115 @@
+.address-form {
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    max-width: 720px;
+    margin: 0 auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    &__col {
+        flex: 1 1 calc(50% - 8px);
+
+        @media (max-width: 768px) {
+            flex: 1 1 100%;
+        }
+
+        .text-input {
+            .group {
+                display: block !important;
+
+                label {
+                    margin-bottom: 8px;
+                }
+
+                div[data-slot="input-wrapper"] {
+                    padding-left: 0px !important;
+                    padding-right: 0px !important;
+                    input {
+                        border: 2px solid #ccc;
+                        border-radius: 6px;
+                        padding: 4px;
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+        button[data-slot="trigger"] {
+            padding-right: 0px !important;
+            padding-left: 0px !important;
+        }
+
+        textarea[data-slot="input"] {
+            border: 2px solid rgb(204, 204, 204);
+            border-radius: 6px;
+            padding: 4px;
+            outline: none;
+        }
+
+        div[data-slot="input-wrapper"] {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+            padding-bottom: 0px !important;
+        }
+
+        .radio-group {
+            label {
+                display: flex;
+                gap: 16px;
+            }
+        }
+
+        .label-checkbox {
+            label {
+                display: flex;
+                gap: 20px;
+                input {
+                    margin-top: 3px;
+                }
+            }
+        }
+    }
+
+    &__footer {
+        margin-top: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+
+        button {
+            background-color: #070e35;
+            color: white;
+            padding: 6px;
+            width: 100px;
+            border-radius: 8px;
+        }
+    }
+
+    &__error {
+        color: #e53935;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .field-checkbox {
+        margin-top: 8px;
+    }
+}

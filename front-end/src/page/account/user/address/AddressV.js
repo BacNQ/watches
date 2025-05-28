@@ -23,8 +23,8 @@ const AddressV = (props) => {
     const handleConfirmRemove = async () => {
         if (!selectedAddress?._id) return;
         try {
-            const { code } = await removeAddress(selectedAddress._id);
-            if (code) {
+            const data = await removeAddress(selectedAddress._id);
+            if (data?.data.code === 1) {
                 toast.success('Hủy thành công!');
                 refetch();
             } else {
@@ -83,7 +83,7 @@ const AddressV = (props) => {
                                                     </label>
                                                     <label className='add-contact'>
                                                         <span className='label-add'><i className="fa-solid fa-location-dot text-[13px]"></i>&ensp;Địa chỉ:</span>
-                                                        <span>{item.address}, {item.ward}, {item.district}, {item.province}</span>
+                                                        <span>{item.address}</span>
                                                     </label>
                                                     <div onClick={(e) => e.preventDefault()} className='address-action'>
                                                         {item.type === 'home' ? <span className="tag home">Nhà riêng</span> : <span className="tag offfice">Văn phòng</span>}

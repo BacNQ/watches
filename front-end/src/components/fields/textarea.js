@@ -17,7 +17,7 @@ const InputField = (props) => {
                 onChange={(e) => onChange(e.target.value)}
                 onBlur={onBlur}
             />
-            <div className='text-end'><span className='text-tiny text-danger'>{errors[name] && errors[name].message}</span></div>
+            <div className='text-end'><span className='text-red-500 text-[13px]'>{errors[name] && errors[name].message}</span></div>
         </div>
     )
 }

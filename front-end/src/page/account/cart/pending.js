@@ -6,14 +6,33 @@ import { formatCurrency } from '../../../helpers/format_price'
 import EmptyV from '../../../components/commons/empty/index';
 import Link from 'next/link';
 import { Button } from '@nextui-org/react';
-
-const PaymentV = dynamic(() => import('./payment'))
+import { paymentByZaloPay } from '../../../services/common';
+// import ViewAddress from '../../account/user/address/ViewAddress';
+// import { useAddress } from '../../../query/profile';
 
 const PendingV = (props) => {
-    const { carts, unavailableCarts, loading, user, priceList, refetch, removeCart, removeAllAvailableCart, removeAllUnavailableCart } = props
+    const { carts, unavailableCarts, loading, user, priceList, removeCart, removeAllAvailableCart, removeAllUnavailableCart } = props
     const [selectedItems, setSelectedItems] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
-    const [show, setShow] = useState(false);
+    // const { data: addresses, refetch } = useAddress();
+    // const [address, setAddress] = useState(null)
+    // const [open, setOpen] = useState(false)
+
+    // useEffect(() => {
+    //     if (addresses && addresses.length) {
+    //         let _address = addresses.find(i => i.primary);
+    //         if (!_address) _address = addresses[0];
+    //         setAddress(_address)
+    //     }
+    // }, [addresses])
+
+    const changeAddress = (item, show) => {
+        if (item && item._id) {
+            setAddress(item)
+            setOpen(show)
+        }
+    }
+
     useEffect(() => {
         setSelectedItems([]);
         setSelectAll(false);
@@ -66,17 +85,39 @@ const PendingV = (props) => {
             .reduce((total, item) => total + item.fee_shipping, 0);
     }
 
-    if (show) {
-        return (
-            <PaymentV
-                total={calculateTotal()}
-                price_product={calculateProductTotal()}
-                fee_shipping={calculateShippingTotal()}
-                user={user}
-                onBack={() => setShow(false)}
-            />
-        );
-    }
+    const handleCheckout = async () => {
+        const selectedProducts = priceList.filter(item => selectedItems.includes(item.id));
+        console.log('helo', selectedProducts)
+        const amount = calculateTotal();
+
+        if (selectedProducts.length === 0 || amount <= 0) return;
+
+        try {
+            const response = await paymentByZaloPay({
+                amount: amount,
+                items: selectedProducts.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    qty: item.qty,
+                    image: item.image,
+                    url: item.url,
+                    fee_shipping: item.fee_shipping
+                })),
+            });
+
+            const { order_url } = response.data;
+
+            if (order_url) {
+                window.location.href = order_url;
+            } else {
+                alert('Không thể tạo đơn hàng ZaloPay');
+            }
+        } catch (error) {
+            console.error('ZaloPay error:', error);
+            alert('Lỗi khi tạo đơn hàng ZaloPay');
+        }
+    };
 
     return (
         <div className="cart-page">
@@ -169,12 +210,13 @@ const PendingV = (props) => {
                         <span style={{ color: 'red' }}>{formatCurrency(calculateTotal())} đ</span>
                     </div>
                     <div className='w-full'>
-                        <button className="cart-checkout-btn" disabled={selectedItems.length === 0} onClick={() => setShow(true)}>
+                        <button className="cart-checkout-btn" disabled={selectedItems.length === 0} onClick={handleCheckout}>
                             MUA HÀNG
                         </button>
                     </div>
                 </div>
             </div>
+            {/* {open && <ViewAddress open={open} close={setOpen} customer={user} address={address} refresh={refetch} onChange={changeAddress} />} */}
         </div>
     )
 }

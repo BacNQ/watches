@@ -5,31 +5,25 @@ const { validObjectId } = require('../helpers/mongo-helper');
 module.exports.create = async (req, res) => {
   try {
     const data = req.body;
-    if (data.code && data.name && data.price) {
+    if (data.name && data.price) {
       const userId = req.userId;
-      const count = await CartModel.countDocuments({ user_id: userId, deleted: false, code: { $ne: data.code } });
-      if (count >= 200) {
-        res.status(400).send({ code: 0, message: 'Bạn thêm vượt quá 300 sản phẩm. Vui lòng xóa bớt các sản phẩm khác để thêm' })
+      const cart = await CartModel.findOne({ slug: data.slug, user_id: userId, deleted: false })
+      if (cart) {
+        return res.status(400).send({ code: 0, message: 'Sản phẩm đã tồn tại trong giỏ hàng!' });
       } else {
-        const cart = await CartModel.findOne({ code: data.code, user_id: userId, deleted: false })
-        if (cart) {
-            return res.status(400).send({code: 0, message: 'Sản phẩm đã tồn tại trong giỏ hàng!'});
-        } else {
-          const dataNew = {
-            code: data.code,
-            slug: data.slug,
-            name: data.name,
-            price: data.price,
-            description: data.description,
-            images: data.images,
-            user_id: userId,
-            qty: data.qty,
-            url: data.url,
-            sold_out: data.sold_out === 'Còn hàng' ? false : true
-          }
-          await new CartModel(dataNew).save();
-          res.status(200).send({ code: 1, message: "Đã thêm sản phẩm vào giỏ hàng!" })
+        const dataNew = {
+          slug: data.slug,
+          name: data.name,
+          price: data.price,
+          description: data.description,
+          images: data.images,
+          user_id: userId,
+          qty: data.qty,
+          url: data.url,
+          sold_out: data.sold_out === 'Còn hàng' ? false : true
         }
+        await new CartModel(dataNew).save();
+        res.status(200).send({ code: 1, message: "Đã thêm sản phẩm vào giỏ hàng!" })
       }
     } else {
       res.status(400).send({ code: 0, message: 'Sản phẩm không tồn tại' })

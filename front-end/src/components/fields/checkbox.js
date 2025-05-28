@@ -9,9 +9,9 @@ const CheckboxField = (props) => {
     const { name, value, onChange } = field;
 
     return (
-        <div>
+        <div className='label-checkbox'>
             {label && <div>{label}</div>}
-            <Checkbox  name={name} isSelected={value} onValueChange={onChange}>{text}</Checkbox>
+            <Checkbox name={name} isSelected={value} onValueChange={onChange}>{text}</Checkbox>
             <div className='text-end'><span className='text-tiny text-danger'>{errors[name] && errors[name].message}</span></div>
         </div>
     )

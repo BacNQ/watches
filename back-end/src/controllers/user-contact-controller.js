@@ -98,7 +98,7 @@ module.exports.loadContactById = async (req, res) => {
 module.exports.loadContactUser = async (req, res) => {
     try {
         const userId = req.userId;
-        let contacts = await ContactModel.find({ user: userId }).sort({ primary: -1, created_date: -1 });
+        let contacts = await ContactModel.find({ user: userId, deleted: false }).sort({ primary: -1, created_date: -1 });
         return res.send({ code: 1, message: "success", data: contacts }).status(200);
     } catch (error) {
         return res.send({ code: 0, message: "Failed", error: 'user not exists' }).end();
@@ -108,8 +108,8 @@ module.exports.loadContactUser = async (req, res) => {
 module.exports.createContact = async (req, res) => {
     try {
         const data = req.body;
-        const user_id = data.user && ObjectId.isValid(data.user) ? data.user : req.userId;
-        if (data.primary && data.user && user_id) {
+        const user_id = req.userId;
+        if (data.primary && user_id) {
             await ContactModel.updateMany({ user: ObjectId(user_id) }, { primary: false })
         }
 
@@ -119,12 +119,6 @@ module.exports.createContact = async (req, res) => {
             phone: data.phone,
             email: data.email,
             address: data.address,
-            province_id: data.province_id,
-            province: data.province,
-            district_id: data.district_id,
-            district: data.district,
-            ward_id: data.ward_id,
-            ward: data.ward,
             remark: data.remark,
             type: data.type,
             primary: !!data.primary,
@@ -144,11 +138,13 @@ module.exports.createContact = async (req, res) => {
 module.exports.updateContact = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id)
         if (id && ObjectId.isValid(id)) {
             const data = req.body;
-            if (data.primary && data.user && ObjectId.isValid(data.user)) {
-                await ContactModel.updateMany({ user: new ObjectId(data.user) }, { primary: false })
+            if (data.primary === true) {
+                await ContactModel.updateMany(
+                    { _id: { $ne: new ObjectId(id) } },
+                    { $set: { primary: false } }
+                );
             }
             const payload = {
                 primary: !!data.primary,
@@ -158,12 +154,6 @@ module.exports.updateContact = async (req, res) => {
             if (data.phone != undefined) payload['phone'] = data.phone;
             if (data.email != undefined) payload['email'] = data.email;
             if (data.address != undefined) payload['address'] = data.address;
-            if (data.province_id != undefined) payload['province_id'] = data.province_id;
-            if (data.province != undefined) payload['province'] = data.province;
-            if (data.district_id != undefined) payload['district_id'] = data.district_id;
-            if (data.district != undefined) payload['district'] = data.district;
-            if (data.ward_id != undefined) payload['ward_id'] = data.ward_id;
-            if (data.ward != undefined) payload['ward'] = data.ward;
             if (data.remark != undefined) payload['remark'] = data.remark;
             if (data.type != undefined) payload['type'] = data.type;
 
@@ -183,12 +173,19 @@ module.exports.updateContact = async (req, res) => {
 module.exports.removeContact = async (req, res) => {
     try {
         const { id } = req.params;
-        let result = await ContactModel.findByIdAndRemove(id)
+
+        const result = await ContactModel.findByIdAndUpdate(
+            id,
+            { deleted: true },
+            { new: true }
+        );
+
         if (result) {
             return res.status(200).send({ code: 1, data: result });
         }
-        return res.send({ code: 0, message: "Failed", error: 'Not Found' }).end();
+
+        return res.status(404).send({ code: 0, message: "Failed", error: 'Not Found' });
     } catch (error) {
-        return res.send({ code: 0, message: "Failed", error: error }).end();
+        return res.status(500).send({ code: 0, message: "Failed", error: error.message || error });
     }
-}
+};

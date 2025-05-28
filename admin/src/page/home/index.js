@@ -1,20 +1,12 @@
 import './style.scss'
+import Dashboard from '../../components/dashboard/index'
 
 export default function Home() {
     return (
         <div className='page-home'>
             <div className="container">
-                <div className='home'>
-
-                </div>
-                <div className='product'>
-
-                </div>
-                <div className='setting'>
-
-                </div>
-                <div className='news'>
-
+                <div className='dashboard'>
+                    <Dashboard />
                 </div>
             </div>
         </div>

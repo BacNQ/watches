@@ -37,8 +37,7 @@ const initialValues = (products) => {
 }
 
 const formatParams = (params) => {
-    let from = dayjs().subtract(15, 'days').startOf('days').format();
-    let to = dayjs().endOf('days').format();
+    let from, to;
 
     if (params.time) {
         let times = params.time.split('_')
@@ -59,6 +58,7 @@ const ProductsV = (props) => {
     //   const [ keyword, setKeyword ] = useState(query.search || '')
 
     const { data, refetch, isLoading: loading } = useFavProductsSearch(formatParams({ ...params }));
+    console.log('data', data)
     const changeSearch = (param) => {
         let _params = pickBy({ ...params, ...param });
         setParams(_params)

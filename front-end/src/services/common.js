@@ -11,7 +11,7 @@ const getAuthHeader = () => {
 
 //Yêu thích
 export const postAddFavorite = (body) => axios.post(`${API_BASE_URL}/api/favorite/product`, body, getAuthHeader())
-export const getFavoProducts = (params) => axios.get(`${API_BASE_URL}/api/favorite/product/user`, {...getAuthHeader(), params}).then(({ data }) => data || [])
+export const getFavoProducts = (params) => axios.get(`${API_BASE_URL}/api/favorite/product/user`, {...getAuthHeader(), params: params}).then(({ data }) => data || [])
 export const searchFavorites = (params) => axios.get(`${API_BASE_URL}/api/favorite/products`, { ...getAuthHeader(), params: params }).then(({ data }) => data || {})
 export const deleteFavorites = (body) => axios.post(`${API_BASE_URL}/api/favorite/product/delete`, body, getAuthHeader());
 
@@ -37,3 +37,6 @@ export const getStates = (id) => axios.get(`${API_BASE_URL}/api/utility/states/$
 export const getDistricts = (id) => axios.get(`${API_BASE_URL}/api/utility/district/${id}`).then(({ data }) => data || []);
 export const getCities = (id) => axios.get(`${API_BASE_URL}/api/utility/cities/${id}`).then(({ data }) => data || []);
 export const getWards = (id) => axios.get(`${API_BASE_URL}/api/utility/ward/${id}`).then(({ data }) => data || []);
+
+//Thanh toán
+export const paymentByZaloPay = (body) => axios.post(`${API_BASE_URL}/api/create-zalopay-order`, body, getAuthHeader())

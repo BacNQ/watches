@@ -20,7 +20,7 @@ const SelectField = (props) => {
             >
                 {options?.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}
             </Select>
-            <div className='text-end'><span className='text-tiny text-danger'>{errors[name] && errors[name].message}</span></div>
+            <div className='text-end'><span className='text-red-500 text-[13px]'>{errors[name] && errors[name].message}</span></div>
         </div>
     )
 }

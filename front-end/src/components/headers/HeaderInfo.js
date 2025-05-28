@@ -38,7 +38,7 @@ const HeaderInfo = (props) => {
                             <Link href="/account/user"><span className="bold text-base font-semibold">{user?.username}</span></Link>
                             <Popover placement="bottom" showArrow={true}>
                                 <PopoverTrigger>
-                                    <span className="fa fa-angle-down text-sm mt-[6px] cursor-pointer"/>
+                                    <span className="fa fa-angle-down text-sm mt-[6px] cursor-pointer" />
                                 </PopoverTrigger>
                                 <PopoverContent className='bg-white p-[12px] text-sm rounded-[6px] mt-[12px] shadow-[4px_16px_10px_rgba(0,0,0,0.3)] outline outline-[2px] outline-[#e2e2e2] !pb-[2px] min-w-[300px]'>
                                     <div className='popover-user'>

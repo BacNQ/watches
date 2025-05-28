@@ -27,7 +27,6 @@ const AddCart = ({ product }) => {
   const onAddCart = () => {
     if (user) {
       const body = {
-        code: product.code,
         name: product.name,
         price: product.price_current,
         slug: product.slug,

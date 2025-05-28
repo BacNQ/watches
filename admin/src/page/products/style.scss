@@ -1,0 +1,17 @@
+.product-manage {
+    display: flex;
+    .body-content {
+        flex: 1;
+        .group-user {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            margin-right: 36px;
+            margin-top: 20px;
+            gap: 8px;
+        }
+        .main-content {
+            
+        }
+    }
+}

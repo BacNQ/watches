@@ -42,14 +42,7 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  address: {
-    street: { type: String },
-    ward: { type: String },
-    district: { type: String },
-    city: { type: String },
-    country: { type: String, default: 'Vietnam' },
-    zipCode: { type: String },
-  },
+  address: {type: String},
   wishlist: [
     {
       type: mongoose.Schema.Types.ObjectId,

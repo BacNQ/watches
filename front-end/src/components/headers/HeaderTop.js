@@ -12,6 +12,7 @@ const SearchInput = dynamic(() => import("./SearchInput"), { ssr: false });
 const HeaderTop = () => {
   const { user } = useUser();
   const { data } = useFavProducts();
+  console.log(data)
   const { data: cartData, refetch } = useCarts();
 
   return (

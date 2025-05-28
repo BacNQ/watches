@@ -31,5 +31,5 @@ export const changePassword = (body) => axios.put(`${API_BASE_URL}/api/session/p
 
 //Address user
 export const getAddress = (params) => axios.get(`${API_BASE_URL}/api/user/address/user`, { ...getAuthHeader(), params: params }).then(({ data }) => data || [])
-export const saveAddress = (body) => body.id ? axios.put(`${API_BASE_URL}/api/user/address/edit/${body.id}`, body, getAuthHeader()) : axios.post("${API_BASE_URL}/api/user/address/add", body, getAuthHeader());
+export const saveAddress = (body) => body.id ? axios.put(`${API_BASE_URL}/api/user/address/edit/${body.id}`, body, getAuthHeader()) : axios.post(`${API_BASE_URL}/api/user/address/add`, body, getAuthHeader());
 export const removeAddress = (id) => axios.delete(`${API_BASE_URL}/api/user/address/remove/${id}`, getAuthHeader());
