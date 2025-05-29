@@ -37,7 +37,7 @@ module.exports.paymentByZaloPay = async (req, res) => {
       amount,
       description: `ZaloPay Demo - Thanh toán đơn hàng #${app_trans_id}`,
       bank_code: '',
-      callback_url: 'https://3055-14-162-145-93.ngrok-free.app/api/zalopay/callback',
+      callback_url: 'https://8854-14-162-145-93.ngrok-free.app/api/zalopay/callback',
       // redirecturl : 'https://1095-14-162-145-93.ngrok-free.app',
       mac: ''
     };

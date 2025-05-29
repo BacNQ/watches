@@ -87,7 +87,6 @@ const PendingV = (props) => {
 
     const handleCheckout = async () => {
         const selectedProducts = priceList.filter(item => selectedItems.includes(item.id));
-        console.log('helo', selectedProducts)
         const amount = calculateTotal();
 
         if (selectedProducts.length === 0 || amount <= 0) return;

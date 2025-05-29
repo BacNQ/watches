@@ -11,7 +11,6 @@ const FavoriteProduct = dynamic(() => import('../../../components/product/favour
 
 const ProductV = (props) => {
     const { product } = props;
-    console.log(product)
     return (
         <div className='content-body'>
             <article className="box-product">

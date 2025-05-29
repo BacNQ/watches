@@ -58,7 +58,6 @@ const ProductsV = (props) => {
     //   const [ keyword, setKeyword ] = useState(query.search || '')
 
     const { data, refetch, isLoading: loading } = useFavProductsSearch(formatParams({ ...params }));
-    console.log('data', data)
     const changeSearch = (param) => {
         let _params = pickBy({ ...params, ...param });
         setParams(_params)

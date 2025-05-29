@@ -15,7 +15,6 @@ import { useState } from 'react';
 
 const ProfileV = () => {
     const { user, refetch } = useUser();
-    console.log(user)
     const [phone, setPhone] = useState("");
     const [open, setOpen] = useState(false);
 
