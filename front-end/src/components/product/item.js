@@ -3,10 +3,10 @@ import { formatCurrency } from '../../helpers/format_price'
 import dynamic from 'next/dynamic';
 
 const FavoriteProduct = dynamic(() => import('../../components/product/favourite'), { ssr: false })
-
+const CartProduct = dynamic(() => import('../../components/product/cart'), { ssr: false })
 
 const ProductItem = ({ product }) => {
-      if (!product) return '';
+    if (!product) return '';
     return (
         <div className="product-item bg-white rounded-[8px] max-w-[240px]">
             <div className="card-prod">
@@ -24,7 +24,7 @@ const ProductItem = ({ product }) => {
                             <span className="price-vn bold text-[16px] block text-[#ed1c24] font-bold leading-[24px]">{formatCurrency(product?.price_current)} đ</span>
                             <div className='flex items-center'>
                                 <span className='text-[#999999] line-through text-[14px]'>{formatCurrency(product?.price_old)} đ</span>
-                                <span className='bg-[#f9e9e2] rounded-[2px] text-[#ef5555] ml-[10px] p-[2px] text-[12px]'>{product?.discount}</span>
+                                <span className='bg-[#f9e9e2] rounded-[2px] text-[#ef5555] ml-[10px] p-[2px] text-[12px]'>-{product?.discount}%</span>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@ const ProductItem = ({ product }) => {
                         <div className='flex justify-end pr-[10px] gap-[10px] pb-4 text-gray-600'>
                             <FavoriteProduct product={product} />
                             <button className="p-[5px] w-[30px] h-[30px] leading-[22px] rounded-full bg-[#eaedf1] text-[#505f77] border border-[#eaedf1] text-center cursor-pointer transition-all duration-200 relative text-[16px]">
-                                <i className="fa-solid fa-cart-shopping"></i>
+                                <CartProduct product={product} isIcon />
                             </button>
                         </div>
                     </div>

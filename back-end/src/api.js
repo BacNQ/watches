@@ -9,5 +9,6 @@ require("./routers/categories").connect(router);
 require("./routers/user-contact").connect(router);
 require("./routers/payment").connect(router);
 require("./routers/utility").connect(router);
+require("./routers/order").connect(router);
 
 module.exports = router;

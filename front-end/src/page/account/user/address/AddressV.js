@@ -83,7 +83,7 @@ const AddressV = (props) => {
                                                     </label>
                                                     <label className='add-contact'>
                                                         <span className='label-add'><i className="fa-solid fa-location-dot text-[13px]"></i>&ensp;Địa chỉ:</span>
-                                                        <span>{item.address}</span>
+                                                        <span>{item.address}, {item.ward_name}, {item.district_name}, {item.province_name}</span>
                                                     </label>
                                                     <div onClick={(e) => e.preventDefault()} className='address-action'>
                                                         {item.type === 'home' ? <span className="tag home">Nhà riêng</span> : <span className="tag offfice">Văn phòng</span>}
@@ -94,9 +94,9 @@ const AddressV = (props) => {
                                             </li>
                                         ))}
                                     </ul>
-                                    <div className='btn-add-address'>
+                                    {/* <div className='btn-add-address'>
                                         <Button className='add-address' color='primary' onClick={() => editAddress(null)}><i className="fa fa-plus" />Thêm địa chỉ mới</Button>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 :
                                 <EmptyV title="Chưa có địa chỉ nhận hàng!">

@@ -11,7 +11,7 @@ const getAuthHeader = () => {
 
 //Yêu thích
 export const postAddFavorite = (body) => axios.post(`${API_BASE_URL}/api/favorite/product`, body, getAuthHeader())
-export const getFavoProducts = (params) => axios.get(`${API_BASE_URL}/api/favorite/product/user`, {...getAuthHeader(), params: params}).then(({ data }) => data || [])
+export const getFavoProducts = (params) => axios.get(`${API_BASE_URL}/api/favorite/product/user`, { ...getAuthHeader(), params: params }).then(({ data }) => data || [])
 export const searchFavorites = (params) => axios.get(`${API_BASE_URL}/api/favorite/products`, { ...getAuthHeader(), params: params }).then(({ data }) => data || {})
 export const deleteFavorites = (body) => axios.post(`${API_BASE_URL}/api/favorite/product/delete`, body, getAuthHeader());
 
@@ -28,15 +28,15 @@ export const removeAllCarts = (body) => axios.post(`${API_BASE_URL}/api/cart/rem
 
 //Danh mục
 export const getCategory = (params) => axios.get(`${API_BASE_URL}/api/categories/get`, { params });
-export const getHomeCategories = (params) => axios.get(`${API_BASE_URL}/api/category/home`, { params }).then(({ data }) => data || []).catch(() => {});
+export const getHomeCategories = (params) => axios.get(`${API_BASE_URL}/api/category/home`, { params }).then(({ data }) => data || []).catch(() => { });
 
 //Địa chỉ
-export const getCountries = () => axios.get(`${API_BASE_URL}/api/utility/countries`);
 export const getProvinces = () => axios.get(`${API_BASE_URL}/api/utility/provinces`).then(({ data }) => data || []);
-export const getStates = (id) => axios.get(`${API_BASE_URL}/api/utility/states/${id}`).then(({ data }) => data || []);
-export const getDistricts = (id) => axios.get(`${API_BASE_URL}/api/utility/district/${id}`).then(({ data }) => data || []);
-export const getCities = (id) => axios.get(`${API_BASE_URL}/api/utility/cities/${id}`).then(({ data }) => data || []);
-export const getWards = (id) => axios.get(`${API_BASE_URL}/api/utility/ward/${id}`).then(({ data }) => data || []);
+export const getDistrict = (province_id) => axios.get(`${API_BASE_URL}/api/utility/districts`, { params: { province_id } }).then(({ data }) => data || []);
+export const getWard = (district_id) => axios.get(`${API_BASE_URL}/api/utility/wards`, { params: { district_id } }).then(({ data }) => data || []);
+export const getShop = () => axios.get(`${API_BASE_URL}/api/utility/shop`).then(({ data }) => data || []);
+export const getService = (params) => axios.post(`${API_BASE_URL}/api/utility/services`, params).then(({ data }) => data || []);
+export const calculateFee = (params) => axios.post(`${API_BASE_URL}/api/calculate-fee`, params).then(({ data }) => data || {});
 
 //Thanh toán
 export const paymentByZaloPay = (body) => axios.post(`${API_BASE_URL}/api/create-zalopay-order`, body, getAuthHeader())

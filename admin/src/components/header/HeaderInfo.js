@@ -66,7 +66,7 @@ const HeaderInfo = (props) => {
                             isBordered
                             showFallback
                             icon={<UserOutlined style={{ fontSize: '16px' }} />}
-                            // src={avatar}
+                            src={user?.avatar}
                             shape="square"
                             radius="sm"
                         />

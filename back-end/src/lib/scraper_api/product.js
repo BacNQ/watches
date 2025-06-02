@@ -27,7 +27,9 @@ async function scrapeProductDetail(slug) {
     const price_current = parseInt(price_current_text.replace(/[^\d]/g, ''), 10);
     const price_old_text = $('.product_name .product_base form#buy_simple_form_submit .price .price_old').text().trim();
     const price_old = parseInt(price_old_text.replace(/[^\d]/g, ''), 10);
-    const discount = $('.product_name .product_base form#buy_simple_form_submit .price .discount').text().trim() || null;
+    let discountText = $('.product_name .product_base form#buy_simple_form_submit .price .discount').text().trim();
+    let discountMatch = discountText.match(/(\d+)/);
+    let discount = discountMatch ? parseInt(discountMatch[1], 10) : null;
     const brand = $('.product_name .product_base form#buy_simple_form_submit .more_detail span.cate_name strong').text().trim() || null;
     const origin = $('.product_name .product_base form#buy_simple_form_submit .more_detail span.text_ext strong').text().trim() || null;
     const description = $('.summary_pro .description p').text().trim() || null;
@@ -98,7 +100,9 @@ async function scrapeProductTrending() {
       const price_current = parseInt(price_current_text.replace(/[^\d]/g, ''), 10);
       let price_old_text = $(el).find('.item .itproduct .itproduct__price .itproduct__discount .itproduct__price--old span').text().trim();
       const price_old = parseInt(price_old_text.replace(/[^\d]/g, ''), 10);
-      let discount = $(el).find('.item .itproduct .itproduct__discount span.price_discount').text().trim();
+      let discountText = $(el).find('.item .itproduct .itproduct__discount span.price_discount').text().trim();
+      let discountMatch = discountText.match(/(\d+)/);
+      let discount = discountMatch ? parseInt(discountMatch[1], 10) : 0;
       let ratingText = $(el).find('.item .itproduct .wrapper-rates .itproduct__rate span.itproduct__ratecount').text().trim();
       const rating = parseFloat(ratingText);
 
@@ -143,7 +147,9 @@ async function scrapeProductLuxury() {
       const price_current = parseInt(price_current_text.replace(/[^\d]/g, ''), 10);
       let price_old_text = $(el).find('a .frame_price .itproduct__discount .itproduct__price--old span').text().trim();
       const price_old = parseInt(price_old_text.replace(/[^\d]/g, ''), 10);
-      let discount = $(el).find('a .frame_price .itproduct__discount span.price_discount').text().trim();
+      let discountText = $(el).find('a .frame_price .itproduct__discount span.price_discount').text().trim();
+      let discountMatch = discountText.match(/(\d+)/);
+      let discount = discountMatch ? parseInt(discountMatch[1], 10) : 0;
       let ratingText = $(el).find('.wrapper-rates .itproduct__rate span.itproduct__ratecount').text().trim();
       const rating = parseFloat(ratingText);
 

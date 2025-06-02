@@ -1,446 +1,232 @@
 const _ = require('lodash');
 const ObjectId = require('mongodb').ObjectId;
+const axios = require('axios');
 
-const ProvinceModel = require('../models/utility/province');
-const DistrictModel = require('../models/utility/district');
-const WardModel = require('../models/utility/ward');
-const ContriesModel = require('../models/utility/countries');
-const StatesModel = require('../models/utility/states');
-const CitiesdModel = require('../models/utility/cities');
-
-const { validObjectId } = require('../helpers/mongo-helper');
+const GHN_TOKEN = process.env.GHN_TOKEN;
+const GHN_SHOP_ID = process.env.GHN_SHOP_ID
 
 module.exports.getProvinces = async (req, res) => {
-    try {
-        const { search } = req.query;
-        let query = {
-        };
-        if (search) {
-            let keyword = search.trim();
-            if (keyword) {
-                keyword = keyword.replace(/\(/g, "\\(").replace(/\)/g, "\\)");
-                let regSearch = new RegExp(keyword, 'i');
-                query.$or = [
-                    { name: regSearch }
-                ];
-            }
+  try {
+    const response = await axios.get(
+      'https://online-gateway.ghn.vn/shiip/public-api/master-data/province',
+      {
+        headers: {
+          Token: GHN_TOKEN
         }
-        let data = await ProvinceModel.find(query).sort({ "created_date": -1 })
-        if (data) {
-            return res.send({
-                code: 1,
-                message: 'Get data successful!',
-                data: data
-            }).status(200)
-        }
-        return res.send({
-            code: 1,
-            message: 'Get data successful!',
-            data: {}
-        }).status(200)
-    } catch (error) {
-        return res.send({
-            code: 0,
-            message: 'Error!',
-            data: {}
-        }).status(200)
-    }
-}
+      }
+    );
 
-module.exports.createProvince = async (req, res) => {
-    try {
-        const payload = req.body;
-        if (payload.id && payload.name && payload.type) {
-            const exist = await ProvinceModel.findOne({ id: payload.id }).exec();
-            if (exist) {
-                return res.status(400).send({ code: 0, message: "Tỉnh này đã tồn tại!", error: "error" }).end();
-            } else {
-                const province = new ProvinceModel(payload);
-                let result = await province.save();
-                return res.send({ code: 1, message: 'success', data: result }).status(200);
-            }
-        } else {
-            return res.status(400).send({ code: 0, message: "Dữ liệu thêm Tỉnh chưa đầy đủ", error: "error" }).end();
-        }
-    } catch (error) {
-        res.boom.badRequest(error);
-    }
-};
+    const provinces = response.data.data;
 
-module.exports.updateProvince = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const payload = req.body;
-        ProvinceModel.updateOne({ _id: new ObjectId(id) }, { $set: payload }).then((result) => {
-            if (result) {
-                return res.send({ code: 1, message: 'success', data: result }).status(200);
-            }
-            return res.status(400).send({ code: 0, message: "Cập nhập Tỉnh thất bại", error: "error" }).end();
-        })
-    } catch (error) {
-        res.boom.badRequest(error);
-    }
-};
-
-module.exports.removeProvince = async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (id && validObjectId(id)) {
-            ProvinceModel.updateOne(
-                { _id: new ObjectId(id) },
-                { deleted: true },
-                (err, result) => {
-                    if (err)
-                        return res.send({ code: 0, message: "failed", error: err }).end();
-                    return res.send({ code: 1, message: "success", data: result }).end();
-                }
-            );
-        } else {
-            res.send({ code: 0, message: "Id not exists or not valid" });
-        }
-    } catch (error) {
-        res.boom.badRequest(error);
-    }
-};
-
-module.exports.createDistrict = async (req, res) => {
-    try {
-        const payload = req.body;
-        if (payload.id && payload.name && payload.type) {
-            const exist = await DistrictModel.findOne({ id: payload.id }).exec();
-            if (exist) {
-                return res.status(400).send({ code: 0, message: "Huyện này đã tồn tại!", error: "error" }).end();
-            } else {
-                const province = new DistrictModel(payload);
-                let result = await province.save();
-                return res.send({ code: 1, message: 'success', data: result }).status(200);
-            }
-        } else {
-            return res.status(400).send({ code: 0, message: "Dữ liệu thêm Huyện chưa đầy đủ", error: "error" }).end();
-        }
-    } catch (error) {
-        res.boom.badRequest(error);
-    }
-};
-
-module.exports.updateDistrict = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const payload = req.body;
-        DistrictModel.updateOne({ _id: new ObjectId(id) }, { $set: payload }).then((result) => {
-            if (result) {
-                return res.send({ code: 1, message: 'success', data: result }).status(200);
-            }
-            return res.status(400).send({ code: 0, message: "Cập nhập Huyện thất bại", error: "error" }).end();
-        })
-    } catch (error) {
-        res.boom.badRequest(error);
-    }
-};
-
-module.exports.removeDistrict = async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (id && validObjectId(id)) {
-            DistrictModel.updateOne(
-                { _id: new ObjectId(id) },
-                { deleted: true },
-                (err, result) => {
-                    if (err)
-                        return res.send({ code: 0, message: "failed", error: err }).end();
-                    return res.send({ code: 1, message: "success", data: result }).end();
-                }
-            );
-        } else {
-            res.send({ code: 0, message: "Id not exists or not valid" });
-        }
-    } catch (error) {
-        res.boom.badRequest(error);
-    }
+    return res.status(200).json({
+      success: true,
+      data: provinces
+    });
+  } catch (error) {
+    console.error('Error fetching provinces from GHN:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch provinces',
+      error: error.message
+    });
+  }
 };
 
 module.exports.getDistrict = async (req, res) => {
-    try {
-        const { id } = req.params
-        // , deleted: false
-        let data = await DistrictModel.find({ "provinceId": Number(id) }).sort({ "name": 1 })
-        if (data) {
-            return res.send({
-                code: 1,
-                message: 'Get data successful!',
-                data: data
-            }).status(200)
-        }
-        return res.send({
-            code: 1,
-            message: 'Get data successful!',
-            data: {}
-        }).status(200)
-    } catch (error) {
-        return res.send({
-            code: 0,
-            message: 'Error!',
-            data: {}
-        }).status(200)
+  try {
+    const province_id = req.query.province_id || req.body.province_id;
+    if (!province_id) {
+      return res.status(400).json({ success: false, message: 'province_id is required' });
     }
-}
 
-module.exports.searchDistricts = async (req, res) => {
-    try {
-        const { size, page, sort, search, code } = req.query;
+    const response = await axios.post(
+      'https://online-gateway.ghn.vn/shiip/public-api/master-data/district',
+      { province_id: Number(province_id) },
+      {
+        headers: {
+          Token: GHN_TOKEN,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
 
-        const requestData = {
-            size: size || 50,
-            page: page || 1,
-            sortBy: sort || { created_date: -1 }
-        };
-        let filter = {
-        };
-        if (search) {
-            let keyword = search.trim();
-            if (keyword) {
-                keyword = keyword.replace(/\(/g, "\\(").replace(/\)/g, "\\)");
-                let regSearch = new RegExp(keyword, 'i');
-                filter.$or = [
-                    { name: regSearch },
-                ];
-            }
-        }
-        if (code) {
-            let keyword = code.trim();
-            filter.$or = [
-                { id: keyword },
-                { provinceId: keyword },
-            ];
-        }
-        let data = await DistrictModel.findPagination(filter, requestData);
-        if (data) {
-            return res.send({
-                code: 1,
-                message: 'Get data successful!',
-                data: data
-            }).status(200)
-        }
-        return res.send({
-            code: 1,
-            message: 'Get data successful!',
-            data: {}
-        }).status(200)
-    } catch (error) {
-        console.log(error, '-----!@@@!error')
-        return res.send({
-            code: 0,
-            message: 'Error!',
-            data: {}
-        }).status(200)
-    }
-}
+    const districts = response.data.data;
+
+    return res.status(200).json({
+      success: true,
+      data: districts
+    });
+  } catch (error) {
+    console.error('Error fetching districts from GHN:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch districts',
+      error: error.message
+    });
+  }
+};
 
 module.exports.getWard = async (req, res) => {
-    try {
-        const { id } = req.params
+  try {
+    const district_id = req.query.district_id || req.body.district_id;
+    if (!district_id) {
+      return res.status(400).json({ success: false, message: 'district_id is required' });
+    }
 
-        let data = await WardModel.find({ districtId: Number(id) }).sort({ "name": 1 })
-        if (data) {
-            return res.send({
-                code: 1,
-                message: 'Get data successful!',
-                data: data
-            }).status(200)
+    const response = await axios.post(
+      'https://online-gateway.ghn.vn/shiip/public-api/master-data/ward',
+      { district_id: Number(district_id) },
+      {
+        headers: {
+          Token: GHN_TOKEN,
+          'Content-Type': 'application/json'
         }
-        return res.send({
-            code: 1,
-            message: 'Get data successful!',
-            data: {}
-        }).status(200)
-    } catch (error) {
-        return res.send({
-            code: 0,
-            message: 'Error!',
-            data: {}
-        }).status(200)
-    }
-}
-module.exports.createWard = async (req, res) => {
-    try {
-        const payload = req.body;
-        if (payload.id && payload.name && payload.type) {
-            const exist = await WardModel.findOne({ id: payload.id }).exec();
-            if (exist) {
-                return res.status(400).send({ code: 0, message: "Xã này đã tồn tại!", error: "error" }).end();
-            } else {
-                const province = new WardModel(payload);
-                let result = await province.save();
-                return res.send({ code: 1, message: 'success', data: result }).status(200);
-            }
-        } else {
-            return res.status(400).send({ code: 0, message: "Dữ liệu thêm Xã chưa đầy đủ", error: "error" }).end();
-        }
-    } catch (error) {
-        res.boom.badRequest(error);
-    }
+      }
+    );
+
+    const wards = response.data.data;
+
+    return res.status(200).json({
+      success: true,
+      data: wards
+    });
+  } catch (error) {
+    console.error('Error fetching wards from GHN:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch wards',
+      error: error.message
+    });
+  }
 };
 
-module.exports.updateWard = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const payload = req.body;
-        WardModel.updateOne({ _id: new ObjectId(id) }, { $set: payload }).then((result) => {
-            if (result) {
-                return res.send({ code: 1, message: 'success', data: result }).status(200);
-            }
-            return res.status(400).send({ code: 0, message: "Cập nhập Xã thất bại", error: "error" }).end();
-        })
-    } catch (error) {
-        res.boom.badRequest(error);
+module.exports.getShop = async (req, res) => {
+  try {
+    const response = await axios.get('https://online-gateway.ghn.vn/shiip/public-api/v2/shop/all', {
+      headers: {
+        Token: GHN_TOKEN,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.data && response.data.data) {
+      return res.status(200).json({
+        success: true,
+        shops: response.data.data
+      });
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: 'Không nhận được dữ liệu từ GHN.'
+      });
     }
+  } catch (error) {
+    console.error('Lỗi lấy danh sách shop từ GHN:', error.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Lỗi khi gọi API GHN',
+      error: error.response?.data || error.message
+    });
+  }
 };
 
-module.exports.removeWard = async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (id && validObjectId(id)) {
-            WardModel.updateOne(
-                { _id: new ObjectId(id) },
-                { deleted: true },
-                (err, result) => {
-                    if (err)
-                        return res.send({ code: 0, message: "failed", error: err }).end();
-                    return res.send({ code: 1, message: "success", data: result }).end();
-                }
-            );
-        } else {
-            res.send({ code: 0, message: "Id not exists or not valid" });
-        }
-    } catch (error) {
-        res.boom.badRequest(error);
+module.exports.getService = async (req, res) => {
+  try {
+    const {
+      from_district,
+      to_district,
+      height,
+      length,
+      weight,
+      width
+    } = req.body;
+
+    if (!from_district || !to_district || !weight) {
+      return res.status(400).json({ message: 'Thiếu tham số bắt buộc (from_district, to_district, weight)' });
     }
+
+    const response = await axios.post(
+      'https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services',
+      {
+        shop_id: parseInt(GHN_SHOP_ID),
+        from_district: parseInt(from_district),
+        to_district: parseInt(to_district),
+        height: parseInt(height) || 15,
+        length: parseInt(length) || 15,
+        weight: parseInt(weight) || 500,
+        width: parseInt(width) || 15
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Token': GHN_TOKEN
+        }
+      }
+    );
+
+    const data = response.data;
+
+    if (data.code !== 200) {
+      return res.status(500).json({ message: 'Lỗi từ GHN', detail: data });
+    }
+
+    return res.json({ services: data.data });
+  } catch (error) {
+    console.error('Lỗi getService:', error.message);
+    return res.status(500).json({ message: 'Lỗi server khi lấy dịch vụ từ GHN', error: error.message });
+  }
 };
 
-module.exports.searchWards = async (req, res) => {
-    try {
-        const { size, page, sort, search, code } = req.query;
+module.exports.calculateFee = async (req, res) => {
+  try {
+    const {
+      from_district_id,
+      to_district_id,
+      from_ward_code,
+      to_ward_code,
+      service_id,
+      weight,
+      height,
+      length,
+      width,
+      coupon = null,
+      insurance_value,
+    } = req.body;
 
-        const requestData = {
-            size: size || 50,
-            page: page || 1,
-            sortBy: sort || { created_date: -1 }
-        };
-        let filter = {
-        };
-        if (search) {
-            let keyword = search.trim();
-            if (keyword) {
-                keyword = keyword.replace(/\(/g, "\\(").replace(/\)/g, "\\)");
-                let regSearch = new RegExp(keyword, 'i');
-                filter.$or = [
-                    { name: regSearch },
-                ];
-            }
-        }
-        if (code) {
-            let keyword = code.trim();
-            filter.$or = [
-                { id: keyword },
-                { districtId: keyword },
-            ];
-        }
-        let data = await WardModel.findPagination(filter, requestData);
-        if (data) {
-            return res.send({
-                code: 1,
-                message: 'Get data successful!',
-                data: data
-            }).status(200)
-        }
-        return res.send({
-            code: 1,
-            message: 'Get data successful!',
-            data: {}
-        }).status(200)
-    } catch (error) {
-        console.log(error, '----!!@@@filter')
-
-        return res.send({
-            code: 0,
-            message: 'Error!',
-            data: {}
-        }).status(200)
+    if (!from_district_id || !to_district_id || !service_id || !weight || !from_ward_code || !to_ward_code) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
-}
 
-module.exports.getCountries = async (req, res) => {
-    try {
-        let data = await ContriesModel.find().sort({ "name": 1 })
-
-        if (data) {
-            return res.send({
-                code: 1,
-                message: 'Get data successful!',
-                data: data
-            }).status(200)
+    const response = await axios.post(
+      'https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee',
+      {
+        from_district_id,
+        to_district_id,
+        from_ward_code,
+        to_ward_code,
+        service_id,
+        weight,
+        height,
+        length,
+        width,
+        insurance_value,
+        coupon
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Token': GHN_TOKEN,
+          'ShopId': GHN_SHOP_ID
         }
-        return res.send({
-            code: 1,
-            message: 'Get data successful!',
-            data: {}
-        }).status(200)
-    } catch (error) {
-        return res.send({
-            code: 0,
-            message: 'Error!',
-            data: {}
-        }).status(200)
-    }
-}
+      }
+    );
 
-module.exports.getStates = async (req, res) => {
-    try {
-        const { id } = req.params
-        let data = await StatesModel.find({ "country_id": Number(id) }).sort({ "name": 1 })
-        if (data) {
-            return res.send({
-                code: 1,
-                message: 'Get data successful!',
-                data: data
-            }).status(200)
-        }
-        return res.send({
-            code: 1,
-            message: 'Get data successful!',
-            data: {}
-        }).status(200)
-    } catch (error) {
-        return res.send({
-            code: 0,
-            message: 'Error!',
-            data: {}
-        }).status(200)
-    }
-}
-
-module.exports.getCities = async (req, res) => {
-    try {
-        const { id } = req.params
-
-        let data = await CitiesdModel.find({ "state_id": Number(id) }).sort({ "name": 1 })
-        if (data) {
-            return res.send({
-                code: 1,
-                message: 'Get data successful!',
-                data: data
-            }).status(200)
-        }
-        return res.send({
-            code: 1,
-            message: 'Get data successful!',
-            data: {}
-        }).status(200)
-    } catch (error) {
-        return res.send({
-            code: 0,
-            message: 'Error!',
-            data: {}
-        }).status(200)
-    }
-}
+    return res.json(response.data);
+  } catch (error) {
+    console.error("GHN Fee Error:", error?.response?.data || error.message);
+    return res.status(500).json({
+      message: "Failed to calculate shipping fee",
+      error: error?.response?.data || error.message
+    });
+  }
+};

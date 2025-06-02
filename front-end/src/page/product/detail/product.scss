@@ -240,6 +240,9 @@
                         flex-direction: row;
                         gap: 48px;
                         margin: 20px 0;
+                        button {
+                            padding: 16px;
+                        }
                     }
                     .hotline_detail {
                         display: flex;

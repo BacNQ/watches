@@ -7,12 +7,18 @@ const AddressSchema = new Mongoose.Schema({
     phone: { type: String },
     email: { type: String },
     address: { type: String },
-    remark: { type: String},
+    remark: { type: String },
+    province_id: { type: Number },
+    province_name: { type: String },
+    district_id: { type: Number },
+    district_name: { type: String },
+    ward_id: { type: String },
+    ward_name: { type: String },
     type: { type: String, enum: ['home', 'office'], default: 'home' },
     primary: { type: Boolean, default: false },
     status: { type: Boolean, default: true },
     deleted: { type: Boolean, default: false },
-}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
+}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
 AddressSchema.virtual("id").get(function() {
     return this._id ? this._id.toHexString() : "";

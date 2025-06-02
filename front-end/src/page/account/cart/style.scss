@@ -1,6 +1,7 @@
 .page-carts {
   background-color: #eee;
   padding-bottom: 65px;
+
   .breadcrumb {
     max-width: 1320px;
     margin: auto;
@@ -49,6 +50,7 @@
           font-size: 16px;
           margin-bottom: 8px;
         }
+
         .emtpy-content {
           button {
             padding: 12px 16px;
@@ -108,6 +110,157 @@
       }
     }
 
+    .box-info {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      .card-address {
+        .body-address {
+          padding: 10px;
+          font-size: 14px;
+          background-color: white;
+          border-radius: 0 0 8px 8px;
+
+          .box-empty {
+            border-radius: 0px 0px 10px 10px;
+
+            .emtpy-content {
+              button {
+                background-color: #070e35;
+                font-size: 13px;
+                color: white;
+                padding: 8px 12px;
+                margin-top: 10px;
+                border-radius: 8px;
+              }
+            }
+          }
+
+          .address-name {
+            text-align: center;
+            width: 100px;
+            border-right: 2px solid #ccc;
+          }
+
+          .address-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-left: 8px;
+          }
+        }
+
+        .panel-header {
+          display: flex;
+          justify-content: space-between;
+          font-size: 14px;
+          align-items: center;
+          position: relative;
+          padding: 8px 16px;
+          border-radius: 10px 10px 0 0;
+          line-height: 25px;
+          min-height: 35px;
+          width: 100%;
+          background-color: #ebf5ff;
+
+          .title-pannel {
+            i {
+              margin-right: 4px;
+              color: red;
+            }
+          }
+
+          .pull-right {
+            .address-more {
+              color: #9e9e9e;
+
+              span {
+                color: red;
+                cursor: pointer;
+                margin-left: 4px;
+                text-decoration: underline;
+              }
+            }
+          }
+        }
+      }
+
+      .cart-products-payment {
+        width: 100%;
+        padding-right: 26px;
+        background-color: #fff;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 20px;
+        border-radius: 8px;
+
+        .box-empty {
+          .empty-description {
+            font-size: 16px;
+            margin-bottom: 8px;
+          }
+
+          .emtpy-content {
+            button {
+              padding: 12px 16px;
+              background-color: #070e35;
+              border-radius: 8px;
+              margin-top: 12px;
+              color: white;
+              font-size: 14px;
+            }
+          }
+        }
+
+        .cart-shop-box {
+          border-radius: 0.5rem;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+          padding-right: 1rem;
+
+          .cart-item {
+            .cart-item-left {
+              .cart-item-info {
+                flex: 1;
+                line-height: 24px;
+                max-width: 465px;
+                min-width: 465px;
+                margin-top: -4px;
+
+                .cart-item-name {
+                  font-weight: 500;
+                  margin-bottom: 4px;
+
+                  &:hover {
+                    color: red;
+                    transition: all ease 0.2s;
+                  }
+                }
+
+                .cart-item-price,
+                .cart-item-shipping {
+                  font-size: 14px;
+                }
+              }
+            }
+
+            .cart-item-qty {
+              font-size: 14px;
+            }
+
+            .cart-item-total {
+              font-size: 16px;
+              font-weight: 600;
+              color: red;
+              min-width: 110px;
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+
     .cart-summary {
       width: 30%;
       border-radius: 8px;
@@ -149,11 +302,11 @@
         }
 
         .cart-checkout-btn {
-          font-size: 16px;
+          font-size: 14px;
           width: 100%;
           background-color: #070e35;
           font-weight: 600;
-          padding: 14px 0;
+          padding: 12px 0;
           border-radius: 8px;
           margin-bottom: .5rem;
           color: #fff;
@@ -179,9 +332,11 @@
   .ant-modal-header {
     margin-bottom: 24px !important;
   }
+
   .ant-modal-footer {
     .ant-btn-variant-solid {
       background-color: #070e35;
+
       &:hover {
         background-color: #232d67;
       }

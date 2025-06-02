@@ -23,10 +23,10 @@ const generateAppTransId = async () => {
 
 module.exports.paymentByZaloPay = async (req, res) => {
   try {
-    const { amount, items } = req.body;
+    const { amount, items, address } = req.body;
     const app_trans_id = await generateAppTransId();
 
-    const embed_data = {};
+    const embed_data = { address, redirecturl: 'https://google.com' };
     const order = {
       app_id: config.app_id,
       app_user: 'demo_user',
@@ -37,8 +37,7 @@ module.exports.paymentByZaloPay = async (req, res) => {
       amount,
       description: `ZaloPay Demo - Thanh toán đơn hàng #${app_trans_id}`,
       bank_code: '',
-      callback_url: 'https://8854-14-162-145-93.ngrok-free.app/api/zalopay/callback',
-      // redirecturl : 'https://1095-14-162-145-93.ngrok-free.app',
+      callback_url: 'https://0ebd-42-116-197-40.ngrok-free.app/api/zalopay/callback',
       mac: ''
     };
 
@@ -77,7 +76,8 @@ module.exports.zaloPayCallback = async (req, res) => {
       app_trans_id,
       zp_trans_id,
       amount,
-      item
+      item,
+      embed_data
     } = parsedData;
 
     if (!parsedData.zp_trans_id) {
@@ -105,14 +105,17 @@ module.exports.zaloPayCallback = async (req, res) => {
     }
 
     const items = JSON.parse(item || '[]');
+    const embed = JSON.parse(embed_data || '{}');
+    const address = embed.address || null;
 
     await OrderModel.create({
       app_trans_id,
       zp_trans_id,
       amount,
       items,
+      address,
       description: `Đơn hàng thanh toán ZaloPay ${app_trans_id}`,
-      status: 'paid',
+      status: 'pending',
       paid: true,
       paid_at: new Date()
     });

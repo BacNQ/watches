@@ -13,7 +13,7 @@ module.exports.UserLogin = async (req, res) => {
 
     try {
         const user = await User.findOne({
-            $or: [{ email: username }, { phone: username }]
+            $or: [{ email: username }, { phone: username }],
         });
 
         if (!user) return res.status(400).json({ message: 'Tài khoản không tồn tại' });
@@ -24,7 +24,7 @@ module.exports.UserLogin = async (req, res) => {
 
         // Tạo JWT
         const accessToken = jwt.sign(
-            { id: user._id, email: user.email },
+            { id: user._id, email: user.email, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         );
@@ -35,6 +35,52 @@ module.exports.UserLogin = async (req, res) => {
         res.status(500).json({ message: 'Lỗi máy chủ' });
     }
 }
+
+module.exports.AdminLogin = async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        const user = await User.findOne({
+            $or: [{ email: username }, { phone: username }],
+            role: 'admin'
+        });
+
+        if (!user) return res.status(400).json({ message: 'Tài khoản không tồn tại' });
+
+        // So sánh password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ message: 'Sai mật khẩu' });
+
+        // Tạo JWT
+        const accessToken = jwt.sign(
+            { id: user._id, email: user.email, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1d' }
+        );
+
+        res.json({ accessToken });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Lỗi máy chủ' });
+    }
+}
+
+module.exports.createAdmin = async (req, res) => {
+    const { name, email, phone, password } = req.body;
+
+    try {
+        const newAdmin = await UserModel.create({
+            name,
+            email,
+            phone,
+            password,
+            role: 'admin'
+        });
+        res.status(200).json({ message: 'Tạo admin thành công', admin: newAdmin });
+    } catch (error) {
+        res.status(500).json({ message: 'Lỗi máy chủ' });
+    }
+};
 
 module.exports.UserRegister = async (req, res) => {
     const { short_name, email, phone, password, confirmPassword } = req.body;

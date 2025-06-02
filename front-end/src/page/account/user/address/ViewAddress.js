@@ -1,120 +1,152 @@
-// // import './styles.scss';
-// import React, { useState } from 'react';
-// import toast from 'react-hot-toast';
-// import AddressForm from './AddressForm';
-// import EmptyV from '../../../../components/commons/empty/index';
-// import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
-// import { useAddress } from '../../../../query/profile';
-// import { useDialog } from "@/provider/ConfirmProvider";
-// import { Button, Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/react";
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
+import AddressForm from './AddressForm';
+import EmptyV from '../../../../components/commons/empty/index';
+import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa';
+import { useAddress } from '../../../../query/profile';
+import { Modal, Button } from 'antd';
+import { removeAddress } from '../../../../services/auth';
+import './view.scss'
 
-// const ViewAddress = (props) => {
-//   const { open, close, address, onChange } = props;
-//   const { confirm } = useDialog();
-//   const [show, setShow] = useState(false)
-//   const [item, setItem] = useState(null)
-//   const { data: addresses, refetch } = useAddress();
+const ViewAddress = (props) => {
+    const { open, close, address, onChange } = props;
+    const [show, setShow] = useState(false);
+    const [item, setItem] = useState(null);
+    const { data: addresses, refetch } = useAddress();
+    const [confirmVisible, setConfirmVisible] = useState(false);
+    const [selectedAddress, setSelectedAddress] = useState(null);
 
-//   const removeAddress = (record) => {
-//     if (record && record._id) {
-//       confirm({
-//         className: "modal-confirm",
-//         title: 'Bạn có chắn muốn xóa địa chỉ này?',
-//         cancelText: 'Không',
-//         confirmText: 'Có',
-//         onConfirm: () => {
-//           cancelBids({ id: record._id })
-//             .then(({ code }) => {
-//               if (code) {
-//                 refetch();
-//                 toast.success('Hủy thành công!')
-//               } else {
-//                 toast.error('Hủy thất bại!')
-//               }
-//             })
-//             .catch((error) => {
-//               toast.error('Hủy thất bại!')
-//             })
-//         }
-//       })
-//     }
-//   }
+    const handleConfirmRemove = async () => {
+        if (!selectedAddress?._id) return;
+        try {
+            const data = await removeAddress(selectedAddress._id);
+            if (data?.data.code === 1) {
+                toast.success('Xóa thành công!');
+                refetch();
+            } else {
+                toast.error('Xóa thất bại!');
+            }
+        } catch (error) {
+            toast.error('Xóa thất bại!');
+        } finally {
+            setConfirmVisible(false);
+            setSelectedAddress(null);
+        }
+    }
 
-//   const editAddress = (item) => {
-//     setItem(item)
-//     setShow(true)
-//   }
+    const showConfirmModal = (record) => {
+        setSelectedAddress(record);
+        setConfirmVisible(true);
+    }
 
-//   return (
-//     <Modal
-//       size={'xl'}
-//       isOpen={open}
-//       onOpenChange={() => close(false)}
-//     >
-//       <ModalContent className='modal-address'>
-//         {() => (
-//           <>
-//             <ModalHeader className="flex flex-col gap-1 pb-0">
-//               {show
-//                 ? <div className='modal-back'>
-//                   <span className='icon-back' onClick={() => setShow(false)}><i className="fa fa-chevron-left" /></span>
-//                   <span className='bold'>{item ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới'}</span>
-//                 </div>
-//                 : <span className='bold'>Danh sách địa chỉ</span>
-//               }
-//             </ModalHeader>
-//             <ModalBody>
-//               <div className='popup-body'>
-//                 <div className='pannel-address'>
-//                   <div className={show ? 'group-pannel display' : 'group-pannel'}>
-//                     {addresses && addresses.length > 0
-//                       ?
-//                       <div className="box-item">
-//                         <ul className='list-address' value={address?._id || address?.address_id || ''}>
-//                           {addresses.map((item, key) => {
-//                             let selected = (address?._id || address?.address_id) === item._id
-//                             return (<li className={`item-address ${selected ? 'seleted' : ''}`} value={item._id} onClick={() => onChange(item, false)} key={key}>
-//                               <div>
-//                                 <label className='add-name bold'>{item.name}</label>
-//                                 <label>
-//                                   {item.phone}
-//                                 </label>
-//                                 <label className='add-contact'>
-//                                   {item.address}, {item.ward}, {item.district}, {item.province}
-//                                 </label>
-//                                 <div onClick={(e) => e.preventDefault()} className='address-action' >
-//                                   {item.type === 'home' ? <span className="tag">Nhà riêng</span> : <span className="tag">Văn phòng</span>}
-//                                   <span onClick={() => editAddress(item)} className='icon-action'><FaRegEdit /></span>
-//                                   <span onClick={() => removeAddress(item)} className='icon-action'><FaRegTrashAlt /></span>
-//                                 </div>
-//                               </div>
-//                             </li>)
-//                           })}
-//                         </ul>
-//                         <div className='mr-t-10 text-right'>
-//                           <span className='add-address' onClick={() => editAddress(null)}><i className="fa fa-plus" />&ensp;Thêm địa chỉ mới</span>
-//                         </div>
-//                       </div>
-//                       :
-//                       <EmptyV
-//                         status='empty'
-//                         title="Chưa có địa chỉ nhận hàng!"
-//                       >
-//                         <Button color='primary' onClick={() => editAddress(null)}>Thêm địa chỉ mới</Button>
-//                       </EmptyV>
-//                     }
-//                     <div className="box-item">
-//                       {show && <AddressForm refresh={refetch} address={item} close={setShow} />}
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </ModalBody>
-//           </>
-//         )}
-//       </ModalContent>
-//     </Modal>
-//   )
-// }
+    const editAddress = (item) => {
+        setItem(item);
+        setShow(true);
+    };
 
-// export default ViewAddress;
+    return (
+        <>
+            <Modal
+                title={
+                    show ? (
+                        <div className="modal-back">
+                            <span className="icon-back cursor-pointer hover:text-red-500" onClick={() => setShow(false)}>
+                                <i className="fa fa-chevron-left mr-2 text-[13px]" />
+                            </span>
+                            <span style={{ fontWeight: 600 }}>{item ? 'Cập nhật địa chỉ' : 'Thêm địa chỉ mới'}</span>
+                        </div>
+                    ) : (
+                        <span style={{ fontWeight: 600 }}>Danh sách địa chỉ</span>
+                    )
+                }
+                open={open}
+                onCancel={() => close(false)}
+                footer={null}
+                width={800}
+                className="modal-address"
+            >
+                <div className="popup-body">
+                    <div className="pannel-address">
+                        {!show ? (
+                            <div className="box-item">
+                                {addresses && addresses?.data.length > 0 ? (
+                                    <>
+                                        <ul className="list-address" value={address?._id || address?.address_id || ''}>
+                                            {addresses?.data.map((item, key) => {
+                                                let selected = (address?._id || address?.address_id) === item._id;
+                                                return (
+                                                    <li
+                                                        className={`item-address ${selected ? 'seleted' : ''}`}
+                                                        value={item._id}
+                                                        onClick={() => onChange(item, false)}
+                                                        key={key}
+                                                    >
+                                                        <div className='relative'>
+                                                            <div className='info-address'>
+                                                                <label className="add-name" style={{ fontWeight: 600 }}>{item.name}</label>
+                                                                <label>{item.phone}</label>
+                                                                <label className="add-contact">{item.address}, {item.ward_name}, {item.district_name}, {item.province_name}</label>
+                                                            </div>
+                                                            <div onClick={(e) => e.preventDefault()} className="address-action">
+                                                                <span className="tag">{item.type === 'home' ? 'Nhà riêng' : 'Văn phòng'}</span>
+                                                                <span
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation()
+                                                                        editAddress(item);
+                                                                    }}
+                                                                    className="icon-action cursor-pointer"
+                                                                >
+                                                                    <FaRegEdit />
+                                                                </span>
+                                                                <span
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        showConfirmModal(item);
+                                                                    }}
+                                                                    className="icon-action cursor-pointer"
+                                                                >
+                                                                    <FaRegTrashAlt />
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                        {/* <div className="btn-add-address">
+                                            <span className="add-address" onClick={() => editAddress(null)}>
+                                                <i className="fa fa-plus" /> &ensp;Thêm địa chỉ mới
+                                            </span>
+                                        </div> */}
+                                    </>
+                                ) : (
+                                    <EmptyV status="empty" title="Chưa có địa chỉ nhận hàng!">
+                                        <Button type="primary" onClick={() => editAddress(null)}>Thêm địa chỉ mới</Button>
+                                    </EmptyV>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="box-item">
+                                <AddressForm refresh={refetch} address={item} close={setShow} />
+                            </div>
+                        )}
+
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal
+                title="Xác nhận xoá"
+                open={confirmVisible}
+                onOk={handleConfirmRemove}
+                onCancel={() => setConfirmVisible(false)}
+                okText="Có"
+                cancelText="Không"
+            >
+                <p>Bạn có chắc chắn muốn xoá địa chỉ này không?</p>
+            </Modal>
+        </>
+    );
+};
+
+export default ViewAddress

@@ -37,7 +37,7 @@ const ProductV = (props) => {
                         <div className="product-price">
                             <div className='price-current'>{formatCurrency(product.price_current)} đ</div>
                             {product.price_old && <div className='price-old'>{formatCurrency(product.price_old)} đ</div>}
-                            {product.discount && <div className='discount'>{product.discount}</div>}
+                            {product.discount && <div className='discount'>-{product.discount}%</div>}
                         </div>
                         <div className='product-brand'>
                             {product.brand && <span>Chính hãng từ: <strong>{product.brand}</strong></span>}

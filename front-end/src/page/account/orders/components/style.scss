@@ -1,0 +1,87 @@
+.cart-page {
+    display: flex;
+    gap: 20px;
+
+    .cart-products {
+        width: 100%;
+        padding-right: 26px;
+        background-color: #fff;
+        padding-top: 20px;
+        border-radius: 8px;
+
+        .box-empty {
+            .empty-description {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .emtpy-content {
+                button {
+                    padding: 12px 16px;
+                    background-color: #070e35;
+                    border-radius: 8px;
+                    margin-top: 12px;
+                    color: white;
+                    font-size: 14px;
+                }
+            }
+        }
+
+        .cart-shop-box {
+            border-radius: 0.5rem;
+            padding-right: 1rem;
+            border-bottom: 1px #d9d9d9 solid;
+            padding-bottom: 16px;
+
+            .cart-item {
+                .cart-item-left {
+                    .cart-item-info {
+                        flex: 1;
+                        line-height: 24px;
+                        max-width: 465px;
+                        min-width: 465px;
+                        margin-top: -4px;
+
+                        .cart-item-name {
+                            font-weight: 500;
+                            margin-bottom: 4px;
+
+                            &:hover {
+                                color: red;
+                                transition: all ease 0.2s;
+                            }
+                        }
+
+                        .cart-item-price,
+                        .cart-item-shipping {
+                            font-size: 13px;
+                        }
+                    }
+                }
+
+                .cart-item-qty {
+                    font-size: 14px;
+                }
+
+                .cart-item-total {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: red;
+                    min-width: 110px;
+                    text-align: right;
+                }
+
+                .cart-item-status {
+                    .tag-status {
+                        color: white;       
+                        padding: 6px 16px;
+                        border-radius: 1.25rem;
+                        font-size: 0.875rem;
+                        display: inline-flex;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+    }
+}

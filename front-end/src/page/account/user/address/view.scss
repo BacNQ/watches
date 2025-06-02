@@ -1,0 +1,72 @@
+.popup-body {
+    .pannel-address {
+        .box-item {
+            .list-address {
+                .address-action {
+                    position: absolute;
+                    top: 12px;
+                    right: 12px;
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+
+                    .tag {
+                        padding: 3px 10px;
+                        color: #fff;
+                        background: #ee772c;
+                        font-size: 13px;
+                        border-radius: 15px;
+                        line-height: 20px;
+                    }
+                }
+
+                .info-address {
+                    background-color: aliceblue;
+                    padding: 12px;
+                    border-radius: 8px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2px;
+                    margin-top: 12px;
+
+                }
+
+                .seleted {
+                    position: relative;
+                    &::before {
+                        top: 0;
+                        right: 3px;
+                        content: "";
+                        position: absolute;
+                        color: #fff;
+                        z-index: 9;
+                        font: normal normal normal 14px / 1 FontAwesome;
+                        font-weight: 300;
+                        font-size: 13px;
+                    }
+                    &::after {
+                        top: 0;
+                        right: 0;
+                        content: "";
+                        position: absolute;
+                        width: 40px;
+                        height: 20px;
+                        border-color: #fdcd0b transparent transparent;
+                        border-style: solid;
+                        border-width: 20px 0 0 40px;
+                        border-top-right-radius: 8px;
+                    }
+                }
+            }
+
+            .btn-add-address {
+                text-align: right;
+                cursor: pointer;
+
+                &:hover {
+                    color: red;
+                }
+            }
+        }
+    }
+}

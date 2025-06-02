@@ -12,6 +12,7 @@ const ProductSchema = new Schema({
     rating: { type: Number },
     stock_status: { type: String },
     sold: { type: Number },
+    stock: { type: Number },
     description: { type: String },
     brand: { type: String },
     origin: { type: String },

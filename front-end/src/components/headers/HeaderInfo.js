@@ -21,7 +21,7 @@ const HeaderInfo = (props) => {
             {user
                 ?
                 (<div className="group-user">
-                    <Link href="/account/user" className='avatar'>
+                    {/* <Link href="/account/user" className='avatar'>
                         <Avatar
                             size={40}
                             isBordered
@@ -31,7 +31,7 @@ const HeaderInfo = (props) => {
                             shape="square"
                             radius="sm"
                         />
-                    </Link>
+                    </Link> */}
                     <div className="user-label">
                         <span className="label-hello text-sm text-gray-400">Xin chào</span>
                         <div className='label-account -mt-2 flex items-center gap-2'>
@@ -51,8 +51,9 @@ const HeaderInfo = (props) => {
                                         <ul className="user-menu">
                                             <li className='py-2 hover:text-red-500 transition duration-200 ease-in-out'><Link href="/account/user"><i className="fa fa-user-circle" />&ensp;Thông tin tài khoản</Link></li>
                                             <li className='py-2 hover:text-red-500 transition duration-200 ease-in-out'><Link href="/account/address"><i className="fa-solid fa-location-dot" />&ensp;Sổ địa chỉ</Link></li>
+                                            <li className='py-2 hover:text-red-500 transition duration-200 ease-in-out'><Link href="/account/orders"><i className="fa-solid fa-bag-shopping"></i>&ensp;Quản lý đơn hàng</Link></li>
                                             <li className='pb-2 hover:text-red-500 transition duration-200 ease-in-out'><hr className='mr-0' /></li>
-                                            <li className='hover:text-red-500 transition duration-200 ease-in-out'><a className='cursor-pointer' onClick={handleLogout}><i className="fa fa-sign-out" />&ensp;Đăng xuất</a></li>
+                                            <li className='hover:text-red-500 transition duration-200 ease-in-out mt-[6px]'><a className='cursor-pointer' onClick={handleLogout}><i className="fa fa-sign-out" />&ensp;Đăng xuất</a></li>
                                         </ul>
                                     </div>
                                 </PopoverContent>
@@ -62,17 +63,17 @@ const HeaderInfo = (props) => {
                 </div>)
                 :
                 (<div className="group-user">
-                    <Link href="/auth/login" className='avatar'>
+                    {/* <Link href="/auth/login" className='avatar'>
                         <Avatar
                             size={40}
                             isBordered
                             showFallback
                             icon={<UserOutlined style={{ fontSize: '22px' }} />}
-                            // src={avatar}
+                            src={user?.avatar}
                             shape="square"
                             radius="sm"
                         />
-                    </Link>
+                    </Link> */}
                     <div className="user-label">
                         <span className="label-hello text-sm text-gray-400">Đăng nhập</span>
                         <div className='label-account -mt-1'>

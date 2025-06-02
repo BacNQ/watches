@@ -106,7 +106,7 @@ const SearchV = ({ keyword }) => {
                                     })}
                                 </Tabs>
                             </div> */}
-                            {isLoading ? (
+                            {/*isLoading ? (
                                 <div
                                     style={{
                                         minHeight: '60vh',
@@ -117,7 +117,7 @@ const SearchV = ({ keyword }) => {
                                 >
                                     <Spin size="large" fullscreen={true} />
                                 </div>
-                            ) : hasResults ? (
+                            ) : */hasResults ? (
                                 <div className="content-main">
                                     <Filter params={params} changeSearch={changeSearch}/>
                                     <div className="product-results">

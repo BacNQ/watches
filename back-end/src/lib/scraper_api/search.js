@@ -46,7 +46,9 @@ async function scrapeSearch(keyword, page = 1, params = {}) {
         const price_current = parseInt(price_current_text.replace(/[^\d]/g, ''), 10);
         let price_old_text = $(el).find('.content_other_item .itproduct__price .itproduct__discount .itproduct__price--old').text().trim();
         const price_old = parseInt(price_old_text.replace(/[^\d]/g, ''), 10);
-        let discount = $(el).find('.content_other_item .itproduct__price .itproduct__discount .price_discount').text().trim();
+        let discountText = $(el).find('.content_other_item .itproduct__price .itproduct__discount .price_discount').text().trim();
+        let discountMatch = discountText.match(/(\d+)/);
+        let discount = discountMatch ? parseInt(discountMatch[1], 10) : 0;
 
         products.push({
             slug,

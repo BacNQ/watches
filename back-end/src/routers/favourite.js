@@ -1,11 +1,11 @@
 const FavoriteProd = require('../controllers/favourite-controller');
-const auth = require('../middlewares/auth-middleware');
+const { authMiddleware } = require('../middlewares/auth-middleware')
 
 function connectRoutes(router) {
-    router.post('/favorite/product', auth, FavoriteProd.create);
-    router.get('/favorite/product/user', auth, FavoriteProd.getFavoriteByUser);
-    router.get('/favorite/products', auth, FavoriteProd.searchFavorities);
-    router.post('/favorite/product/delete', auth, FavoriteProd.deleteByUser);
+    router.post('/favorite/product', authMiddleware, FavoriteProd.create);
+    router.get('/favorite/product/user', authMiddleware, FavoriteProd.getFavoriteByUser);
+    router.get('/favorite/products', authMiddleware, FavoriteProd.searchFavorities);
+    router.post('/favorite/product/delete', authMiddleware, FavoriteProd.deleteByUser);
 
 }
 

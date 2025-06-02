@@ -106,79 +106,118 @@ module.exports.loadContactUser = async (req, res) => {
 };
 
 module.exports.createContact = async (req, res) => {
-    try {
-        const data = req.body;
-        const user_id = req.userId;
-        if (data.primary && user_id) {
-            await ContactModel.updateMany({ user: ObjectId(user_id) }, { primary: false })
-        }
+  try {
+    const data = req.body;
+    const user_id = req.userId;
 
-        const payload = {
-            user: user_id,
-            name: data.name,
-            phone: data.phone,
-            email: data.email,
-            address: data.address,
-            remark: data.remark,
-            type: data.type,
-            primary: !!data.primary,
-        }
-        if (payload.name && payload.phone) {
-            const newContact = new ContactModel(payload);
-            await newContact.save();
-            return res.status(200).send({ code: 1, data: true });
-        } else {
-            return res.status(400).send({ code: 0, message: "Failed", error: 'name or phone not exists' }).end();
-        }
-    } catch (error) {
-        return res.status(500).send({ code: 0, message: "Failed", error: error }).end();
+    if (!user_id) {
+      return res.status(401).send({ code: 0, message: "Unauthorized" });
     }
-}
+
+    if (data.primary) {
+      await ContactModel.updateMany(
+        { user: new ObjectId(user_id) },
+        { primary: false }
+      );
+    }
+
+    const payload = {
+      user: new ObjectId(user_id),
+      name: data.name,
+      phone: data.phone,
+      email: data.email || '',
+      address: data.address || '',
+      remark: data.remark || '',
+      type: data.type || 'home',
+      primary: !!data.primary,
+      province_id: data.province_id || null,
+      province_name: data.province_name || '',
+      district_id: data.district_id || null,
+      district_name: data.district_name || '',
+      ward_id: data.ward_id || null,
+      ward_name: data.ward_name || '',
+    };
+
+    if (!payload.name || !payload.phone) {
+      return res.status(400).send({ code: 0, message: "Failed", error: 'name or phone not exists' });
+    }
+
+    if (data.id) {
+      const updated = await ContactModel.findOneAndUpdate(
+        { _id: new ObjectId(data.id), user: new ObjectId(user_id) },
+        payload,
+        { new: true }
+      );
+      if (!updated) {
+        return res.status(404).send({ code: 0, message: "Contact not found" });
+      }
+      return res.status(200).send({ code: 1, data: updated });
+    } else {
+      const newContact = new ContactModel(payload);
+      await newContact.save();
+      return res.status(200).send({ code: 1, data: newContact });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ code: 0, message: "Failed", error: error.message || error });
+  }
+};
 
 module.exports.updateContact = async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (id && ObjectId.isValid(id)) {
-            const data = req.body;
-            if (data.primary === true) {
-                await ContactModel.updateMany(
-                    { _id: { $ne: new ObjectId(id) } },
-                    { $set: { primary: false } }
-                );
-            }
-            const payload = {
-                primary: !!data.primary,
-            }
-
-            if (data.name != undefined) payload['name'] = data.name;
-            if (data.phone != undefined) payload['phone'] = data.phone;
-            if (data.email != undefined) payload['email'] = data.email;
-            if (data.address != undefined) payload['address'] = data.address;
-            if (data.remark != undefined) payload['remark'] = data.remark;
-            if (data.type != undefined) payload['type'] = data.type;
-
-            let result = await ContactModel.updateOne({ _id: new ObjectId(id) }, { $set: payload })
-            if (result) {
-                return res.status(200).send({ code: 1, data: true })
-            }
-            return res.status(500).send({ code: 0, message: "Lỗi cập nhập", error: 'Not Found' }).end();
-        } else {
-            return res.status(400).send({ code: 0, message: "Không có dữ liệu cập nhập", error: 'Not Found' }).end();
-        }
-    } catch (error) {
-        return res.status(500).send({ code: 0, message: "Lỗi cập nhập", error: error }).end();
+  try {
+    const { id } = req.params;
+    if (!id || !ObjectId.isValid(id)) {
+      return res.status(400).send({ code: 0, message: "ID không hợp lệ hoặc không có dữ liệu cập nhật", error: 'Invalid ID' });
     }
-}
+
+    const data = req.body;
+
+    if (data.primary === true) {
+      await ContactModel.updateMany(
+        { _id: { $ne: new ObjectId(id) } },
+        { $set: { primary: false } }
+      );
+    }
+
+    const payload = {
+      primary: !!data.primary,
+    };
+
+    const allowedFields = [
+      'name', 'phone', 'email', 'address', 'remark', 'type',
+      'province_id', 'province_name',
+      'district_id', 'district_name',
+      'ward_id', 'ward_name',
+      'user'
+    ];
+
+    allowedFields.forEach(field => {
+      if (data[field] !== undefined) {
+        payload[field] = data[field];
+      }
+    });
+
+    const result = await ContactModel.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: payload }
+    );
+
+    if (result.modifiedCount > 0) {
+      return res.status(200).send({ code: 1, data: true });
+    } else {
+      return res.status(404).send({ code: 0, message: "Không tìm thấy địa chỉ hoặc dữ liệu không thay đổi", error: 'Not Found' });
+    }
+
+  } catch (error) {
+    return res.status(500).send({ code: 0, message: "Lỗi cập nhật địa chỉ", error: error.message || error });
+  }
+};
 
 module.exports.removeContact = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const result = await ContactModel.findByIdAndUpdate(
-            id,
-            { deleted: true },
-            { new: true }
-        );
+        const result = await ContactModel.findByIdAndDelete(id);
 
         if (result) {
             return res.status(200).send({ code: 1, data: result });

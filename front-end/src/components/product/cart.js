@@ -6,7 +6,7 @@ import { useCarts } from '../../query/product';
 import { postAddCart } from '../../services/common';
 import { useUser } from '../../provider/UserProvider';
 
-const AddCart = ({ product }) => {
+const AddCart = ({ product, isIcon  }) => {
   const { user } = useUser();
   const { refetch } = useCarts();
 
@@ -31,9 +31,9 @@ const AddCart = ({ product }) => {
         price: product.price_current,
         slug: product.slug,
         url: `http://localhost:3000/product/detail/${product.slug}`,
-        description: product.description,
+        description: product.description || null,
         qty: 1,
-        sold_out: product.stock_status,
+        sold_out: product.stock_status || null,
         images: product?.thumbnails?.length > 0 ? product.thumbnails : (product.image ? [product.image] : product?.images?.length > 0 ? product.images : null),
       }
       mutate(body)
@@ -44,14 +44,19 @@ const AddCart = ({ product }) => {
 
   return (
     <Button
-    size='lg'
-    color={'primary'}
-    className="w-1/2 bg-[#070e35] font-semibold rounded-md text-white"
-    onPress={() => onAddCart()}
-    fullWidth
-  >
-    <span className='bold'>Thêm vào giỏ hàng</span>
-  </Button>
+      isIconOnly={isIcon}
+      size={isIcon ? 'sm' : 'lg'}
+      color="primary"
+      className={`rounded-md ${isIcon ? 'bg-transparent hover:text-[#fa2323]' : 'w-1/2 bg-[#070e35] text-white font-semibold'}`}
+      onPress={onAddCart}
+      isLoading={isLoading}
+    >
+      {isIcon ? (
+        <i className="fa-solid fa-cart-shopping text-[14px]" />
+      ) : (
+        <span className="bold">Thêm vào giỏ hàng</span>
+      )}
+    </Button>
   )
 };
 

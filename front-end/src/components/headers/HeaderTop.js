@@ -16,7 +16,7 @@ const HeaderTop = () => {
 
   return (
     <div className="header-top">
-      <div className='header-nav-top w-full bg-[#070e35] flex items-center justify-end h-[40px] pr-[80px] gap-[50px] text-white text-[13px] font-semibold'>
+      <div className='header-nav-top w-full bg-[#070e35] flex items-center justify-end h-[40px] pr-[80px] gap-[50px] text-white/80 text-[13px] font-semibold'>
         <div className='flex items-center gap-2'>
           <i className="fa-solid fa-phone-volume"></i>
           <span>035 382 7279</span>
