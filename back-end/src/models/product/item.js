@@ -1,14 +1,16 @@
 const ObjectId = require('mongodb').ObjectId;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const ProductSchema = new Schema({
     slug: { type: String, required: true, trim: true },
     name: { type: String, required: true, trim: true },
+    code: {type: Number, trim: true},
     url: { type: String, trim: true },
     price_current: { type: Number, required: true },
     price_old: { type: Number },
-    discount: { type: String },
+    discount: { type: Number },
     rating: { type: Number },
     stock_status: { type: String },
     sold: { type: Number },
@@ -16,7 +18,9 @@ const ProductSchema = new Schema({
     description: { type: String },
     brand: { type: String },
     origin: { type: String },
-    specifics: [{ label: String, value: String }],
+    specifics: [
+        mongoose.Schema.Types.Mixed
+    ],
     images: { type: [String] },
     thumbnails: { type: [String] },
     related: [
@@ -42,6 +46,8 @@ ProductSchema.set('toJSON', {
 ProductSchema.set('toObject', {
     virtuals: true
 });
+
+ProductSchema.plugin(AutoIncrement, { inc_field: 'code' });
 
 ProductSchema.statics.findById = function (id) {
     return this.findOne({ _id: ObjectId(id) })

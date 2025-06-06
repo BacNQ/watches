@@ -44,6 +44,7 @@ const OrderSchema = new Mongoose.Schema({
   },
   paid: { type: Boolean, default: false },
   paid_at: { type: Date },
+  note: {type: String},
   deleted: { type: Boolean, default: false },
 }, {
   timestamps: true

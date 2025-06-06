@@ -41,7 +41,7 @@ const LoginV = () => {
             <div className='container'>
                 <div className='auth-body'>
                     <div className="form-login">
-                        <div className="group-auth w-100">
+                        <div className="group-auth w-100" style={{paddingTop: 155}}>
                             <article id="content" className="box-login">
                                 <div className="tab-login">
                                     <h3 className="text-center label-auth bold">ĐĂNG NHẬP</h3>

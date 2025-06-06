@@ -9,8 +9,8 @@ const getAuthHeader = () => {
   };
 };
 
-export const login = (body) => axios.post(`${API_BASE_URL}/api/login`, body)
-export const register = (body) => axios.post(`${API_BASE_URL}/api/register`, body)
+export const login = (body) => axios.post(`${API_BASE_URL}/api/admin/login`, body)
+export const register = (body) => axios.post(`${API_BASE_URL}/api/admin/register`, body)
 export const verifyUser = (body) => axios.post(`${API_BASE_URL}/api/verify-password`, body)
 export const forgot = (body) => axios.post(`${API_BASE_URL}/api/forgot-password`, body)
 export const getInfoUser = async (token) => {

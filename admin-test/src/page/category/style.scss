@@ -1,0 +1,50 @@
+.categories-manage {
+    display: flex;
+
+    .body-content {
+        flex: 1;
+
+        .group-user {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            margin-right: 36px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            gap: 8px;
+        }
+
+        .main-content {
+            padding: 0 20px 20px 20px;
+            border-top: 2px solid #e7e4e4;
+
+            .breadcrumb {
+                .breadcrumb-list {
+                    padding: 10px 0px;
+                    margin: 10px 0px !important;
+                    align-items: center;
+                    display: inline-flex;
+                    list-style: none;
+
+                    .breadcrumb-item {
+                        font-size: 16px;
+
+                        a {
+                            color: rgb(128, 128, 137) !important;
+                            font-size: 16px;
+                            text-decoration: unset !important;
+                        }
+
+                        .bx {
+                            margin: 0px 5px;
+                            font-size: 22px;
+                            vertical-align: sub;
+                            color: rgb(128, 128, 137);
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+}
