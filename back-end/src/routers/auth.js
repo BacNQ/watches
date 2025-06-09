@@ -11,6 +11,9 @@ function connectRoutes(router) {
     router.get('/info-user', authMiddleware, Login.getInfoUser);
     router.put('/session/update', authMiddleware, Login.updateProfile);
     router.put('/session/password', authMiddleware, Login.updatePassword);
+    router.get('/get/accounts', authMiddleware, isAdmin, Login.getAllUsers);
+    router.post('/create/accounts', authMiddleware, isAdmin, Login.createAccount);
+    router.put('/lock-account', authMiddleware, isAdmin, Login.lockAccount);
 }
 
 module.exports.connect = connectRoutes;

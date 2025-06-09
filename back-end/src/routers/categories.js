@@ -1,4 +1,4 @@
-const { authMiddleware } = require('../middlewares/auth-middleware')
+const { authMiddleware, isAdmin } = require('../middlewares/auth-middleware')
 const Category = require('../controllers/categories-controller');
 
 function connectRoutes(router) {
@@ -10,9 +10,10 @@ function connectRoutes(router) {
     router.get('/category/tree', Category.getCategoryTree);
     router.get('/category/parent/:id', Category.getByParent);
     router.get('/category/id/:id', Category.getCategoryById);
-    router.post('/category', authMiddleware, Category.addCategory);
-    router.put('/category/:id', authMiddleware, Category.updateCategory);
-    router.delete('/category/:id', authMiddleware, Category.deleteCategory);
+    router.get('/category/get/all', authMiddleware, isAdmin, Category.getAllCategories);
+    router.post('/category', authMiddleware, isAdmin, Category.addCategory);
+    router.put('/category/:id', authMiddleware, isAdmin, Category.updateCategory);
+    router.delete('/category/delete/:id', authMiddleware, isAdmin, Category.deleteCategory);
 }
 
 

@@ -1,4 +1,4 @@
-.categories-manage {
+.account-manage {
     display: flex;
 
     .body-content {
@@ -42,15 +42,6 @@
                             color: rgb(128, 128, 137);
                         }
                     }
-                }
-            }
-
-            .table-section {
-                .spinner-container {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    min-height: 300px;
                 }
             }
         }

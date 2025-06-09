@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -42,7 +41,8 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  address: {type: String},
+  address: { type: String },
+  deleted: { type: Boolean, default: false },
   wishlist: [
     {
       type: mongoose.Schema.Types.ObjectId,

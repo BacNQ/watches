@@ -90,13 +90,13 @@ module.exports.getTopCategories = async (req, res) => {
 };
 
 module.exports.getHomeCategories = async (req, res) => {
-    try {
-        const categories = await CategoryModel.find({ main: true, deleted: false }).limit(20);
-        return res.status(200).send({ code: 1, data: categories || [] });
-    } catch (error) {
-        return res.status(500).send({ code: 0, message: 'Lỗi lấy danh mục' });
-    }
-};  
+  try {
+    const categories = await CategoryModel.find({ main: true, deleted: false }).limit(20);
+    return res.status(200).send({ code: 1, data: categories || [] });
+  } catch (error) {
+    return res.status(500).send({ code: 0, message: 'Lỗi lấy danh mục' });
+  }
+};
 
 module.exports.getCategories = async (req, res) => {
   let perPage = Number(req.query.size || 50);
@@ -161,31 +161,31 @@ module.exports.getCategories = async (req, res) => {
 };
 
 module.exports.getByParent = async (req, res) => {
-    try {
-      let category_id = req.params.id;
-      category_id = validObjectId(category_id) ? category_id : null;
-  
-      const parents = await CategoryModel.findByParent(category_id);
-  
-      const data = await Promise.all(parents.map(async (parent) => {
-        const children = await CategoryModel.find({ parent_id: parent._id, deleted: false });
-  
-        return {
-          title: parent.name,
-          value: parent._id,
-          children: children.map(child => ({
-            title: child.name,
-            value: child._id
-          }))
-        };
-      }));
-  
-      return res.status(200).send({ code: 1, message: 'success', data });
-    } catch (error) {
-      console.error("Error getByParent:", error);
-      return res.status(500).send({ code: 0, message: "Lỗi", error });
-    }
-  };
+  try {
+    let category_id = req.params.id;
+    category_id = validObjectId(category_id) ? category_id : null;
+
+    const parents = await CategoryModel.findByParent(category_id);
+
+    const data = await Promise.all(parents.map(async (parent) => {
+      const children = await CategoryModel.find({ parent_id: parent._id, deleted: false });
+
+      return {
+        title: parent.name,
+        value: parent._id,
+        children: children.map(child => ({
+          title: child.name,
+          value: child._id
+        }))
+      };
+    }));
+
+    return res.status(200).send({ code: 1, message: 'success', data });
+  } catch (error) {
+    console.error("Error getByParent:", error);
+    return res.status(500).send({ code: 0, message: "Lỗi", error });
+  }
+};
 //  
 module.exports.getCategoryById = async (req, res) => {
   const id = req.params.id;
@@ -296,6 +296,103 @@ module.exports.getCategoryTree = async (req, res) => {
     })
 };
 
+//Admin
+module.exports.getAllCategories = async (req, res) => {
+  let perPage = Number(req.query.size || 50);
+  let page = Number(req.query.page || 1);
+  perPage = !isNaN(perPage) ? perPage : 100;
+  page = !isNaN(page) ? page : 1;
+
+  const { id, deleted, search, product, menu, status, home, main, root, sortField, sortOrder } = req.query;
+
+  const query = {
+    deleted: false,
+  };
+
+  if (validObjectId(id)) {
+    query._id = ObjectId(id);
+  }
+
+  if (deleted !== undefined) {
+    query.deleted = validBoolean(deleted);
+  }
+
+  if (product !== undefined) {
+    query.product = parse.getBooleanIfValid(product, true);
+  }
+
+  if (menu !== undefined) {
+    query.menu = parse.getBooleanIfValid(menu, true);
+  }
+
+  if (status !== undefined) {
+    query.status = status === 'true';
+  }
+
+  if (home !== undefined) {
+    query.home = home === 'true';
+  }
+
+  if (main !== undefined) {
+    query.main = main === 'true';
+  }
+
+  if (root !== undefined) {
+    query.root = root === 'true';
+  }
+
+  if (search) {
+    query.$or = [
+      { name: { $regex: `.*${search}.*`, $options: 'i' } },
+      { category_id: { $regex: `.*${search}.*`, $options: 'i' } }
+    ];
+  }
+
+  let sortOption = { position: 1 };
+
+  if (sortField && sortOrder) {
+    const order = sortOrder === 'ascend' ? 1 : -1;
+    sortOption = { [sortField]: order };
+  }
+
+  try {
+    const categories = await CategoryModel.find(query)
+      .sort(sortOption)
+      .skip(perPage * page - perPage)
+      .limit(perPage)
+      .exec();
+
+    const arrIds = categories.map(c => c._id);
+
+    const children = await CategoryModel.find({
+      parent_id: { $in: arrIds },
+      deleted: false,
+    })
+      .sort({ position: -1 })
+      .exec();
+
+    const arrCategories = categories.map(category => {
+      category.children = children.filter(
+        child => String(child.parent_id) === String(category._id)
+      );
+      return category;
+    });
+
+    const count = await CategoryModel.countDocuments(query).exec();
+
+    const data = {
+      categories: arrCategories,
+      page,
+      pages: Math.ceil(count / perPage),
+      total: count,
+    };
+
+    return res.send({ code: 1, message: 'success', data }).end();
+  } catch (error) {
+    return res.send({ code: 0, message: 'failed', error }).end();
+  }
+};
+
 module.exports.addCategory = async (req, res) => {
   try {
     const data = req.body;
@@ -343,22 +440,25 @@ module.exports.addCategory = async (req, res) => {
 
 
 module.exports.updateCategory = (req, res) => {
-  const { category } = req.body;
+  const updateData = req.body;
   const id = req.params.id;
-  if (category && ObjectId.isValid(id)) {
+
+  if (updateData && ObjectId.isValid(id)) {
     const categoryObjectID = new ObjectId(id);
-    return documenUpdate(id, category)
-      .then(dataToSet => CategoryModel.updateOne({ _id: categoryObjectID }, { $set: dataToSet }))
+    return documenUpdate(id, updateData)
+      .then(dataToSet =>
+        CategoryModel.updateOne({ _id: categoryObjectID }, { $set: dataToSet })
+      )
       .then(result => {
-        return res.status(200).send({ code: 1, message: "success", data: result })
+        return res.status(200).send({ code: 1, message: "Cập nhật thành công", data: result });
       })
       .catch((error) => {
-        return res.status(400).send({ code: 0, message: (error && error.message) || 'Lỗi cập nhập' })
-      })
+        return res.status(400).send({ code: 0, message: error?.message || 'Lỗi cập nhật' });
+      });
   } else {
-    return res.status(500).send({ code: 0, message: 'Lỗi cập nhập' })
+    return res.status(400).send({ code: 0, message: 'ID không hợp lệ hoặc thiếu dữ liệu cập nhật' });
   }
-}
+};
 
 module.exports.deleteCategory = async (req, res) => {
   const id = req.params.id;

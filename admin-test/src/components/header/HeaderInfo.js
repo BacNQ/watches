@@ -24,7 +24,7 @@ const HeaderInfo = (props) => {
             {user
                 ?
                 (<div className="group-user">
-                    <Link href="/account/user" className='avatar'>
+                    <Link href="/" className='avatar'>
                         <Avatar
                             size={40}
                             isBordered
@@ -37,7 +37,7 @@ const HeaderInfo = (props) => {
                     </Link>
                     <div className="user-label">
                         <div className='label-account flex gap-2'>
-                            <Link href="/account/user"><span className="bold text-base font-semibold">{user?.username}</span></Link>
+                            <Link href="/"><span className="bold text-base font-semibold">{user?.username}</span></Link>
                             <Popover placement="bottom" showArrow={true}>
                                 <PopoverTrigger>
                                     <span className="fa fa-angle-down text-sm mt-[6px] cursor-pointer" />
@@ -46,8 +46,8 @@ const HeaderInfo = (props) => {
                                     <div className='popover-user'>
                                         <div className='user-segment bg-[#ebedee] p-[10px] mt-[5px] mb-2 min-w-[260px] rounded-[10px]'>
                                             <div className='segment-item relative text-base flex items-center gap-[10px] justify-between font-semibold'>
-                                                <Link href="/account/user" className="bold user-name">{user?.username}</Link>
-                                                <Link href={'/account/user'} className='user-edit'><i className="fa fa-pencil !text-[13px]" /></Link>
+                                                <Link href="/" className="bold user-name">{user?.username}</Link>
+                                                <Link href={'/'} className='user-edit'><i className="fa fa-pencil !text-[13px]" /></Link>
                                             </div>
                                         </div>
                                         <ul className="user-menu ml-2 mt-4">

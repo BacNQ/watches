@@ -29,7 +29,62 @@ export const getInfoUser = async (token) => {
 export const updateProfile = (body) => axios.put(`${API_BASE_URL}/api/session/update`, body, getAuthHeader());
 export const changePassword = (body) => axios.put(`${API_BASE_URL}/api/session/password`, body, getAuthHeader());
 
-//Address user
-export const getAddress = (params) => axios.get(`${API_BASE_URL}/api/user/address/user`, { ...getAuthHeader(), params: params }).then(({ data }) => data || [])
-export const saveAddress = (body) => body.id ? axios.put(`${API_BASE_URL}/api/user/address/edit/${body.id}`, body, getAuthHeader()) : axios.post("${API_BASE_URL}/api/user/address/add", body, getAuthHeader());
-export const removeAddress = (id) => axios.delete(`${API_BASE_URL}/api/user/address/remove/${id}`, getAuthHeader());
+export const getAllUsers = async ({ search = '', page = 1, limit = 10 }) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/get/accounts`, {
+      params: {
+        search,
+        page,
+        limit,
+      },
+      ...getAuthHeader(),
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách tài khoản:', error);
+    throw error;
+  }
+};
+
+export const createAccount = async (body) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/api/create/accounts`,
+      body,
+      getAuthHeader()
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi tạo tài khoản:', error?.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const updatePassword = async (body) => {
+  try {
+    const response = await axios.put(
+      `${API_BASE_URL}/api/session/password`,
+      body,
+      getAuthHeader()
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi đổi mật khẩu:', error?.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const lockAccount = async (userId) => {
+  try {
+    const response = await axios.put(
+      `${API_BASE_URL}/api/lock-account`,
+      { userId },
+      getAuthHeader()
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi khóa tài khoản:', error?.response?.data || error.message);
+    throw error;
+  }
+};

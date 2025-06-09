@@ -1,0 +1,47 @@
+.dashboard-content {
+    display: flex;
+
+    .body-content {
+        flex: 1;
+
+        .group-user {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            margin-right: 36px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            gap: 8px;
+        }
+
+        .main-content {
+            padding: 20px;
+            padding-bottom: 100px !important;
+            border-top: 2px solid #e7e4e4;
+
+            .order-recent {
+                .ant-row {
+                    border-top: 4px solid #cecece;
+                    border-radius: 8px;
+
+                    .ant-card-body {
+                        padding: 0 !important;
+                    }
+                }
+            }
+
+            .list-product {
+                display: flex;
+                align-items: center;
+                gap: 32px;
+
+                .ant-row {
+                    flex: 1;
+                    border-top: 4px solid #cecece;
+                    border-radius: 8px;
+                }
+            }
+
+        }
+    }
+}

@@ -14,6 +14,7 @@ module.exports.UserLogin = async (req, res) => {
     try {
         const user = await User.findOne({
             $or: [{ email: username }, { phone: username }],
+            deleted: { $ne: true },
         });
 
         if (!user) return res.status(400).json({ message: 'Tài khoản không tồn tại' });
@@ -42,8 +43,10 @@ module.exports.AdminLogin = async (req, res) => {
     try {
         const user = await User.findOne({
             $or: [{ email: username }, { phone: username }],
-            role: 'admin'
+            role: 'admin',
+            deleted: { $ne: true },
         });
+
 
         if (!user) return res.status(400).json({ message: 'Tài khoản không tồn tại' });
 
@@ -90,13 +93,11 @@ module.exports.UserRegister = async (req, res) => {
     }
 
     try {
-        // Kiểm tra email đã tồn tại
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'Email đã được đăng ký' });
         }
 
-        // Lưu người dùng vào database
         const newUser = new User({
             username: short_name,
             email,
@@ -105,11 +106,8 @@ module.exports.UserRegister = async (req, res) => {
         });
 
         await newUser.save();
-
-        // Tạo JWT
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        // Trả về JWT trong response
         res.status(201).json({ token, user: { username: newUser.short_name, email: newUser.email, phone: newUser.phone } });
     } catch (error) {
         console.error(error);
@@ -121,26 +119,19 @@ module.exports.UserVerify = async (req, res) => {
     const { email, phone } = req.body;
 
     try {
-        // 1. Tìm user theo email hoặc phone
         const user = await User.findOne({ $or: [{ email }, { phone }] });
         if (!user) return res.status(404).json({ message: 'Không tìm thấy người dùng' });
 
-        // 2. Tạo mã xác minh (OTP)
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-        // 3. Tạo token tạm (có thể dùng JWT hoặc mã ngẫu nhiên)
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '15m' });
-
-        // 4. Cập nhật user với mã và hạn dùng
         user.resetPasswordOTP = otp;
         user.resetPasswordToken = token;
-        user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 phút
+        user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
         await user.save();
 
-        // 5. Gửi OTP (email hoặc SMS)
         await sendOTP(user.email || user.phone, otp);
 
-        // 6. Trả về token cho frontend
         res.json({ message: 'OTP đã được gửi', res: { token } });
 
     } catch (err) {
@@ -157,13 +148,10 @@ module.exports.UserForgot = async (req, res) => {
     }
 
     try {
-        // 1. Giải mã token để lấy user ID
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findById(decoded.id);
 
         if (!user) return res.status(404).json({ message: 'Người dùng không tồn tại' });
-
-        // 2. Kiểm tra OTP và hạn sử dụng
         const now = Date.now();
         if (
             user.resetPasswordOTP !== code ||
@@ -173,7 +161,6 @@ module.exports.UserForgot = async (req, res) => {
             return res.status(400).json({ message: 'Mã OTP không hợp lệ hoặc đã hết hạn' });
         }
 
-        // 3. Cập nhật mật khẩu và xoá thông tin khôi phục
         user.password = password;
         user.resetPasswordOTP = undefined;
         user.resetPasswordToken = undefined;
@@ -267,7 +254,7 @@ module.exports.updatePassword = async (req, res) => {
             return res.status(400).json({ message: 'Mật khẩu cũ không đúng' });
         }
 
-        user.password = password; // Không hash ở đây nữa
+        user.password = password;
         await user.save();
 
         res.status(200).json({ message: 'Đổi mật khẩu thành công' });
@@ -277,4 +264,106 @@ module.exports.updatePassword = async (req, res) => {
     }
 };
 
+module.exports.getAllUsers = async (req, res) => {
+    try {
+        const { search = '', page = 1, limit = 10 } = req.query;
+
+        const query = {
+            $or: [
+                { username: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } },
+                { phone: { $regex: search, $options: 'i' } },
+            ],
+        };
+
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+
+        const users = await User.find(query)
+            .select('-password')
+            .skip(skip)
+            .limit(parseInt(limit))
+            .sort({ createdAt: -1 });
+
+        const totalUsers = await User.countDocuments(query);
+
+        res.status(200).json({
+            total: totalUsers,
+            page: parseInt(page),
+            limit: parseInt(limit),
+            data: users,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Lỗi máy chủ' });
+    }
+};
+
+module.exports.createAccount = async (req, res) => {
+    const { username, email, phone, password, role = 'user' } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email và mật khẩu là bắt buộc' });
+    }
+
+    try {
+        const existing = await User.findOne({
+            $or: [{ email }, { phone }],
+        });
+
+        if (existing) {
+            return res.status(400).json({ message: 'Email hoặc số điện thoại đã tồn tại' });
+        }
+
+        const newUser = new User({
+            username,
+            email,
+            phone,
+            password,
+            role,
+        });
+
+        await newUser.save();
+
+        return res.status(201).json({
+            message: 'Tài khoản đã được tạo thành công',
+            user: {
+                id: newUser._id,
+                username: newUser.username,
+                email: newUser.email,
+                phone: newUser.phone,
+                role: newUser.role,
+            },
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Lỗi máy chủ khi tạo tài khoản' });
+    }
+};
+
+module.exports.lockAccount = async (req, res) => {
+    const { userId } = req.body;
+
+    if (!userId) {
+        return res.status(400).json({ message: 'Thiếu ID tài khoản' });
+    }
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Không tìm thấy tài khoản' });
+        }
+
+        if (user.deleted === true) {
+            return res.status(400).json({ message: 'Tài khoản đã bị khóa trước đó' });
+        }
+
+        user.deleted = true;
+        await user.save();
+
+        res.status(200).json({ message: 'Tài khoản đã bị khóa thành công' });
+    } catch (error) {
+        console.error('Lỗi khi khóa tài khoản:', error);
+        res.status(500).json({ message: 'Lỗi máy chủ khi khóa tài khoản' });
+    }
+};
 
