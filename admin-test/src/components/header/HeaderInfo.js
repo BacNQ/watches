@@ -14,9 +14,6 @@ const HeaderInfo = (props) => {
         localStorage.removeItem('token');
         toast.success('Đăng xuất thành công!');
         router.push('/auth/login');
-        setTimeout(() => {
-            window.location.reload();
-        }, 300);
     };
 
     return (

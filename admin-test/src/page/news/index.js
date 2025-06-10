@@ -325,7 +325,7 @@ const NewsV = () => {
                     onCancel={() => setShowModal(false)}
                     footer={null}
                     width={700}
-                    destroyOnClose
+                    destroyOnHidden
                 >
                     <Form
                         form={form}

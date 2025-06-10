@@ -19,7 +19,8 @@ const Dashboard = () => {
         totalCustomers: 0,
         totalProducts: 0,
         totalRevenue: 0,
-        totalStock: 0
+        totalStock: 0,
+        totalSold: 0
     });
 
     const [chartMode, setChartMode] = useState('day');
@@ -47,8 +48,8 @@ const Dashboard = () => {
         }
     }, [chartMode]);
 
-    const chartLabels = revenueData.map(item => item._id);
-    const chartValues = revenueData.map(item => item.totalRevenue);
+    const chartLabels = revenueData?.map(item => item._id);
+    const chartValues = revenueData?.map(item => item.totalRevenue);
 
     const lineChartData = {
         labels: chartLabels,
@@ -89,14 +90,14 @@ const Dashboard = () => {
     };
 
     const pieChartData = {
-        labels: statusData.map(item => mapStatusToVietnamese(item._id)),
+        labels: statusData?.map(item => mapStatusToVietnamese(item._id)),
         datasets: [{
-            data: statusData.map(item => item.count),
+            data: statusData?.map(item => item.count),
             backgroundColor: ['#1890ff', '#52c41a', '#faad14', '#f5222d', '#8c8c8c'],
         }],
     };
 
-    const formatCurrency = (value) => value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    const formatCurrency = (value) => value?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
     const cardStyle = {
         display: 'flex',
@@ -174,75 +175,82 @@ const Dashboard = () => {
             <div className="body-content">
                 <HeaderInfo />
                 <div className="main-content">
-                    <Row
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'nowrap',
-                            overflowX: 'auto',
-                            marginBottom: 28,
-                            gap: 35,
-                        }}
-                    >
-                        <Col style={{ flex: '0 0 auto', minWidth: 220 }}>
-                            <Card>
-                                <div style={cardStyle}>
-                                    <ShoppingCartOutlined style={{ fontSize: 32, color: '#1890ff' }} />
-                                    <div>
-                                        <div>Tổng đơn hàng</div>
-                                        <strong>{stats.totalOrders}</strong>
+                    <div style={{ marginBottom: 20 }}>
+                        <Row gutter={[16, 16]}>
+                            <Col xs={24} sm={12} md={8}>
+                                <Card>
+                                    <div style={cardStyle}>
+                                        <ShoppingCartOutlined style={{ fontSize: 32, color: '#1890ff' }} />
+                                        <div>
+                                            <div>Tổng đơn hàng</div>
+                                            <strong>{stats?.totalOrders}</strong>
+                                        </div>
                                     </div>
-                                </div>
-                            </Card>
-                        </Col>
+                                </Card>
+                            </Col>
 
-                        <Col style={{ flex: '0 0 auto', minWidth: 220 }}>
-                            <Card>
-                                <div style={cardStyle}>
-                                    <UserOutlined style={{ fontSize: 32, color: '#52c41a' }} />
-                                    <div>
-                                        <div>Tổng khách hàng</div>
-                                        <strong>{stats.totalCustomers}</strong>
+                            <Col xs={24} sm={12} md={8}>
+                                <Card>
+                                    <div style={cardStyle}>
+                                        <UserOutlined style={{ fontSize: 32, color: '#52c41a' }} />
+                                        <div>
+                                            <div>Tổng khách hàng</div>
+                                            <strong>{stats?.totalCustomers}</strong>
+                                        </div>
                                     </div>
-                                </div>
-                            </Card>
-                        </Col>
+                                </Card>
+                            </Col>
 
-                        <Col style={{ flex: '0 0 auto', minWidth: 220 }}>
-                            <Card>
-                                <div style={cardStyle}>
-                                    <AppstoreOutlined style={{ fontSize: 32, color: '#faad14' }} />
-                                    <div>
-                                        <div>Tổng sản phẩm</div>
-                                        <strong>{stats.totalProducts}</strong>
+                            <Col xs={24} sm={12} md={8}>
+                                <Card>
+                                    <div style={cardStyle}>
+                                        <AppstoreOutlined style={{ fontSize: 32, color: '#faad14' }} />
+                                        <div>
+                                            <div>Tổng sản phẩm</div>
+                                            <strong>{stats?.totalProducts}</strong>
+                                        </div>
                                     </div>
-                                </div>
-                            </Card>
-                        </Col>
+                                </Card>
+                            </Col>
 
-                        <Col style={{ flex: '0 0 auto', minWidth: 220 }}>
-                            <Card>
-                                <div style={cardStyle}>
-                                    <InboxOutlined style={{ fontSize: 32, color: '#722ed1' }} />
-                                    <div>
-                                        <div>Sản phẩm tồn kho</div>
-                                        <strong>{stats.totalStock}</strong>
+                            <Col xs={24} sm={12} md={8}>
+                                <Card>
+                                    <div style={cardStyle}>
+                                        <InboxOutlined style={{ fontSize: 32, color: '#722ed1' }} />
+                                        <div>
+                                            <div>Sản phẩm tồn kho</div>
+                                            <strong>{stats?.totalStock}</strong>
+                                        </div>
                                     </div>
-                                </div>
-                            </Card>
-                        </Col>
+                                </Card>
+                            </Col>
 
-                        <Col style={{ flex: '0 0 auto', minWidth: 220 }}>
-                            <Card>
-                                <div style={cardStyle}>
-                                    <DollarOutlined style={{ fontSize: 32, color: '#f5222d' }} />
-                                    <div>
-                                        <div>Tổng doanh thu</div>
-                                        <strong>{formatCurrency(stats.totalRevenue)}</strong>
+                            <Col xs={24} sm={12} md={8}>
+                                <Card>
+                                    <div style={cardStyle}>
+                                        <DollarOutlined style={{ fontSize: 32, color: '#f5222d' }} />
+                                        <div>
+                                            <div>Sản phẩm đã bán</div>
+                                            <strong>{stats?.totalSold}</strong>
+                                        </div>
                                     </div>
-                                </div>
-                            </Card>
-                        </Col>
-                    </Row>
+                                </Card>
+                            </Col>
+
+                            <Col xs={24} sm={12} md={8}>
+                                <Card>
+                                    <div style={cardStyle}>
+                                        <DollarOutlined style={{ fontSize: 32, color: '#f5222d' }} />
+                                        <div>
+                                            <div>Tổng doanh thu</div>
+                                            <strong>{formatCurrency(stats?.totalRevenue)}</strong>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </Col>
+
+                        </Row>
+                    </div>
 
                     <Row justify="start" style={{ marginBottom: 16 }}>
                         <Col>
@@ -282,7 +290,7 @@ const Dashboard = () => {
                             <Col span={24}>
                                 <Card title="Top sản phẩm bán chạy">
                                     <div className="top-products-list">
-                                        {topProducts.map(product => (
+                                        {topProducts?.map(product => (
                                             <div key={product._id} className="product-item" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
                                                 <div style={{ display: 'flex', gap: 12 }}>
                                                     <img src={product?.images[0]} alt={product.name} style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 4 }} />

@@ -287,7 +287,7 @@ const CategoriesV = () => {
                         open={isModalVisible}
                         onCancel={() => setIsModalVisible(false)}
                         footer={null}
-                        destroyOnClose
+                        destroyOnHidden
                     >
                         <Form form={form} layout="vertical" onFinish={handleSubmitCategory}>
                             <Form.Item name="name" label="Tên danh mục" rules={[{ required: true }]}>

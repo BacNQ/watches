@@ -20,6 +20,16 @@ module.exports.getDashboardStats = async (req, res) => {
       }
     ]);
 
+    //Sản phẩm đã bán
+    const totalSoldResult = await ProductModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalSold: { $sum: '$sold' }
+        }
+      }
+    ]);
+
     // Tính tổng doanh thu
     const revenueResult = await OrderModel.aggregate([
       {
@@ -32,13 +42,15 @@ module.exports.getDashboardStats = async (req, res) => {
 
     const totalRevenue = revenueResult[0]?.totalRevenue || 0;
     const totalStock = totalStockResult[0]?.totalStock || 0;
+    const totalSold = totalSoldResult[0]?.totalSold || 0;
 
     res.json({
       totalOrders,
       totalCustomers,
       totalProducts,
       totalRevenue,
-      totalStock
+      totalStock,
+      totalSold
     });
   } catch (err) {
     console.error('Lỗi lấy thống kê:', err);
