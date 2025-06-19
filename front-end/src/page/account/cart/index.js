@@ -31,7 +31,8 @@ const CartV = (props) => {
         image: item.images[0],
         fee_shipping: 0,
         id: item.id,
-        url: item.url
+        url: item.url,
+        stock: item.stock || null
     }));
 
     React.useEffect(() => {

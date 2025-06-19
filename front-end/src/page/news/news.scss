@@ -1,0 +1,108 @@
+.container {
+    background-color: #eee;
+    padding-bottom: 50px;
+    
+    .breadcrumb {
+        max-width: 1320px;
+        margin: 0 auto;
+
+        .breadcrumb-list {
+            padding: 10px 0px;
+            margin: 10px 0px !important;
+            align-items: center;
+            display: inline-flex;
+            list-style: none;
+
+            .breadcrumb-item {
+                font-size: 14px;
+
+                a {
+                    color: rgb(128, 128, 137) !important;
+                    font-size: 14px;
+                    text-decoration: unset !important;
+                }
+
+                .bx {
+                    margin: 0px 5px;
+                    font-size: 20px;
+                    vertical-align: sub;
+                    color: rgb(128, 128, 137);
+                }
+            }
+        }
+    }
+
+    .news-detail-container {
+        display: flex;
+        max-width: 1320px;
+        padding-bottom: 12px;
+        gap: 20px;
+        margin: 0 auto;
+
+        .main-content {
+            background: rgb(255, 255, 255);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: justify;
+
+            .news-title {
+                font-weight: 600;
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+
+            .news-create {
+                color: #888;
+                font-size: 14px;
+                margin-bottom: 16px;
+            }
+
+            .news-image {
+                width: 100%;
+                border-radius: 8px;
+                margin-bottom: 16px;
+            }
+
+            .news-content {}
+        }
+
+        .news-sidebar {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            min-width: 320px;
+
+            .sidebar-header {
+                font-weight: 600;
+                font-size: 18px;
+                margin-bottom: 4px;
+            }
+
+            .title_sidebar {
+                color: #222;
+                text-decoration: none;
+                display: block;
+                font-size: 16px;
+
+                &:hover {
+                    color: #fa2323;
+                    transition: all 0.2s;
+                }
+            }
+        }
+    }
+
+    .news-section {
+        .news-section__title {
+            font-size: 18px;
+            color: #333;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eeeeee;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: start;
+            text-transform: none;
+            margin-top: 0px;
+        }
+    }
+}

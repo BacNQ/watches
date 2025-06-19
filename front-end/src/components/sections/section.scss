@@ -1,6 +1,7 @@
 .group-styles {
     padding: 20px 0px;
-    .header-styles{
+
+    .header-styles {
         h1 {
             font-size: 22px;
             color: #333333;
@@ -10,16 +11,19 @@
             text-transform: uppercase;
             text-align: center;
         }
+
         p {
             font-size: 16px;
         }
     }
 }
+
 .group-trending {
     .card-body {
         .swiper-trending {
             .swiper-wrapper {
                 margin-left: 6px !important;
+
                 .swiper-slide {
                     .product-item {
                         .card-prod {
@@ -28,6 +32,7 @@
                                     i {
                                         font-size: 16px;
                                     }
+
                                     .btn-heart {
                                         padding: 5px;
                                         width: 30px;
@@ -42,7 +47,9 @@
                                         position: relative;
                                         font-size: 16px;
                                         transition: all 0.2s;
-                                        &:hover, &.active {
+
+                                        &:hover,
+                                        &.active {
                                             color: #fa2323;
                                             background-color: #ffc7c7;
                                             transition: 0.2s ease-in-out;
@@ -61,7 +68,8 @@
 .group-collection {
     padding-top: 8px;
     padding-bottom: 40px;
-    .header-collection{
+
+    .header-collection {
         h1 {
             font-size: 22px;
             color: #333333;
@@ -71,31 +79,37 @@
             text-transform: uppercase;
             text-align: center;
         }
+
         p {
             font-size: 16px;
         }
     }
+
     .content-collection {
         position: relative;
+
         .swiper {
             position: unset;
         }
+
         .swiper-main {
             .swiper-wrapper {
                 .swiper-slide {
                     height: 100%;
                 }
             }
-    
+
             .swiper-button-prev {
                 color: #fff;
             }
-    
+
             .swiper-button-next {
                 color: #fff;
             }
+
             .swiper-pagination {
                 bottom: -35px;
+
                 .swiper-pagination-bullet {
                     background-color: #070e35;
                 }
@@ -107,18 +121,23 @@
 .group-luxury {
     .card-body {
         position: relative;
+
         .swiper {
             position: unset;
+
             .swiper-slide {
                 .product-item {
                     margin: 4px 0;
+
                     .card-prod {
                         padding: 4px;
+
                         .caption {
                             .group-action {
                                 i {
                                     font-size: 16px;
                                 }
+
                                 .btn-heart {
                                     padding: 5px;
                                     width: 30px;
@@ -133,7 +152,9 @@
                                     position: relative;
                                     font-size: 16px;
                                     transition: all 0.2s;
-                                    &:hover, &.active {
+
+                                    &:hover,
+                                    &.active {
                                         color: #fa2323;
                                         background-color: #ffc7c7;
                                         transition: 0.2s ease-in-out;
@@ -142,14 +163,17 @@
                             }
                         }
                     }
+
                     &:hover {
                         transition: .2s ease-in-out;
                         box-shadow: 0 3px 6px 3px rgba(0, 0, 0, .15);
                     }
                 }
             }
+
             .swiper-pagination {
                 bottom: 20px;
+
                 .swiper-pagination-bullet {
                     background-color: #070e35;
                 }
@@ -160,7 +184,8 @@
 
 .group-brand {
     padding: 20px 0px;
-    .header-brand{
+
+    .header-brand {
         h1 {
             font-size: 22px;
             color: #333333;
@@ -170,6 +195,7 @@
             text-transform: uppercase;
             text-align: center;
         }
+
         p {
             font-size: 16px;
         }
@@ -178,7 +204,8 @@
 
 .group-history {
     padding: 20px 0px;
-    .header-history{
+
+    .header-history {
         h1 {
             font-size: 22px;
             color: #333333;
@@ -189,19 +216,23 @@
             text-align: center;
         }
     }
+
     .card-body {
         .swiper {
             .swiper-wrapper {
                 .swiper-slide {
                     .product-item {
                         margin: 4px 0;
+
                         .card-prod {
                             padding: 4px;
+
                             .caption {
                                 .group-action {
                                     i {
                                         font-size: 16px;
                                     }
+
                                     .btn-heart {
                                         padding: 5px;
                                         width: 30px;
@@ -216,7 +247,9 @@
                                         position: relative;
                                         font-size: 16px;
                                         transition: all 0.2s;
-                                        &:hover, &.active {
+
+                                        &:hover,
+                                        &.active {
                                             color: #fa2323;
                                             background-color: #ffc7c7;
                                             transition: 0.2s ease-in-out;
@@ -225,6 +258,7 @@
                                 }
                             }
                         }
+
                         &:hover {
                             transition: .2s ease-in-out;
                             box-shadow: 0 3px 6px 3px rgba(0, 0, 0, .15);
@@ -234,5 +268,109 @@
             }
         }
     }
+}
 
+.news-section {
+    padding: 24px;
+    padding-bottom: 12px;
+    max-width: 1320px;
+    margin: auto;
+    background-color: white;
+    border-radius: 8px;
+
+    &__title {
+        font-size: 22px;
+        color: #333;
+        padding-bottom: 12px;
+        margin-top: 8px;
+        font-weight: normal;
+        text-transform: uppercase;
+        text-align: center;
+    }
+}
+
+.news-list {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.news-item {
+    background: #fff;
+    border-radius: 10px;
+    // box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+    flex: 1 1 22%;
+    min-width: 260px;
+    max-width: 350px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    &__thumb {
+        height: 150px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 100%;
+            object-fit: cover;
+            height: 150px;
+        }
+    }
+
+    &__body {
+        padding-top: 12px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__title {
+        font-size: 15px;
+        margin: 0px;
+        font-weight: 600;
+        line-height: 22px;
+        min-height: 50px;
+        transition: all 0.2s;
+        &:hover {
+            color: #fa2323;
+        }
+    }
+
+    &__date {
+        color: #888;
+        font-size: 12px;
+        margin-bottom: 16px;
+        margin-top: 8px;
+        i {
+            font-size: 11px;
+        }
+    }
+
+    &__desc {
+        color: #444;
+        font-size: 14px;
+        line-height: 20px;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+    }
+
+    &__more {
+        margin-top: 20px;
+        text-align: right;
+    }
+
+    &__readmore {
+        color: #da2128;
+        text-decoration: underline;
+        font-weight: 600;
+        font-size: 14px;
+        padding-right: 4px;
+    }
 }

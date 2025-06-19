@@ -1,4 +1,5 @@
 const Promise = require('bluebird');
+const mongoose = require('mongoose');
 // const cheerio = require('cheerio');
 const ObjectId = require('mongodb').ObjectId;
 const CategoryModel = require('../models/category/model');
@@ -7,55 +8,37 @@ const parse = require('../helpers/parse');
 const _ = require('lodash');
 
 module.exports.searchCategories = async (req, res) => {
-  const { status, main, root, role, home, primary, search } = req.query;
+  try {
+    const { status, main, root, role, home, primary, search } = req.query;
+    const filter = {};
 
-  const requestData = {
-    size: req.query.size || 20,
-    page: req.query.page || 1,
-    sortBy: req.query.sortBy || { position: 1 },
-  };
-  const filter = {}
-  if (search) {
-    const _search = search.trim();
-    filter.$or = [
-      { name: { $regex: _search, $options: "i" } },
-      { name_origin: { $regex: _search, $options: "i" } },
-      { description: { $regex: _search, $options: "i" } },
-      { category_id: { $regex: _search, $options: "i" } }
-    ];
-  }
+    if (search) {
+      const _search = search.trim();
+      filter.$or = [
+        { name: { $regex: _search, $options: "i" } },
+        { name_origin: { $regex: _search, $options: "i" } },
+        { description: { $regex: _search, $options: "i" } },
+        { category_id: { $regex: _search, $options: "i" } }
+      ];
+    }
 
-  if (role !== undefined) {
-    filter.role = role
-  }
-  if (status !== undefined) {
-    filter.status = parse.getBooleanIfValid(status, true);
-  }
-  if (main !== undefined) {
-    filter.main = parse.getBooleanIfValid(main, true);
-  }
-  if (home !== undefined) {
-    filter.home = parse.getBooleanIfValid(home, true);
-  }
-  if (primary !== undefined) {
-    filter.primary = parse.getBooleanIfValid(primary, true);
-  }
-  if (root !== undefined) {
-    filter.root = parse.getBooleanIfValid(root, true);
-  }
-  const query = {
-    deleted: false,
-    ...filter,
-  };
+    if (role !== undefined) filter.role = role;
+    if (status !== undefined) filter.status = parse.getBooleanIfValid(status, true);
+    if (main !== undefined) filter.main = parse.getBooleanIfValid(main, true);
+    if (home !== undefined) filter.home = parse.getBooleanIfValid(home, true);
+    if (primary !== undefined) filter.primary = parse.getBooleanIfValid(primary, true);
+    if (root !== undefined) filter.root = parse.getBooleanIfValid(root, true);
 
-  CategoryModel.findPagination(query, requestData)
-    .then(data => {
-      return res.send({ code: 1, message: 'sucess', data: data || [] }).end();
-    })
-    .catch(error => {
-      console.log('Error:', error);
-      return res.status(500).send({ code: 0, message: "Lỗi", error: error }).end();
-    });
+    const query = { deleted: false, ...filter };
+
+    const sortBy = req.query.sortBy || { position: 1 };
+    const results = await CategoryModel.find(query).sort(sortBy);
+
+    return res.send({ code: 1, message: 'success', data: results }).end();
+  } catch (error) {
+    console.log('Error:', error);
+    return res.status(500).send({ code: 0, message: "Lỗi", error: error }).end();
+  }
 };
 
 module.exports.getTopCategories = async (req, res) => {
@@ -396,7 +379,6 @@ module.exports.getAllCategories = async (req, res) => {
 module.exports.addCategory = async (req, res) => {
   try {
     const data = req.body;
-
     const exist = await CategoryModel.exists({ category_id: data.category_id });
     if (exist) {
       return res.status(400).send({ code: 0, message: 'Danh mục sản phẩm đã tồn tại' });
@@ -439,24 +421,28 @@ module.exports.addCategory = async (req, res) => {
 };
 
 
-module.exports.updateCategory = (req, res) => {
-  const updateData = req.body;
-  const id = req.params.id;
+module.exports.updateCategory = async (req, res) => {
+  try {
+    const updateData = req.body;
+    const id = req.params.id;
 
-  if (updateData && ObjectId.isValid(id)) {
-    const categoryObjectID = new ObjectId(id);
-    return documenUpdate(id, updateData)
-      .then(dataToSet =>
-        CategoryModel.updateOne({ _id: categoryObjectID }, { $set: dataToSet })
-      )
-      .then(result => {
-        return res.status(200).send({ code: 1, message: "Cập nhật thành công", data: result });
-      })
-      .catch((error) => {
-        return res.status(400).send({ code: 0, message: error?.message || 'Lỗi cập nhật' });
-      });
-  } else {
-    return res.status(400).send({ code: 0, message: 'ID không hợp lệ hoặc thiếu dữ liệu cập nhật' });
+    if (!updateData || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ code: 0, message: 'ID không hợp lệ hoặc thiếu dữ liệu cập nhật' });
+    }
+
+    const result = await CategoryModel.updateOne(
+      { _id: id },
+      { $set: updateData }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ code: 0, message: 'Không tìm thấy danh mục để cập nhật' });
+    }
+
+    return res.status(200).json({ code: 1, message: 'Cập nhật thành công', data: result });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ code: 0, message: error.message || 'Lỗi server khi cập nhật' });
   }
 };
 

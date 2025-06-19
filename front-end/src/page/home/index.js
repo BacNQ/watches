@@ -6,6 +6,7 @@ import LuxuryCollection from "../../components/sections/LuxuryCollection"
 import LuxuryWatches from "../../components/sections/LuxuryWatches"
 import FeaturedBrand from "../../components/sections/FeaturedBrand"
 import HistoryProduct from "../../components/sections/HistoryProduct"
+import News from "../../components/sections/News"
 export default function Home() {
   return (
     <div className='page-home'>
@@ -30,6 +31,9 @@ export default function Home() {
         </div>
         <div className="section-history">
           <HistoryProduct />
+        </div>
+        <div className="section-news">
+          <News />
         </div>
       </div>
     </div>

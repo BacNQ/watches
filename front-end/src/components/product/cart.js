@@ -6,7 +6,7 @@ import { useCarts } from '../../query/product';
 import { postAddCart } from '../../services/common';
 import { useUser } from '../../provider/UserProvider';
 
-const AddCart = ({ product, isIcon  }) => {
+const AddCart = ({ product, isIcon, quantity }) => {
   const { user } = useUser();
   const { refetch } = useCarts();
 
@@ -32,8 +32,9 @@ const AddCart = ({ product, isIcon  }) => {
         slug: product.slug,
         url: `http://localhost:3000/product/detail/${product.slug}`,
         description: product.description || null,
-        qty: 1,
+        qty: quantity || 1,
         sold_out: product.stock_status || null,
+        stock: product.stock || null,
         images: product?.thumbnails?.length > 0 ? product.thumbnails : (product.image ? [product.image] : product?.images?.length > 0 ? product.images : null),
       }
       mutate(body)

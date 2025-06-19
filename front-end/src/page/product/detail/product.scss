@@ -1,22 +1,27 @@
 .container {
     background-color: #eee;
     padding-bottom: 2px;
+
     .breadcrumb {
         max-width: 1320px;
         margin: 0 auto;
+
         .breadcrumb-list {
             padding: 10px 0px;
             margin: 10px 0px !important;
             align-items: center;
             display: inline-flex;
             list-style: none;
+
             .breadcrumb-item {
                 font-size: 14px;
+
                 a {
                     color: rgb(128, 128, 137) !important;
                     font-size: 14px;
                     text-decoration: unset !important;
                 }
+
                 .bx {
                     margin: 0px 5px;
                     font-size: 20px;
@@ -26,6 +31,7 @@
             }
         }
     }
+
     .content-body {
         max-width: 1320px;
         margin: auto;
@@ -44,7 +50,7 @@
                 display: grid;
                 grid-template-columns: repeat(12, 1fr);
                 gap: 28px;
-    
+
                 @media (min-width: 768px) {
                     .gallery {
                         grid-column: span 5;
@@ -55,10 +61,12 @@
                     display: flex;
                     flex-direction: column;
                     gap: 4px;
+
                     .product-header {
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
+
                         .product-name {
                             font-size: 20px;
                             display: -webkit-box;
@@ -70,10 +78,12 @@
                             -webkit-line-clamp: 2;
                             font-weight: 600;
                         }
+
                         .product-action {
                             i {
                                 font-size: 18px;
                             }
+
                             .btn-heart {
                                 padding: 5px;
                                 width: 30px;
@@ -88,7 +98,9 @@
                                 position: relative;
                                 font-size: 16px;
                                 transition: all 0.2s;
-                                &:hover, &.active {
+
+                                &:hover,
+                                &.active {
                                     color: #fa2323;
                                     background-color: #ffc7c7;
                                     transition: 0.2s ease-in-out;
@@ -96,21 +108,25 @@
                             }
                         }
                     }
+
                     .product-rating {
                         display: flex;
                         align-items: center;
                         gap: 12px;
+
                         .number-rating {
                             font-size: 14px;
                             color: #999;
                         }
                     }
+
                     .product-sold {
                         font-size: 14px;
                         color: #999;
                         margin-top: 12px;
                         margin-left: 4px;
                     }
+
                     .product-status {
                         display: inline-block;
                         padding: 5px 10px;
@@ -122,12 +138,15 @@
                         margin-top: 8px;
                         text-align: center;
                     }
+
                     .in-stock {
                         background-color: #219653;
                     }
+
                     .out-of-stock {
                         background-color: #ca2929;
                     }
+
                     .product-price {
                         position: relative;
                         display: flex;
@@ -135,6 +154,7 @@
                         flex-wrap: wrap;
                         margin-top: 12px;
                         margin-left: 4px;
+
                         .price-current {
                             color: #ED1C24;
                             font-size: 24px;
@@ -144,6 +164,7 @@
                             vertical-align: middle;
                             margin-right: 5px;
                         }
+
                         .price-old {
                             color: #999;
                             font-size: 16px;
@@ -153,6 +174,7 @@
                             vertical-align: middle;
                             margin-right: 5px;
                         }
+
                         .discount {
                             background: #f9e9e2;
                             border-radius: 2px;
@@ -163,6 +185,7 @@
                             font-weight: 700;
                         }
                     }
+
                     .product-brand {
                         display: flex;
                         align-items: center;
@@ -170,6 +193,7 @@
                         margin-top: 8px;
                         margin-left: 4px;
                     }
+
                     .product-specifics {
                         margin-top: 16px;
                         display: grid;
@@ -181,7 +205,7 @@
                             font-size: 0.875rem;
 
                             .text-specifics {
-                            color: #1f2937;
+                                color: #1f2937;
                             }
                         }
 
@@ -195,9 +219,76 @@
                         }
                     }
 
+                    .product-quantity {
+                        margin-left: 8px;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+
+                        .label-quantity {
+                            font-weight: 600;
+                            font-size: 16px;
+                            margin-right: 10px;
+                        }
+
+                        .quantity-controls {
+                            display: flex;
+                            align-items: center;
+                            border: 1px solid #e5e5e5;
+                            border-radius: 6px;
+                            overflow: hidden;
+                            background: #fafbfc;
+                            min-width: 120px;
+                            height: 38px;
+                            box-shadow: 0 1px 2px rgba(30, 34, 40, .05);
+                        }
+
+                        .btn-quantity {
+                            width: 36px;
+                            height: 36px;
+                            background: #f6f6f6;
+                            border: none;
+                            color: #333;
+                            font-size: 20px;
+                            cursor: pointer;
+                            transition: background 0.2s;
+                            outline: none;
+
+                            &:hover:enabled {
+                                background: #e5e5e5;
+                            }
+
+                            &:disabled {
+                                color: #ccc;
+                                cursor: not-allowed;
+                            }
+                        }
+
+                        .input-quantity {
+                            width: 48px;
+                            height: 36px;
+                            border: none;
+                            text-align: center;
+                            font-size: 16px;
+                            background: transparent;
+                            outline: none;
+                            padding: 0;
+
+                            &::-webkit-inner-spin-button,
+                            &::-webkit-outer-spin-button {
+                                -webkit-appearance: none;
+                                margin: 0;
+                            }
+
+                            -moz-appearance: textfield;
+                        }
+                    }
+
+
                     .box-commitment {
                         border: 2px solid #E0E0E0;
                         border-radius: 5px;
+
                         .title-box {
                             .title {
                                 background: #333;
@@ -211,6 +302,7 @@
                                 text-align: center;
                             }
                         }
+
                         .grid-item {
                             grid-template-columns: repeat(2, minmax(0, 1fr));
                             grid-gap: 24px;
@@ -219,15 +311,19 @@
                             margin-bottom: 0 !important;
                             grid-auto-rows: minmax(min-content, max-content);
                             padding: 16px 24px;
+
                             .item {
                                 display: flex;
                                 margin: 3px 0;
+
                                 .item-content {
                                     display: flex;
                                     gap: 12px;
+
                                     .item-text {
                                         font-size: 14px;
                                     }
+
                                     i {
                                         color: #fdaf17;
                                     }
@@ -235,35 +331,41 @@
                             }
                         }
                     }
+
                     .product-buy {
                         display: flex;
                         flex-direction: row;
                         gap: 48px;
                         margin: 20px 0;
+
                         button {
                             padding: 16px;
                         }
                     }
+
                     .hotline_detail {
                         display: flex;
                         justify-content: center;
                         gap: 4px;
                         font-size: 14px;
+
                         p {
                             font-weight: 550;
                         }
+
                         .phone-link {
                             color: #2f80ed;
                             font-weight: 550;
                         }
                     }
                 }
+
                 @media (min-width: 768px) {
                     .info-product {
                         grid-column: span 7;
                     }
                 }
-                  
+
             }
         }
 
@@ -275,6 +377,7 @@
                         margin-bottom: 8px;
                         padding-bottom: 8px;
                         border-bottom: 1px solid #dddcdcc2;
+
                         .title-header {
                             font-size: 18px;
                             line-height: 32px;
@@ -282,6 +385,7 @@
                             font-weight: 550;
                         }
                     }
+
                     .pannel-body {
                         p {
                             position: relative;
@@ -301,9 +405,11 @@
                 background: #fff;
                 border-radius: 6px;
                 margin-bottom: 25px;
+
                 .card-header {
                     border-radius: 6px 6px 0px 0px;
                     background-color: #070e35;
+
                     .title-main {
                         padding: 8px 12px;
                         font-size: 16px;
@@ -312,9 +418,11 @@
                         color: #fff;
                     }
                 }
+
                 .card-body {
                     .swiper {
                         margin: 12px;
+
                         .product-item {
                             transition: 0.2s ease-in-out;
                             width: 100%;
@@ -324,6 +432,7 @@
                             padding: 10px;
                             border-radius: 12px;
                             margin-bottom: 15px;
+
                             &:hover {
                                 box-shadow: 0 3px 6px 3px rgba(0, 0, 0, 0.15);
                             }
@@ -331,6 +440,113 @@
                     }
                 }
             }
+        }
+
+        .product-comment {
+            .comments-section {
+                    background-color: white;
+                    border-radius: 8px;
+                    padding: 20px 20px 4px 20px;
+                    margin-bottom: 16px;
+            
+                    .card-header {
+                        margin-bottom: 16px;
+
+                    .title-main {
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #070e35;
+                    }
+                }
+
+                .form-comment {
+                    margin-bottom: 20px;
+
+                    .input-comment {
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #ddd;
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        resize: none;
+                        margin-bottom: 12px;
+                        outline: none;
+
+                        &:focus {
+                            border-color: #ddd;
+                        }
+                    }
+
+                    .btn-send-comment {
+                        display: flex;
+                        align-items: center;
+                        padding: 8px 16px;
+                        color: white;
+                        font-size: 14px;
+                        background-color: #070e35;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+
+                        &:hover {
+                            background-color: #393e5c;
+                        }
+
+                        .icon-pencil {
+                            margin-right: 8px;
+                        }
+                    }
+                }
+
+                .list-comments {
+                    .item-comment {
+                        display: flex;
+                        margin-bottom: 18px;
+                        border-bottom: 1px solid #f2f2f2;
+                        padding-bottom: 12px;
+
+                        .avatar {
+                            margin-right: 12px;
+
+                            .avatar-image {
+                                border-radius: 50%;
+                                object-fit: cover;
+                            }
+                        }
+
+                        .comment-content {
+                            .comment-username {
+                                font-weight: 600;
+                                color: #000;
+                                font-size: 14px;
+                            }
+
+                            .comment-text {
+                                margin: 8px 0;
+                                color: #555;
+                                font-size: 14px;
+                            }
+
+                            .group-end {
+                                display: flex;
+                                align-items: center;
+                                gap: 16px;
+                                font-size: 12px;
+                                color: #888;
+                            }
+                        }
+                    }
+
+                    .no-comments {
+                        font-size: 1rem;
+                        color: #555;
+                        text-align: center;
+                        margin-top: 20px;
+                    }
+                }
+            }
+
         }
     }
 }

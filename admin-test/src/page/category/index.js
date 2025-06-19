@@ -294,7 +294,7 @@ const CategoriesV = () => {
                                 <Input />
                             </Form.Item>
                             <Form.Item name="category_id" label="Mã danh mục" rules={[{ required: true }]}>
-                                <Input disabled={!!editingCategory} />
+                                <Input />
                             </Form.Item>
                             <Form.Item name="status" label="Trạng thái" initialValue={true}>
                                 <Select>

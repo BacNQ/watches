@@ -13,5 +13,6 @@ require("./routers/order").connect(router);
 require("./routers/upload").connect(router);
 require("./routers/news").connect(router);
 require("./routers/common").connect(router);
+require("./routers/comments").connect(router);
 
 module.exports = router;

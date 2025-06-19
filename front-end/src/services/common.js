@@ -40,3 +40,16 @@ export const calculateFee = (params) => axios.post(`${API_BASE_URL}/api/calculat
 
 //Thanh toán
 export const paymentByZaloPay = (body) => axios.post(`${API_BASE_URL}/api/create-zalopay-order`, body, getAuthHeader())
+
+//Bình luận, đánh giá
+export const getComments = (product_id) => axios.get(`${API_BASE_URL}/api/comments/${product_id}`).then(({ data }) => data);
+export const addComments = (product_id, body) => axios.post(`${API_BASE_URL}/api/add/comments/${product_id}`, body, getAuthHeader()).then(({ data }) => data);
+export const editComment = (comment_id, body) => axios.put(`${API_BASE_URL}/api/comments/${comment_id}`, body, getAuthHeader()).then(({ data }) => data);
+export const deleteComment = (comment_id) => axios.delete(`${API_BASE_URL}/api/comments/${comment_id}`, getAuthHeader()).then(({ data }) => data);
+
+//Bài viết, tin tức
+export const getNews = (params) => axios.get(`${API_BASE_URL}/api/get/news`, { params: params }).then(({ data }) => data || {}).catch(() => { });
+export const getNewsDetail = (slug) => axios.get(`${API_BASE_URL}/api/detail/news/${slug}`).then(({ data }) => data || {}).catch(() => ({}));
+
+
+

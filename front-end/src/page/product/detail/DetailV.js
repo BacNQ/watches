@@ -1,16 +1,53 @@
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import GalleryProduct from '../../../components/product/gallery';
-import { formatCurrency } from '../../../helpers/format_price'
+import { formatCurrency } from '../../../helpers/format_price';
 import SectionRelate from "../components/SectionRelate";
 import { Rate } from "antd";
-import './product.scss'
+import './product.scss';
+import SectionComment from '../components/SectionComment';
 
-const BtnBuyProduct = dynamic(() => import('../../../components/product/buy-cart'), { ssr: false })
-const BtnCart = dynamic(() => import('../../../components/product/cart'), { ssr: false })
-const FavoriteProduct = dynamic(() => import('../../../components/product/favourite'), { ssr: false })
+const BtnBuyProduct = dynamic(() => import('../../../components/product/buy-cart'), { ssr: false });
+const BtnCart = dynamic(() => import('../../../components/product/cart'), { ssr: false });
+const FavoriteProduct = dynamic(() => import('../../../components/product/favourite'), { ssr: false });
 
 const ProductV = (props) => {
     const { product } = props;
+    const [quantity, setQuantity] = useState(1);
+    const maxQty = typeof product?.stock === 'number' ? product.stock : 999;
+
+    const handleIncrease = () => {
+        if (typeof product?.stock === 'number') {
+            if (quantity < product.stock) {
+                setQuantity(quantity + 1);
+            }
+        } else {
+            setQuantity(qty => Math.min(qty + 1, 999));
+        }
+    };
+
+    const handleDecrease = () => {
+        if (quantity > 1) {
+            setQuantity(quantity - 1);
+        }
+    };
+
+    const handleChangeQuantity = (e) => {
+        let val = parseInt(e.target.value, 10);
+        if (isNaN(val) || val < 1) val = 1;
+
+        if (typeof product?.stock === 'number') {
+            if (val > product.stock) {
+                setQuantity(product.stock);
+            } else {
+                setQuantity(val);
+            }
+        } else {
+            if (val > 999) val = 999;
+            setQuantity(val);
+        }
+    };
+
     return (
         <div className='content-body'>
             <article className="box-product">
@@ -30,10 +67,11 @@ const ProductV = (props) => {
                             <span className='number-rating'>{product?.rating || '0'}</span>
                         </div>
                         <span className='product-sold'>Đã bán {product.sold} sản phẩm</span>
-                        {product.stock_status && product.stock_status === 'Còn hàng' ?
-                            <div className='product-status in-stock'>Còn hàng</div> :
+                        {product.stock_status && product.stock_status === 'Còn hàng' ? (
+                            <div className='product-status in-stock'>Còn hàng</div>
+                        ) : (
                             <div className='product-status out-of-stock'>Hết hàng</div>
-                        }
+                        )}
                         <div className="product-price">
                             <div className='price-current'>{formatCurrency(product.price_current)} đ</div>
                             {product.price_old && <div className='price-old'>{formatCurrency(product.price_old)} đ</div>}
@@ -53,16 +91,45 @@ const ProductV = (props) => {
                                 );
                             })}
                         </div>
+
+                        <div className="product-quantity">
+                            <span className="label-quantity">Số lượng:</span>
+                            <div className="quantity-controls">
+                                <button
+                                    type="button"
+                                    className="btn-quantity btn-quantity-decrease"
+                                    onClick={handleDecrease}
+                                    disabled={quantity <= 1}
+                                >-</button>
+                                <input
+                                    type="number"
+                                    min={1}
+                                    max={maxQty}
+                                    value={quantity}
+                                    onChange={handleChangeQuantity}
+                                    className="input-quantity"
+                                />
+                                <button
+                                    type="button"
+                                    className="btn-quantity btn-quantity-increase"
+                                    onClick={handleIncrease}
+                                    disabled={typeof product?.stock === 'number' ? quantity >= product.stock : quantity >= 999}
+                                >+</button>
+                            </div>
+                        </div>
+
                         <div className='product-buy'>
                             <BtnCart
                                 product={product}
                                 size="lg"
                                 label="Thêm vào giỏ"
+                                quantity={quantity}
                             />
                             <BtnBuyProduct
                                 product={product}
                                 size="lg"
                                 label="Mua ngay"
+                                quantity={quantity}
                             />
                         </div>
                         <div className='hotline_detail'>
@@ -104,6 +171,10 @@ const ProductV = (props) => {
                         </div>
                     </section>
                 </div>
+            </article>
+
+            <article className="product-comment">
+                <SectionComment productId={product._id} title="Bình luận"/>
             </article>
 
             {product?.description &&

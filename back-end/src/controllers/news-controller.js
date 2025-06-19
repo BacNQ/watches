@@ -61,6 +61,75 @@ module.exports.getAllNews = async (req, res) => {
     }
 };
 
+module.exports.getNews = async (req, res) => {
+    try {
+        const { title, category, sort, page = 1, limit = 10 } = req.query;
+
+        let filter = {
+            status: true,
+            deleted: false
+        };
+
+        if (title) {
+            filter.$or = [
+                { title: { $regex: title, $options: 'i' } },
+                { slug: { $regex: title, $options: 'i' } }
+            ];
+        }
+
+        if (category) {
+            filter.category = category;
+        }
+
+        let sortOption = { createdAt: -1 };
+        if (sort) {
+            const isDesc = sort.startsWith('-');
+            const sortField = isDesc ? sort.substring(1) : sort;
+            sortOption = { [sortField]: isDesc ? -1 : 1 };
+        }
+
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+        const total = await NewsModel.countDocuments(filter);
+
+        const news = await NewsModel.find(filter)
+            .populate('author', 'username email phone')
+            .sort(sortOption)
+            .skip(skip)
+            .limit(parseInt(limit));
+
+        res.status(200).json({
+            success: true,
+            data: news,
+            paging: {
+                total,
+                page: parseInt(page),
+                limit: parseInt(limit),
+                totalPages: Math.ceil(total / limit)
+            }
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi server',
+            error: err.message
+        });
+    }
+};
+
+module.exports.getNewsBySlug = async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const news = await NewsModel.findOne({ slug, status: true, deleted: false })
+            .populate('author', 'username email phone');
+        if (!news) {
+            return res.status(404).json({ success: false, message: 'Không tìm thấy bài viết' });
+        }
+        res.status(200).json({ success: true, data: news });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Lỗi server', error: err.message });
+    }
+};
+
 /**
  * Thêm bài viết mới
  */

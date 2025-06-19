@@ -20,6 +20,7 @@ module.exports.create = async (req, res) => {
           user_id: userId,
           qty: data.qty,
           url: data.url,
+          stock: data.stock,
           sold_out: data.sold_out === 'Còn hàng' ? false : true
         }
         await new CartModel(dataNew).save();

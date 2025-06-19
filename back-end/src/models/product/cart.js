@@ -14,6 +14,7 @@ const CartSchema = new Schema({
     user_id: { type: Schema.Types.ObjectId },
     deleted: { type: Boolean, default: false },
     sold_out: { type: Boolean, default: false },
+    stock: {type: Number},
     created_date: { type: Date, default: Date.now },
 });
 
