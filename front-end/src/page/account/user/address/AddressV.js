@@ -94,9 +94,9 @@ const AddressV = (props) => {
                                             </li>
                                         ))}
                                     </ul>
-                                    {/* <div className='btn-add-address'>
+                                    <div className='btn-add-address'>
                                         <Button className='add-address' color='primary' onClick={() => editAddress(null)}><i className="fa fa-plus" />Thêm địa chỉ mới</Button>
-                                    </div> */}
+                                    </div>
                                 </div>
                                 :
                                 <EmptyV title="Chưa có địa chỉ nhận hàng!">

@@ -85,6 +85,7 @@ const Dashboard = () => {
             case 'shipping': return 'Đang vận chuyển';
             case 'success': return 'Mua thành công';
             case 'cancelled': return 'Đơn bị hủy';
+            case 'cancel_requested': return 'Đơn yêu cầu hủy';
             default: return status;
         }
     };

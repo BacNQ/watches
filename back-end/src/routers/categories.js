@@ -14,6 +14,7 @@ function connectRoutes(router) {
     router.post('/category', authMiddleware, isAdmin, Category.addCategory);
     router.put('/category/:id', authMiddleware, isAdmin, Category.updateCategory);
     router.delete('/category/delete/:id', authMiddleware, isAdmin, Category.deleteCategory);
+    router.get('/bnq_watches/category/:category_id', Category.getDetailCategory);
 }
 
 

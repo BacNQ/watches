@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
 import "./style.scss";
-import { seachCategories } from '../../services/categories';
+import { seachCategories, getDetailCategory } from '../../services/categories';
 
 function buildCategoryTree(categories) {
     const map = {};
@@ -47,7 +47,7 @@ const MegaMenu = ({ category, onClose }) => {
                     <ul>
                         {category.children.map(child => (
                             <li key={child._id} className="py-1 text-[15px] text-gray-800 font-medium">
-                                <a href={`/category/${child.slug || child._id}`} className="hover:text-blue-600">{child.name}</a>
+                                <a href={`/category/${child.category_id || child.slug}`} className="hover:text-blue-600">{child.name}</a>
                             </li>
                         ))}
                     </ul>
@@ -58,7 +58,7 @@ const MegaMenu = ({ category, onClose }) => {
                         <ul>
                             {col.items.map(sub => (
                                 <li key={sub._id} className="py-1 text-[15px] text-gray-700">
-                                    <a href={`/category/${sub.slug || sub._id}`} className="hover:text-blue-600">{sub.name}</a>
+                                    <a href={`/category/${sub.category_id || sub.slug}`} className="hover:text-blue-600">{sub.name}</a>
                                 </li>
                             ))}
                         </ul>
@@ -122,7 +122,7 @@ const CategoryMain = () => {
                                         onMouseEnter={() => handleMouseEnter(cat)}
                                     >
                                         <a className="flex items-center px-3 py-2 hover:bg-gray-100 font-medium"
-                                            href={`/category/${cat.slug || cat._id}`}>
+                                            href={`/category/${cat.category_id || cat.slug}`}>
                                             {cat.name}
                                             {cat.children && cat.children.length > 0 &&
                                                 <i className="fas fa-chevron-right ml-auto text-xs"></i>

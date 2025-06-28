@@ -2,11 +2,22 @@ import { useQuery } from '@tanstack/react-query';
 import { checkIsLoggedIn } from '../lib/check-login';
 import { getFavoProducts, getCarts, searchFavorites } from '../services/common'
 import { searchProducts } from '@/services/product';
+import { getDetailCategory } from '@/services/categories';
 
 export const useSearchProducts = (keyword, params = {}, options = {}) => useQuery({
     queryKey: ['SEARCH_PRODUCTS', keyword, params],
     queryFn: () => searchProducts(keyword, params),
     enabled: !!keyword,
+    retry: false,
+    refetchOnWindowFocus: false,
+    retryOnMount: false,
+    ...options,
+});
+
+export const useDetailCategory = (category_id, params = {}, options = {}) => useQuery({
+    queryKey: ['DETAIL_CATEGORY', category_id, params],
+    queryFn: () => getDetailCategory(category_id, params),
+    enabled: !!category_id,
     retry: false,
     refetchOnWindowFocus: false,
     retryOnMount: false,

@@ -54,3 +54,16 @@ export const generateInvoice = (orderId) => {
     responseType: 'blob',
   });
 };
+
+//Hàm xác nhận hủy đơn từ khách hàng
+export const confirmCancel = (orderId) =>
+  axios.put(
+    `${API_BASE_URL}/api/orders/confirm/cancel`,
+    { orderId },
+    getAuthHeader()
+  )
+    .then(({ data }) => data || {})
+    .catch((error) => {
+      console.error('Lỗi khi gọi API updateOrderStatus:', error);
+      throw error;
+    });

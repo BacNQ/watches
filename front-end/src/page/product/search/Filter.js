@@ -3,7 +3,7 @@ import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Segmented } from 'antd';
 
-const SearchHeader = ({ params, changeSearch }) => {
+const SearchHeader = ({ params }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 

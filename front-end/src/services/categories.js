@@ -28,3 +28,5 @@ export const seachCategories = async (params) => {
     throw error;
   }
 };
+
+export const getDetailCategory = (category_id, params = {}) => axios.get(`${API_BASE_URL}/api/bnq_watches/category/${category_id}`, { params }).then(({ data }) => data || {}).catch((error) => {console.error('Lỗi khi gọi API:', error)});

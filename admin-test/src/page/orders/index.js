@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import SideBar from '../../components/sidebar';
 import './style.scss';
 import HeaderInfo from '../../components/header/HeaderInfo';
-import { Table, Spin, Tooltip, Image, Select, Modal, Input, Button, Space } from 'antd';
-import { getAllOrders, updateOrderStatus, cancelOrder, generateInvoice } from '../../services/order';
+import { Table, Spin, Tooltip, Image, Select, Modal, Input, Button } from 'antd';
+import { getAllOrders, updateOrderStatus, cancelOrder, generateInvoice, confirmCancel } from '../../services/order';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { FilePdfOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -18,6 +18,8 @@ const OrdersV = () => {
     const [selectedStatus, setSelectedStatus] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [isEditingStatus, setIsEditingStatus] = useState(false);
+    const [isApproveCancelModalVisible, setIsApproveCancelModalVisible] = useState(false);
+    const [orderApproveCancel, setOrderApproveCancel] = useState(null);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -35,7 +37,20 @@ const OrdersV = () => {
         fetchOrders();
     }, [searchQuery, selectedStatus]);
 
-    const renderStatus = (status) => {
+    const renderStatus = (status, record) => {
+        if (status === 'cancel_requested') {
+            return (
+                <Button
+                    type="primary"
+                    danger
+                    size="small"
+                    onClick={() => handleApproveCancel(record)}
+                    style={{paddingTop: 16, paddingBottom: 16}}
+                >
+                    Khách yêu cầu hủy đơn
+                </Button>
+            );
+        }
         switch (status) {
             case 'pending':
                 return 'Đang xử lý';
@@ -49,6 +64,24 @@ const OrdersV = () => {
                 return 'Đơn bị hủy';
             default:
                 return status;
+        }
+    };
+
+    const handleApproveCancel = (order) => {
+        setOrderApproveCancel(order);
+        setIsApproveCancelModalVisible(true);
+    };
+
+    const handleConfirmApproveCancel = async () => {
+        try {
+            await confirmCancel(orderApproveCancel._id);
+            toast.success('Đã duyệt hủy đơn hàng!');
+            setIsApproveCancelModalVisible(false);
+            setOrderApproveCancel(null);
+            const res = await getAllOrders({ search: searchQuery, status: selectedStatus });
+            setOrders(res?.data?.results || []);
+        } catch (error) {
+            toast.error('Lỗi khi duyệt hủy đơn hàng!');
         }
     };
 
@@ -185,7 +218,7 @@ const OrdersV = () => {
             title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
-            render: (status) => renderStatus(status),
+            render: (status, record) => renderStatus(status, record),
             align: 'center'
         },
         {
@@ -387,6 +420,15 @@ const OrdersV = () => {
                     <Select.Option value="success">Mua thành công</Select.Option>
                     <Select.Option value="cancelled">Đơn bị hủy</Select.Option>
                 </Select>
+            </Modal>
+
+            <Modal
+                title="Xác nhận duyệt hủy đơn"
+                open={isApproveCancelModalVisible}
+                onOk={handleConfirmApproveCancel}
+                onCancel={() => setIsApproveCancelModalVisible(false)}
+            >
+                <p>Bạn chắc chắn muốn duyệt hủy cho đơn <b>{orderApproveCancel?.app_trans_id}</b> không?</p>
             </Modal>
         </div>
     );

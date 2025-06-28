@@ -3,14 +3,10 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import pickBy from 'lodash/pickBy'
 import ProductItem from "../../../components/product/item";
-// import SearchSkeleton from "../../../components/product/item";
-// import SkeletonSide from '../../../components/product/item'
 import EmptySearch from "../../../components/empty/search";
 import { useState, useEffect } from "react";
-import { Tabs, Tab, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import { Spin } from 'antd';
 import { useSearchProducts } from '../../../query/product';
-// import { numberCommas } from '../../../helpers/commons'
 import { useQuery } from '../../../hook/query';
 import { Pagination } from 'antd';
 import "./search.scss"
@@ -44,21 +40,6 @@ const SearchV = ({ keyword }) => {
     };
 
     return (
-        // <div>
-        //     <Tabs aria-label="Tìm kiếm sản phẩm">
-        //         <Tab key="all" title="Tất cả sản phẩm">
-        //             <div className="product-list">
-        //                 {data?.response?.results?.length > 0 ? (
-        //                     data?.response?.results.map(product => (
-        //                         <ProductItem key={product.slug} product={product} />
-        //                     ))
-        //                 ) : (
-        //                     <EmptySearch />
-        //                 )}
-        //             </div>
-        //         </Tab>
-        //     </Tabs>
-        // </div>
         <div className="page-search">
             <div className="container">
                 <nav aria-label="breadcrumb" className='breadcrumb'>

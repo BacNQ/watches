@@ -63,7 +63,6 @@
                     display: flex;
                     justify-content: end;
                     align-items: center;
-                    margin-right: 2px;
                     gap: 24px;
 
                     .btn-refetch {
@@ -309,7 +308,7 @@
                                 gap: 8px;
                             }
                             li {
-                                padding: 6px 10px;
+                                padding: 0px 10px;
                                 border-radius: 6px;
                                 font-size: 14px;
                                 outline: none;

@@ -6,6 +6,7 @@ const CategoryModel = require('../models/category/model');
 const { validObjectId } = require('../helpers/mongo-helper');
 const parse = require('../helpers/parse');
 const _ = require('lodash');
+const { scrapeCategory } = require('../lib/scraper_api/category');
 
 module.exports.searchCategories = async (req, res) => {
   try {
@@ -536,3 +537,23 @@ function documenUpdate(id, data) {
     resolve(category);
   });
 }
+
+module.exports.getDetailCategory = async (req, res) => {
+    try {
+        const { category_id } = req.params;
+        const { page = 1, ...queryParams } = req.query;
+
+        if (!category_id) {
+            return res.status(400).json({ message: 'Không tồn tại category_id' });
+        }
+
+        const pageNumber = parseInt(page, 10) || 1;
+
+        const results = await scrapeCategory(category_id, pageNumber, queryParams);
+
+        res.status(200).send({ code: 1, message: "Thành công", response: results });
+    } catch (error) {
+        console.error('Error search: ', error);
+        res.status(400).send({ code: 0, message: 'Lỗi danh mục' });
+    }
+};

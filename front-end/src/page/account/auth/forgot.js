@@ -128,7 +128,7 @@ const ForgotV = () => {
                                                     labelPlacement="outside"
                                                 />
                                             </div>
-                                            <div className='input-form py-2'>
+                                            <div className='input-form py-2' style={{paddingTop: 24}}>
                                                 <FieldPassword
                                                     control={control}
                                                     name="confirmPassword"

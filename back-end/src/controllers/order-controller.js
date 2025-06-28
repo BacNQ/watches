@@ -300,3 +300,63 @@ module.exports.generateInvoice = async (req, res) => {
         return res.status(500).send({ code: 0, message: 'Internal Server Error' });
     }
 };
+
+module.exports.requestCancelOrder = async (req, res) => {
+    try {
+        const { orderId, note } = req.body;
+
+        if (!ObjectId.isValid(orderId)) {
+            return res.status(400).send({ code: 0, message: 'Invalid order ID' });
+        }
+
+        if (!note || note.trim() === '') {
+            return res.status(400).send({ code: 0, message: 'Lý do hủy đơn không được để trống' });
+        }
+
+        const order = await OrderModel.findOne({ _id: orderId, status: 'pending' });
+        if (!order) {
+            return res.status(400).send({ code: 0, message: 'Không thể gửi yêu cầu hủy đơn này!' });
+        }
+
+        order.status = 'cancel_requested';
+        order.note = note;
+        await order.save();
+
+        return res.send({
+            code: 1,
+            message: 'Yêu cầu hủy đơn đã được gửi thành công!',
+            data: { order }
+        });
+    } catch (err) {
+        console.error('requestCancelOrder error:', err);
+        return res.status(400).send({ code: 0, message: 'Bad request' });
+    }
+};
+
+module.exports.approveCancelOrder = async (req, res) => {
+    try {
+        const { orderId } = req.body;
+
+        if (!ObjectId.isValid(orderId)) {
+            return res.status(400).send({ code: 0, message: 'Invalid order ID' });
+        }
+
+        const order = await OrderModel.findOne({ _id: orderId, status: 'cancel_requested' });
+        if (!order) {
+            return res.status(400).send({ code: 0, message: 'Không thể duyệt đơn này!' });
+        }
+
+        order.status = 'cancelled';
+        await order.save();
+
+        return res.send({
+            code: 1,
+            message: 'Đơn hàng đã được hủy thành công!',
+            data: { order }
+        });
+    } catch (err) {
+        console.error('approveCancelOrder error:', err);
+        return res.status(400).send({ code: 0, message: 'Bad request' });
+    }
+};
+

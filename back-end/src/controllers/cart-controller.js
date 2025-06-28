@@ -9,7 +9,9 @@ module.exports.create = async (req, res) => {
       const userId = req.userId;
       const cart = await CartModel.findOne({ slug: data.slug, user_id: userId, deleted: false })
       if (cart) {
-        return res.status(400).send({ code: 0, message: 'Sản phẩm đã tồn tại trong giỏ hàng!' });
+        cart.qty += data.qty;
+        await cart.save();
+        return res.status(200).send({ code: 1, message: 'Số lượng sản phẩm trong giỏ hàng đã được cập nhật!' })
       } else {
         const dataNew = {
           slug: data.slug,

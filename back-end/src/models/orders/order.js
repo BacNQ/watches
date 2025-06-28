@@ -39,7 +39,7 @@ const OrderSchema = new Mongoose.Schema({
   address: AddressSchema,
   status: {
     type: String,
-    enum: ['pending', 'approved', 'success', 'cancelled', 'shipping'],
+    enum: ['pending', 'approved', 'success', 'cancelled', 'shipping', 'cancel_requested'],
     default: 'pending'
   },
   paid: { type: Boolean, default: false },
