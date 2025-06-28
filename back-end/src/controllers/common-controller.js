@@ -33,6 +33,9 @@ module.exports.getDashboardStats = async (req, res) => {
     // Tính tổng doanh thu
     const revenueResult = await OrderModel.aggregate([
       {
+        $match: { status: { $in: ['success', 'shipping', 'approved'] } }
+      },
+      {
         $group: {
           _id: null,
           totalRevenue: { $sum: '$amount' }
@@ -76,7 +79,8 @@ module.exports.getRevenueByDay = async (req, res) => {
             $gte: startDate,
             $lt: endDate,
           },
-          deleted: false
+          deleted: false,
+          status: { $in: ['success', 'shipping', 'approved'] }
         },
       },
       {
@@ -116,7 +120,8 @@ module.exports.getRevenueByMonth = async (req, res) => {
             $gte: startDate,
             $lt: endDate,
           },
-          deleted: false
+          deleted: false,
+          status: { $in: ['success', 'shipping', 'approved'] }
         },
       },
       {

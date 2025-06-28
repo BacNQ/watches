@@ -10,7 +10,6 @@ async function scrapeCategory(category_id, page = 1, params = {}) {
 
     const queryStr = queryString.stringify(params);
     const url = queryStr ? `${baseUrl}?${queryStr}` : baseUrl;
-    console.log('Scraping:', url);
 
     const browser = await puppeteer.launch({ headless: true });
     const pageObj = await browser.newPage();
