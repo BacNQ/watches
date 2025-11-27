@@ -43,12 +43,26 @@ module.exports.getDashboardStats = async (req, res) => {
       }
     ]);
 
+    const refundResult = await OrderModel.aggregate([
+      {
+        $match: { status: { $in: ['cancelled', 'cancel_requested'] } }
+      },
+      {
+        $group: {
+          _id: null,
+          totalRefund: { $sum: '$amount' }
+        }
+      }
+    ]);
+
+    const totalRefund = refundResult[0]?.totalRefund || 0;
     const totalRevenue = revenueResult[0]?.totalRevenue || 0;
     const totalStock = totalStockResult[0]?.totalStock || 0;
     const totalSold = totalSoldResult[0]?.totalSold || 0;
 
     res.json({
       totalOrders,
+      totalRefund,
       totalCustomers,
       totalProducts,
       totalRevenue,

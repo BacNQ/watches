@@ -26,7 +26,7 @@ module.exports.paymentByZaloPay = async (req, res) => {
     const { amount, items, address } = req.body;
     const app_trans_id = await generateAppTransId();
 
-    const embed_data = { address, redirecturl: 'https://349a-58-187-50-132.ngrok-free.app/account/orders' };
+    const embed_data = { address, redirecturl: 'https://90ec-2401-d800-2e51-84fe-b952-4de1-144c-9d02.ngrok-free.app/account/orders' };
     const order = {
       app_id: config.app_id,
       app_user: 'demo_user',
@@ -37,7 +37,7 @@ module.exports.paymentByZaloPay = async (req, res) => {
       amount,
       description: `ZaloPay Demo - Thanh toán đơn hàng #${app_trans_id}`,
       bank_code: '',
-      callback_url: 'https://expired-carbon-bacterial-marking.trycloudflare.com/api/zalopay/callback',
+      callback_url: 'https://consideration-sections-media-exhaust.trycloudflare.com/api/zalopay/callback',
       mac: ''
     };
 

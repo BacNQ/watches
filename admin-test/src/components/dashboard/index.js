@@ -6,7 +6,7 @@ import { getDashboardStats, getRevenueByDay, getRevenueByMonth, getOrderByStatus
 import { Row, Col, Card, Select, Table, Tooltip as Tooltips } from 'antd';
 import { Line, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend, Title } from 'chart.js';
-import { ShoppingCartOutlined, UserOutlined, AppstoreOutlined, DollarOutlined, InboxOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, UserOutlined, AppstoreOutlined, DollarOutlined, InboxOutlined, GiftOutlined } from '@ant-design/icons';
 import './style.scss';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend, Title);
@@ -20,7 +20,8 @@ const Dashboard = () => {
         totalProducts: 0,
         totalRevenue: 0,
         totalStock: 0,
-        totalSold: 0
+        totalSold: 0,
+        totalRefund: 0
     });
 
     const [chartMode, setChartMode] = useState('day');
@@ -229,7 +230,7 @@ const Dashboard = () => {
                             <Col xs={24} sm={12} md={8}>
                                 <Card>
                                     <div style={cardStyle}>
-                                        <DollarOutlined style={{ fontSize: 32, color: '#f5222d' }} />
+                                        <GiftOutlined  style={{ fontSize: 32, color: '#f5222d' }} />
                                         <div>
                                             <div>Sản phẩm đã bán</div>
                                             <strong>{stats?.totalSold}</strong>
@@ -243,8 +244,20 @@ const Dashboard = () => {
                                     <div style={cardStyle}>
                                         <DollarOutlined style={{ fontSize: 32, color: '#f5222d' }} />
                                         <div>
-                                            <div>Tổng doanh thu</div>
-                                            <strong>{formatCurrency(stats?.totalRevenue)}</strong>
+                                            <Tooltips
+                                                title={
+                                                    <div>
+                                                        <div style={{marginBottom: 8}}><b>Doanh thu:</b> {formatCurrency(stats?.totalRevenue)}</div>
+                                                        <div><b>Hoàn đơn:</b> {formatCurrency(stats?.totalRefund)}</div>
+                                                    </div>
+                                                }
+                                                placement="top"
+                                            >
+                                                <div>
+                                                    <div>Tổng doanh thu</div>
+                                                    <strong>{formatCurrency(stats?.totalRevenue)}</strong>
+                                                </div>
+                                            </Tooltips>
                                         </div>
                                     </div>
                                 </Card>
